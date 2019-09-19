@@ -1,14 +1,15 @@
 package com.zenvia.api.sdk.client.exceptions;
 
+import com.zenvia.api.sdk.client.errors.ErrorResponse;
 
 @SuppressWarnings( "serial" )
 public class UnsuccessfulRequestException extends Exception {
 	private final int httpStatusCode;
 	
-	private final Error body;
+	private final ErrorResponse body;
 
 
-	public UnsuccessfulRequestException( String url, int httpStatusCode, Error body ) {
+	public UnsuccessfulRequestException( String url, int httpStatusCode, ErrorResponse body ) {
 		super( "Unsuccessful request on: " + url );
 		this.httpStatusCode = httpStatusCode;
 		this.body = body;
@@ -20,7 +21,7 @@ public class UnsuccessfulRequestException extends Exception {
 	}
 
 
-	public Error getBody() {
+	public ErrorResponse getBody() {
 		return body;
 	}
 }
