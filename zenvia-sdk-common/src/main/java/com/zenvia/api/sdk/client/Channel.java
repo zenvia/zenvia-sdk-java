@@ -20,10 +20,10 @@ public class Channel {
 	
 	public final String url;
 
-	protected final IClient client;
+	protected final AbstractClient client;
 
 
-	public Channel( ChannelType type, IClient client ) {
+	public Channel( ChannelType type, AbstractClient client ) {
 		this.type = type;
 		this.client = client;
 		this.url = client.getApiUrl() + type.path;

@@ -23,7 +23,7 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public abstract class AbstractChannelTest {
-	protected final IClient client = Mockito.mock( IClient.class );
+	protected final AbstractClient client = Mockito.mock( AbstractClient.class );
 
 	protected final Channel channel;
 
