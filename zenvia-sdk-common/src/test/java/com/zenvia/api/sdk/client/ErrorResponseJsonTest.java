@@ -8,15 +8,15 @@ import java.nio.charset.StandardCharsets;
 import org.junit.Test;
 
 import com.zenvia.api.sdk.JsonMapper;
-import com.zenvia.api.sdk.client.errors.Error;
+import com.zenvia.api.sdk.client.errors.ErrorResponse;
 
 
-public class ErrorJsonTest {
+public class ErrorResponseJsonTest {
 	@Test
 	public void deserializationWithoutDetails() {
-		Error error = JsonMapper.deserialize(
+		ErrorResponse error = JsonMapper.deserialize(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\"}".getBytes( StandardCharsets.UTF_8 ),
-			Error.class );
+			ErrorResponse.class );
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -28,9 +28,9 @@ public class ErrorJsonTest {
 
 	@Test
 	public void deserialization() {
-		Error error = JsonMapper.deserialize(
+		ErrorResponse error = JsonMapper.deserialize(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\",\"details\":[{\"code\":\"INVALID\",\"path\":\"id\",\"message\":\"Invalid id!\"}]}".getBytes( StandardCharsets.UTF_8 ),
-			Error.class );
+			ErrorResponse.class );
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -45,9 +45,9 @@ public class ErrorJsonTest {
 
 	@Test
 	public void deserializationWithUnsupportedAttributes() {
-		Error error = JsonMapper.deserialize(
+		ErrorResponse error = JsonMapper.deserialize(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\",\"details\":[],\"new\":[{\"whatever\":\"!\"}]}".getBytes( StandardCharsets.UTF_8 ),
-			Error.class );
+			ErrorResponse.class );
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -57,9 +57,9 @@ public class ErrorJsonTest {
 
 	@Test
 	public void deserializationWithUnsupportedAttributesOnADetail() {
-		Error error = JsonMapper.deserialize(
+		ErrorResponse error = JsonMapper.deserialize(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\",\"details\":[{\"code\":\"INVALID\",\"path\":\"id\",\"message\":\"Invalid id!\",\"new\":[{\"whatever\":\"!\"}]}]}".getBytes( StandardCharsets.UTF_8 ),
-			Error.class );
+			ErrorResponse.class );
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );

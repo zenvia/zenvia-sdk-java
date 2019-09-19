@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @JsonIgnoreProperties( ignoreUnknown = true )
-public class Error {
+public class ErrorResponse {
 	public final String code;
 
 	public final String message;
@@ -18,7 +18,7 @@ public class Error {
 
 
 	@JsonCreator
-	public Error(
+	public ErrorResponse(
 		@JsonProperty( "code" ) String code,
 		@JsonProperty( "message" ) String message,
 		@JsonProperty( "details" ) List<ErrorDetail> details
