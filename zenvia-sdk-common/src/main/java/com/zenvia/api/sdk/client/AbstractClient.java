@@ -1,5 +1,6 @@
 package com.zenvia.api.sdk.client;
 
+import com.zenvia.api.sdk.JsonMapper;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
 
 
@@ -9,6 +10,8 @@ public abstract class AbstractClient implements IClient {
 	protected final String apiToken;
 
 	protected final String apiUrl;
+	
+	protected final JsonMapper jsonMapper = new JsonMapper();
 
 
 	public AbstractClient( String apiToken ) {

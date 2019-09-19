@@ -4,24 +4,32 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.zenvia.api.sdk.JsonMapper;
+import com.zenvia.api.sdk.client.exceptions.JsonException;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
 import com.zenvia.api.sdk.client.messages.TMessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
 import com.zenvia.api.sdk.contents.TextContent;
 
 
+@FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class MessageResponseJsonTest {
+	private JsonMapper jsonMapper = new JsonMapper();
+
+
 	@Test
-	public void deserializationMissingContents() {
-		MessageResponse messageResponse = JsonMapper.deserialize(
+	public void deserializationMissingContents() throws JsonException, IOException {
+		MessageResponse messageResponse = jsonMapper.deserialize(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\"}".getBytes( StandardCharsets.UTF_8 ),
 			MessageResponse.class );
-		
+
 		assertNotNull( messageResponse );
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
@@ -32,11 +40,11 @@ public class MessageResponseJsonTest {
 
 
 	@Test
-	public void deserialization() {
-		MessageResponse messageResponse = JsonMapper.deserialize(
+	public void deserialization() throws JsonException, IOException {
+		MessageResponse messageResponse = jsonMapper.deserialize(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\",\"contents\":[{\"type\":\"text\",\"text\":\"This is a test!\"}]}".getBytes( StandardCharsets.UTF_8 ),
 			MessageResponse.class );
-		
+
 		assertNotNull( messageResponse );
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
@@ -51,11 +59,11 @@ public class MessageResponseJsonTest {
 
 
 	@Test
-	public void deserializationWithUnsupportedAttributes() {
-		MessageResponse messageResponse = JsonMapper.deserialize(
+	public void deserializationWithUnsupportedAttributes() throws JsonException, IOException {
+		MessageResponse messageResponse = jsonMapper.deserialize(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\",\"contents\":[]}".getBytes( StandardCharsets.UTF_8 ),
 			MessageResponse.class );
-		
+
 		assertNotNull( messageResponse );
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
@@ -66,13 +74,13 @@ public class MessageResponseJsonTest {
 
 
 	@Test
-	public void deserializationWithUnsupportedChannel() {
+	public void deserializationWithUnsupportedChannel() throws IOException {
 		try {
-			JsonMapper.deserialize(
+			jsonMapper.deserialize(
 				"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"new\",\"contents\":[]}".getBytes( StandardCharsets.UTF_8 ),
 				MessageResponse.class );
 			fail();
-		} catch( RuntimeException exception ) {
+		} catch( JsonException exception ) {
 			assertEquals( "Exception deserializing", exception.getMessage() );
 		}
 	}

@@ -4,11 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.zenvia.api.sdk.JsonMapper;
+import com.zenvia.api.sdk.client.exceptions.JsonException;
 import com.zenvia.api.sdk.contents.Content;
 import com.zenvia.api.sdk.contents.FileContent;
 import com.zenvia.api.sdk.contents.ContentType;
@@ -16,10 +20,14 @@ import com.zenvia.api.sdk.contents.TemplateContent;
 import com.zenvia.api.sdk.contents.TextContent;
 
 
+@FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class ContentJsonTest {
+	private JsonMapper jsonMapper = new JsonMapper();
+
+
 	@Test
-	public void textDeserialization() {
-		Content content = JsonMapper.deserialize(
+	public void textDeserialization() throws JsonException, IOException {
+		Content content = jsonMapper.deserialize(
 			"{\"type\":\"text\",\"text\":\"This is a test!\"}".getBytes( StandardCharsets.UTF_8 ),
 			Content.class );
 		
@@ -32,8 +40,8 @@ public class ContentJsonTest {
 
 
 	@Test
-	public void fileDeserialization() {
-		Content content = JsonMapper.deserialize(
+	public void fileDeserialization() throws JsonException, IOException {
+		Content content = jsonMapper.deserialize(
 			"{\"type\":\"file\",\"fileUrl\":\"https://zenvia.com/favicon.ico\",\"fileMimeType\":\"image/x-icon\",\"fileCaption\":\"This is a test!\"}".getBytes( StandardCharsets.UTF_8 ),
 			Content.class );
 		
@@ -48,8 +56,8 @@ public class ContentJsonTest {
 
 
 	@Test
-	public void templateDeserialization() {
-		Content content = JsonMapper.deserialize(
+	public void templateDeserialization() throws JsonException, IOException {
+		Content content = jsonMapper.deserialize(
 			"{\"type\":\"template\",\"templateId\":\"123\",\"fields\":{\"name\":\"value\"}}".getBytes( StandardCharsets.UTF_8 ),
 			Content.class );
 		
@@ -65,13 +73,13 @@ public class ContentJsonTest {
 
 
 	@Test
-	public void unknowDeserialization() {
+	public void unknowDeserialization() throws IOException {
 		try {
-			JsonMapper.deserialize(
+			jsonMapper.deserialize(
 				"{\"type\":\"new\"}" .getBytes( StandardCharsets.UTF_8 ),
 				Content.class );
 			fail();
-		} catch( RuntimeException exception ) {
+		} catch( JsonException exception ) {
 			assertEquals( "Exception deserializing", exception.getMessage() );
 		}
 	}

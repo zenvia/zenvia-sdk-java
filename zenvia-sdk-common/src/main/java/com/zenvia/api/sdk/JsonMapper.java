@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,13 +18,18 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zenvia.api.sdk.client.exceptions.JsonException;
 
-public final class JsonMapper {
-	private static final Logger LOG = LoggerFactory.getLogger( JsonMapper.class );
+
+public class JsonMapper {
+	protected static final Logger LOG = LoggerFactory.getLogger( JsonMapper.class );
 	
-	
-	private static final ObjectMapper mapper = new ObjectMapper();
-	{
+	protected final ObjectMapper mapper;
+
+
+	public JsonMapper() {
+		mapper = new ObjectMapper();
+		
 		mapper.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS );
 		mapper.disable( DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE );
 		mapper.setDateFormat( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSXXX" ) );
@@ -37,28 +44,23 @@ public final class JsonMapper {
 	}
 
 
-	public static byte[] serialize( Object data )
-	{
-		try
-		{
+	public byte[] serialize( Object data ) throws IllegalArgumentException {
+		try {
 			byte[] serialized = mapper.writeValueAsBytes( data );
 			if( LOG.isTraceEnabled() ) {
 				LOG.trace( "Serialized: {}", new String( serialized, StandardCharsets.UTF_8 ) );
 			}
 			return serialized;
 		}
-		catch( JsonProcessingException exception )
-		{
+		catch( JsonProcessingException exception ) {
 			LOG.error( "Exception serializing: ", exception );
 			throw new IllegalArgumentException( "Exception serializing", exception );
 		}
 	}
 
 
-	public static <TYPE> TYPE deserialize( byte[] data, Class<TYPE> type )
-	{
-		try
-		{
+	public <TYPE> TYPE deserialize( byte[] data, Class<TYPE> type ) throws JsonException, IOException {
+		try {
 			if( LOG.isTraceEnabled() ) {
 				LOG.trace( "Deserialing: {}", new String( data, StandardCharsets.UTF_8 ) );
 			}
@@ -67,16 +69,12 @@ public final class JsonMapper {
 				return null;
 			
 			return mapper.readValue( data, type );
-		}
-		catch( IOException exception )
-		{
+		} catch( JsonMappingException | JsonParseException exception ) {
 			LOG.error( "Exception deserializing: ", exception );
-			throw new IllegalArgumentException( "Exception deserializing", exception );
+			throw new JsonException( data, exception );
+		} catch( IOException exception ) {
+			LOG.error( "Exception deserializing: ", exception );
+			throw new IOException( "Exception deserializing", exception );
 		}
-	}
-
-
-	private JsonMapper() {
-		super();
 	}
 }
