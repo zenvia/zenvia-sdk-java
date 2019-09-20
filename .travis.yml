@@ -12,6 +12,13 @@ script:
 after_success:
   - mvn -DrepoToken=$COVERALLS_REPO_TOKEN clean test jacoco:report coveralls:report
 
+deploy:
+  provider: script
+  script: bash scripts/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: v1-code
+
 cache:
   directories:
     - $HOME/.m2
