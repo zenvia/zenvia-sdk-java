@@ -20,13 +20,80 @@
 		<java.version>1.8</java.version>
 	</properties>
 
-	<distributionManagement>
-		<repository>
-			<id>repo</id>
-			<name>zenvia-artifactory-releases</name>
-			<url>http://artifactory.zenvia360.com/artifactory/libs-release-local</url>
-		</repository>
-	</distributionManagement>
+	<scm>
+		<url>https://github.com/zenvia/zenvia-sdk-java</url>
+		<connection>scm:git:git://github.com/zenvia/zenvia-sdk-java.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/zenvia/zenvia-sdk-java.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/zenvia/zenvia-sdk-java/issues</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>https://github.com/zenvia/zenvia-sdk-node/blob/master/LICENSE.md</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Zenvia</name>
+		<url>https://www.zenvia.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>rafael.souza</id>
+			<name>Rafael Souza</name>
+			<email>rafael.souza@zenvia.com</email>
+			<url>https://github.com/rafael-org</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+		<developer>
+			<id>rodrigo.kamada</id>
+			<name>Rodrigo Kamada</name>
+			<email>rodrigo.kamada@zenvia.com</email>
+			<url>https://github.com/rodrigokamada</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+		<developer>
+			<id>henrique.magarotto</id>
+			<name>Henrique Magarotto</name>
+			<email>henrique.magarotto@zenvia.com</email>
+			<url>https://github.com/hmagarotto</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+		<developer>
+			<id>wladimir.mangelardo</id>
+			<name>Wladimir Mangelardo</name>
+			<email>wladimir.mangelardo@zenvia.com</email>
+			<url>https://github.com/wmangelardo</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+	</developers>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.3.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<format>xml</format>
+					<maxmem>256m</maxmem>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<modules>
 		<module>zenvia-sdk-common</module>
