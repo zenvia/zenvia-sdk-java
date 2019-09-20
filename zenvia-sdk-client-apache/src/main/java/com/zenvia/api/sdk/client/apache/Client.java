@@ -38,6 +38,7 @@ import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpRequestException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.JsonException;
+import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
@@ -142,7 +143,7 @@ public class Client extends AbstractClient implements Closeable {
 
 	@Override
 	public MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException{
+		throws UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException{
 		HttpResponse httpResponse = executeRequest( channel.url, THttpMethod.POST, messageRequest );
 		int httpStatus = httpResponse.getStatusLine().getStatusCode();
 		if ( httpStatus < 200 || httpStatus >= 300 ) {
@@ -156,7 +157,7 @@ public class Client extends AbstractClient implements Closeable {
 	}
 
 
-	protected <TYPE> TYPE deserialize( HttpEntity entity, Class<TYPE>type, String url ) throws HttpIOException {
+	protected <TYPE> TYPE deserialize( HttpEntity entity, Class<TYPE>type, String url ) throws HttpIOException, UnexpectedResponseBodyException {
 		if( entity == null ) {
 			return null;
 		}
@@ -165,7 +166,7 @@ public class Client extends AbstractClient implements Closeable {
 			entity.writeTo( buffer );
 			return jsonMapper.deserialize( buffer.toByteArray(), type );
 		} catch( JsonException exception ) {
-			throw new HttpIOException( url, exception );
+			throw new UnexpectedResponseBodyException( url, exception );
 		} catch( IOException exception ) {
 			throw new HttpIOException( url, exception );
 		}
