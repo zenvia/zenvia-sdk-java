@@ -6,6 +6,7 @@ import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
+import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
@@ -34,7 +35,7 @@ public abstract class AbstractClient {
 
 
 	protected abstract MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+		throws UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
 
 
 	public String getApiUrl() {

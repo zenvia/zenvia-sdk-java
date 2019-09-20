@@ -8,6 +8,7 @@ import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
+import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedContentException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
@@ -31,25 +32,25 @@ public class Channel {
 
 
 	public MessageResponse sendMessage( String from, String to, Content... contents )
-		throws UnsupportedContentException, UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		throws UnsupportedContentException, UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 		return sendMessage( new MessageRequest( from, to, contents ) );
 	}
 
 
 	public MessageResponse sendMessage( String from, String to, Collection<Content> contents )
-		throws UnsupportedContentException, UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		throws UnsupportedContentException, UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 		return sendMessage( new MessageRequest( from, to, contents ) );
 	}
 
 
 	public MessageResponse sendMessage( String from, String to, List<Content> contents )
-		throws UnsupportedContentException, UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		throws UnsupportedContentException, UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 		return sendMessage( new MessageRequest( from, to, contents ) );
 	}
 
 
 	public MessageResponse sendMessage( MessageRequest messageRequest )
-		throws UnsupportedContentException, UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		throws UnsupportedContentException, UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 		messageRequest.contents.forEach( ( content ) -> contentSupportValidation( content ) );
 		return client.sendMessage( this, messageRequest );
 	}
