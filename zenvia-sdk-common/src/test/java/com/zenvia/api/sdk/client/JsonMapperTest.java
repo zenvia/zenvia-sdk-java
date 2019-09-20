@@ -21,6 +21,21 @@ public class JsonMapperTest {
 
 
 	@Test
+	public void emptyDeserialization() {
+		try {
+			jsonMapper.deserialize(
+				"".getBytes( StandardCharsets.UTF_8 ),
+				ErrorResponse.class );
+			fail();
+		} catch( JsonException exception ) {
+			assertEquals( "Exception deserializing", exception.getMessage() );
+		} catch( IOException exception ) {
+			fail();
+		}
+	}
+
+
+	@Test
 	public void nonJsonDeserialization() {
 		try {
 			jsonMapper.deserialize(
