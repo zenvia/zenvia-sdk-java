@@ -10,7 +10,7 @@ script:
   - mvn test -B
 
 after_success:
-  - mvn -DrepoToken=$COVERALLS_REPO_TOKEN clean cobertura:cobertura coveralls:report
+  - mvn -DrepoToken=$COVERALLS_REPO_TOKEN clean test jacoco:report coveralls:report
 
 cache:
   directories:
