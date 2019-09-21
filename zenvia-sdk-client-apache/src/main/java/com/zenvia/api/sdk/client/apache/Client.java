@@ -166,9 +166,9 @@ public class Client extends AbstractClient implements Closeable {
 			entity.writeTo( buffer );
 			return jsonMapper.deserialize( buffer.toByteArray(), type );
 		} catch( JsonException exception ) {
-			throw new UnexpectedResponseBodyException( url, exception );
+			throw logException( new UnexpectedResponseBodyException( url, exception ) );
 		} catch( IOException exception ) {
-			throw new HttpIOException( url, exception );
+			throw logException( new HttpIOException( url, exception ) );
 		}
 	}
 
@@ -205,7 +205,7 @@ public class Client extends AbstractClient implements Closeable {
 	private <EXCEPTION extends HttpRequestException> EXCEPTION logException( EXCEPTION exception ) {
 		LOG.warn( exception.getMessage() );
 		if( LOG.isDebugEnabled() ) {
-			LOG.debug( "Unsuccessful request", exception );
+			LOG.debug( "Request error", exception );
 		}
 		return exception;
 	}
