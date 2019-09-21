@@ -204,9 +204,7 @@ public class Client extends AbstractClient implements Closeable {
 
 	private <EXCEPTION extends HttpRequestException> EXCEPTION logException( EXCEPTION exception ) {
 		LOG.warn( exception.getMessage() );
-		if( LOG.isDebugEnabled() ) {
-			LOG.debug( "Request error", exception );
-		}
+		LOG.debug( "Request error", exception );
 		return exception;
 	}
 
