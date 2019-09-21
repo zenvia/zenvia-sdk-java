@@ -13,7 +13,6 @@ import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -53,7 +52,7 @@ public class Client extends AbstractClient implements Closeable {
 	
 	private final ConnectionReuseStrategy connectionReuseStrategy;
 	
-	private final HttpRequestRetryHandler requestRetryHandler;
+	private final DefaultHttpRequestRetryHandler requestRetryHandler;
 	
 	private final PoolingHttpClientConnectionManager connectionPool;
 
@@ -61,47 +60,93 @@ public class Client extends AbstractClient implements Closeable {
 
 
 	public Client( String apiToken ) {
-		this( apiToken, DEFAULT_URI );
+		this( apiToken, null );
 	}
 
 
 	public Client(
 		String apiToken,
-		int maxConnections,
-		int connectionTimeout,
-		int socketTimeout,
-		int maxAutoRetries
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries
 	) {
-		this( apiToken, DEFAULT_URI, null, null, null, null, null );
+		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, null );
+	}
+
+
+	public Client(
+		String apiToken,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections
+	) {
+		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
+	}
+
+
+	public Client(
+		String apiToken,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections,
+		Integer connectionPoolTimeout,
+		Integer checkStaleConnectionAfterInactivityTime
+	) {
+		this( apiToken, null, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
 	public Client( String apiToken, String apiUrl ) {
-		this( apiToken, apiUrl, null, null, null, null, null );
+		this( apiToken, apiUrl, null, null, null );
 	}
 
 
 	public Client(
 		String apiToken,
 		String apiUrl,
-		Integer maxConnections,
-		Integer checkStaleConnectionAfterInactivityTime,
-		Integer connectionPoolTimeout,
 		Integer connectionTimeout,
 		Integer socketTimeout,
 		Integer maxAutoRetries
 	) {
+		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, null );
+	}
+
+
+	public Client(
+		String apiToken,
+		String apiUrl,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections
+	) {
+		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
+	}
+
+
+	public Client(
+		String apiToken,
+		String apiUrl,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections,
+		Integer connectionPoolTimeout,
+		Integer checkStaleConnectionAfterInactivityTime
+	) {
 		this(
 			apiToken,
-			apiUrl,
+			valueOrDefault( apiUrl, DEFAULT_URI ),
 			buildConnectionPool(
 				valueOrDefault( maxConnections, 100 ),
 				valueOrDefault( checkStaleConnectionAfterInactivityTime, 5000 )
 			),
 			buildRequestConfig(
-				valueOrDefault( connectionPoolTimeout, 0 ),
 				valueOrDefault( connectionTimeout, 25000 ),
-				valueOrDefault( socketTimeout, 60000 )
+				valueOrDefault( socketTimeout, 60000 ),
+				valueOrDefault( connectionPoolTimeout, 0 )
 			),
 			new DefaultHttpRequestRetryHandler(
 				valueOrDefault( maxAutoRetries, 4 ),
@@ -118,7 +163,7 @@ public class Client extends AbstractClient implements Closeable {
 		String apiUrl,
 		PoolingHttpClientConnectionManager connectionPool,
 		RequestConfig defaultRequestConfig,
-		HttpRequestRetryHandler requestRetryHandler,
+		DefaultHttpRequestRetryHandler requestRetryHandler,
 		ConnectionConfig defaultConnectionConfig,
 		ConnectionReuseStrategy connectionReuseStrategy
 	) {
@@ -238,7 +283,7 @@ public class Client extends AbstractClient implements Closeable {
 	}
 
 
-	private static final int valueOrDefault( Integer value, int defaultValue ) {
+	private static final <TYPE> TYPE valueOrDefault( TYPE value, TYPE defaultValue ) {
 		return value == null ? defaultValue : value;
 	}
 
@@ -274,7 +319,7 @@ public class Client extends AbstractClient implements Closeable {
 
 
 	public int getMaxAutoRetries() {
-		return requestConfig.getSocketTimeout();
+		return requestRetryHandler.getRetryCount();
 	}
 
 
