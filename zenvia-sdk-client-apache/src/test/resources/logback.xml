@@ -9,7 +9,8 @@
 			</encoder>
 		</appender>
 	</root>
-	<logger name="com.zenvia" level="INFO" />
+	<logger name="com.zenvia" level="ERROR" />
+	<logger name="com.zenvia.api.sdk.client.apache.Client" level="ERROR" />
 	<logger name="com.zenvia.api.sdk.client.apache.ClientTest" level="ERROR" />
 	<logger name="org.apache.http.wire" level="INFO"/>
 </configuration>
