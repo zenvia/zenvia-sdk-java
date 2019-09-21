@@ -53,7 +53,7 @@ public class JsonMapper {
 			return serialized;
 		}
 		catch( JsonProcessingException exception ) {
-			LOG.debug( "Exception serializing: ", exception );
+			LOG.error( "Exception serializing", exception );
 			throw new IllegalArgumentException( "Exception serializing", exception );
 		}
 	}
@@ -70,10 +70,12 @@ public class JsonMapper {
 			
 			return mapper.readValue( data, type );
 		} catch( JsonMappingException | JsonParseException exception ) {
-			LOG.debug( "Exception deserializing: ", exception );
+			LOG.debug( "Exception deserializing: {}", exception.getMessage() );
+			LOG.trace( "Exception deserializing", exception );
 			throw new JsonException( data, exception );
 		} catch( IOException exception ) {
-			LOG.debug( "Exception deserializing: ", exception );
+			LOG.debug( "Exception deserializing: {}", exception.getMessage() );
+			LOG.trace( "Exception deserializing", exception );
 			throw new IOException( "Exception deserializing", exception );
 		}
 	}
