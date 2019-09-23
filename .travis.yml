@@ -14,7 +14,7 @@ after_success:
 
 deploy:
   provider: script
-  script: bash scripts/deploy.sh
+  script: mvn clean source:jar javadoc:jar deploy --settings=.maven.xml -Dmaven.test.skip=true
   skip_cleanup: true
   on:
     branch: v1-code

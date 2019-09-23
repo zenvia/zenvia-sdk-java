@@ -32,6 +32,17 @@
 		<tag>HEAD</tag>
 	</scm>
 
+	<distributionmanagement>
+		<snapshotrepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotrepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionmanagement>
+
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/zenvia/zenvia-sdk-java/issues</url>
