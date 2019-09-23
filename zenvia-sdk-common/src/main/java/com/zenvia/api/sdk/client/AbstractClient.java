@@ -1,6 +1,5 @@
 package com.zenvia.api.sdk.client;
 
-import com.zenvia.api.sdk.JsonMapper;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpIOException;
@@ -19,8 +18,6 @@ public abstract class AbstractClient {
 	protected final String apiToken;
 
 	protected final String apiUrl;
-	
-	protected final JsonMapper jsonMapper = new JsonMapper();
 
 
 	public AbstractClient( String apiToken ) {

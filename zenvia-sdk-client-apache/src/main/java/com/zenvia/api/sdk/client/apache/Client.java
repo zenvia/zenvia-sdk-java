@@ -7,6 +7,11 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -36,7 +41,6 @@ import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpRequestException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
-import com.zenvia.api.sdk.client.exceptions.JsonException;
 import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
@@ -57,6 +61,8 @@ public class Client extends AbstractClient implements Closeable {
 	private final PoolingHttpClientConnectionManager connectionPool;
 
 	private final HttpClient httpClient;
+	
+	private final ObjectMapper jsonMapper = new ObjectMapper();
 
 
 	public Client( String apiToken ) {
@@ -206,12 +212,18 @@ public class Client extends AbstractClient implements Closeable {
 		if( entity == null ) {
 			return null;
 		}
+		byte[] data = null;
 		try {
+			if( LOG.isTraceEnabled() ) {
+				LOG.trace( "Deserialing: {}", new String( data, StandardCharsets.UTF_8 ) );
+			}
+
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 			entity.writeTo( buffer );
-			return jsonMapper.deserialize( buffer.toByteArray(), type );
-		} catch( JsonException exception ) {
-			throw logException( new UnexpectedResponseBodyException( url, exception ) );
+			data = buffer.toByteArray();
+			return jsonMapper.readValue( data, type );
+		} catch( JsonMappingException | JsonParseException exception ) {
+			throw  logException( new UnexpectedResponseBodyException( url, data, exception ) );
 		} catch( IOException exception ) {
 			throw logException( new HttpIOException( url, exception ) );
 		}
@@ -227,7 +239,7 @@ public class Client extends AbstractClient implements Closeable {
 		httpMethod.addHeader( "X-API-Token", apiToken );
 		if( requestBody != null && httpMethod instanceof HttpEntityEnclosingRequest ) {
 			( (HttpEntityEnclosingRequest) httpMethod ).setEntity(
-				new ByteArrayEntity( jsonMapper.serialize( requestBody ), ContentType.APPLICATION_JSON )
+				new ByteArrayEntity( serialize( requestBody ), ContentType.APPLICATION_JSON )
 			);
 		}
 		
@@ -243,6 +255,21 @@ public class Client extends AbstractClient implements Closeable {
 			throw logException( new HttpProtocolException( url, cause ) );
 		} catch( IOException cause ) {
 			throw logException( new HttpIOException( url, cause ) );
+		}
+	}
+
+
+	protected byte[] serialize( Object data ) throws IllegalArgumentException {
+		try {
+			byte[] serialized = jsonMapper.writeValueAsBytes( data );
+			if( LOG.isTraceEnabled() ) {
+				LOG.trace( "Serialized: {}", new String( serialized, StandardCharsets.UTF_8 ) );
+			}
+			return serialized;
+		}
+		catch( JsonProcessingException exception ) {
+			LOG.error( "Exception serializing", exception );
+			throw new IllegalArgumentException( "Exception serializing", exception );
 		}
 	}
 
