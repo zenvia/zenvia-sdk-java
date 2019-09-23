@@ -1,10 +1,14 @@
 language: java
 
 jdk:
-- openjdk8
+  - openjdk8
 
-before_script:
-  - mvn install -DskipTests=true -B -V
+cache:
+  directories:
+    - $HOME/.m2
+
+install:
+  - mvn install --settings .maven.xml -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 
 script:
   - mvn test -B
@@ -12,16 +16,16 @@ script:
 after_success:
   - mvn -DrepoToken=$COVERALLS_REPO_TOKEN clean test jacoco:report coveralls:report
 
+before_deploy:
+  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+
 deploy:
   provider: script
-  script: mvn clean source:jar javadoc:jar deploy --settings=.maven.xml -Dmaven.test.skip=true
+  script: mvn deploy --settings .maven.xml -Dmaven.test.skip=true -B
   skip_cleanup: true
   on:
     branch: v1-code
-
-cache:
-  directories:
-    - $HOME/.m2
 
 notifications:
   email:
