@@ -7,25 +7,26 @@ import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.zenvia.api.sdk.JsonMapper;
 import com.zenvia.api.sdk.client.errors.ErrorResponse;
-import com.zenvia.api.sdk.client.exceptions.JsonException;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class ErrorResponseJsonTest {
-	private JsonMapper jsonMapper = new JsonMapper();
+	private ObjectMapper jsonMapper = new ObjectMapper();
 
 
 	@Test
-	public void deserializationWithoutDetails() throws JsonException, IOException {
-		ErrorResponse error = jsonMapper.deserialize(
+	public void deserializationWithoutDetails() throws IOException {
+		ErrorResponse error = jsonMapper.readValue(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\"}".getBytes( StandardCharsets.UTF_8 ),
-			ErrorResponse.class );
+			ErrorResponse.class
+		);
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -36,10 +37,11 @@ public class ErrorResponseJsonTest {
 
 
 	@Test
-	public void deserialization() throws JsonException, IOException {
-		ErrorResponse error = jsonMapper.deserialize(
+	public void deserialization() throws IOException {
+		ErrorResponse error = jsonMapper.readValue(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\",\"details\":[{\"code\":\"INVALID\",\"path\":\"id\",\"message\":\"Invalid id!\"}]}".getBytes( StandardCharsets.UTF_8 ),
-			ErrorResponse.class );
+			ErrorResponse.class
+		);
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -53,10 +55,11 @@ public class ErrorResponseJsonTest {
 
 
 	@Test
-	public void deserializationWithUnsupportedAttributes() throws JsonException, IOException {
-		ErrorResponse error = jsonMapper.deserialize(
+	public void deserializationWithUnsupportedAttributes() throws IOException {
+		ErrorResponse error = jsonMapper.readValue(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\",\"details\":[],\"new\":[{\"whatever\":\"!\"}]}".getBytes( StandardCharsets.UTF_8 ),
-			ErrorResponse.class );
+			ErrorResponse.class
+		);
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -65,10 +68,11 @@ public class ErrorResponseJsonTest {
 
 
 	@Test
-	public void deserializationWithUnsupportedAttributesOnADetail() throws JsonException, IOException {
-		ErrorResponse error = jsonMapper.deserialize(
+	public void deserializationWithUnsupportedAttributesOnADetail() throws IOException {
+		ErrorResponse error = jsonMapper.readValue(
 			"{\"code\":\"TEST\",\"message\":\"This is a test!\",\"details\":[{\"code\":\"INVALID\",\"path\":\"id\",\"message\":\"Invalid id!\",\"new\":[{\"whatever\":\"!\"}]}]}".getBytes( StandardCharsets.UTF_8 ),
-			ErrorResponse.class );
+			ErrorResponse.class
+		);
 		
 		assertNotNull( error );
 		assertEquals( "TEST", error.code );
@@ -77,10 +81,11 @@ public class ErrorResponseJsonTest {
 
 
 	@Test
-	public void deserializationWithoutKnownAttributes() throws JsonException, IOException {
-		ErrorResponse error = jsonMapper.deserialize(
+	public void deserializationWithoutKnownAttributes() throws IOException {
+		ErrorResponse error = jsonMapper.readValue(
 			"{}".getBytes( StandardCharsets.UTF_8 ),
-			ErrorResponse.class );
+			ErrorResponse.class
+		);
 		
 		assertNotNull( error );
 		assertNull( error.code );

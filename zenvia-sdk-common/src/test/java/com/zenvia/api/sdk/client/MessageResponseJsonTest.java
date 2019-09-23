@@ -7,12 +7,13 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.zenvia.api.sdk.JsonMapper;
-import com.zenvia.api.sdk.client.exceptions.JsonException;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
 import com.zenvia.api.sdk.client.messages.TMessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
@@ -21,14 +22,15 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class MessageResponseJsonTest {
-	private JsonMapper jsonMapper = new JsonMapper();
+	private ObjectMapper jsonMapper = new ObjectMapper();
 
 
 	@Test
-	public void deserializationMissingContents() throws JsonException, IOException {
-		MessageResponse messageResponse = jsonMapper.deserialize(
+	public void deserializationMissingContents() throws IOException {
+		MessageResponse messageResponse = jsonMapper.readValue(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\"}".getBytes( StandardCharsets.UTF_8 ),
-			MessageResponse.class );
+			MessageResponse.class
+		);
 
 		assertNotNull( messageResponse );
 		assertEquals( "12345", messageResponse.id );
@@ -40,10 +42,11 @@ public class MessageResponseJsonTest {
 
 
 	@Test
-	public void deserialization() throws JsonException, IOException {
-		MessageResponse messageResponse = jsonMapper.deserialize(
+	public void deserialization() throws IOException {
+		MessageResponse messageResponse = jsonMapper.readValue(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\",\"contents\":[{\"type\":\"text\",\"text\":\"This is a test!\"}]}".getBytes( StandardCharsets.UTF_8 ),
-			MessageResponse.class );
+			MessageResponse.class
+		);
 
 		assertNotNull( messageResponse );
 		assertEquals( "12345", messageResponse.id );
@@ -59,10 +62,11 @@ public class MessageResponseJsonTest {
 
 
 	@Test
-	public void deserializationWithUnsupportedAttributes() throws JsonException, IOException {
-		MessageResponse messageResponse = jsonMapper.deserialize(
+	public void deserializationWithUnsupportedAttributes() throws IOException {
+		MessageResponse messageResponse = jsonMapper.readValue(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\",\"contents\":[]}".getBytes( StandardCharsets.UTF_8 ),
-			MessageResponse.class );
+			MessageResponse.class
+		);
 
 		assertNotNull( messageResponse );
 		assertEquals( "12345", messageResponse.id );
@@ -76,12 +80,16 @@ public class MessageResponseJsonTest {
 	@Test
 	public void deserializationWithUnsupportedChannel() throws IOException {
 		try {
-			jsonMapper.deserialize(
+			jsonMapper.readValue(
 				"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"new\",\"contents\":[]}".getBytes( StandardCharsets.UTF_8 ),
-				MessageResponse.class );
+				MessageResponse.class
+			);
 			fail();
-		} catch( JsonException exception ) {
-			assertEquals( "Exception deserializing", exception.getMessage() );
+		} catch( JsonMappingException exception ) {
+			assertEquals(
+				"Cannot deserialize value of type `com.zenvia.api.sdk.client.ChannelType` from String \"new\": value not one of declared Enum instance names: [sms, whatsapp, facebook]\n at [Source: (byte[])\"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"new\",\"contents\":[]}\"; line: 1, column: 67] (through reference chain: com.zenvia.api.sdk.client.messages.MessageResponse[\"channel\"])",
+				exception.getMessage()
+			);
 		}
 	}
 }
