@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.zenvia.api.sdk.client.messages.MessageResponse;
-import com.zenvia.api.sdk.client.messages.TMessageDirection;
+import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
 import com.zenvia.api.sdk.contents.TextContent;
 
@@ -36,7 +36,7 @@ public class MessageResponseJsonTest {
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
 		assertEquals( "456", messageResponse.to );
-		assertEquals( TMessageDirection.OUT, messageResponse.direction );
+		assertEquals( MessageDirection.OUT, messageResponse.direction );
 		assertEquals( ChannelType.whatsapp, messageResponse.channel );
 	}
 
@@ -52,7 +52,7 @@ public class MessageResponseJsonTest {
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
 		assertEquals( "456", messageResponse.to );
-		assertEquals( TMessageDirection.OUT, messageResponse.direction );
+		assertEquals( MessageDirection.OUT, messageResponse.direction );
 		assertEquals( ChannelType.whatsapp, messageResponse.channel );
 		assertNotNull( messageResponse.contents );
 		assertEquals( 1, messageResponse.contents.size() );
@@ -72,7 +72,7 @@ public class MessageResponseJsonTest {
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
 		assertEquals( "456", messageResponse.to );
-		assertEquals( TMessageDirection.OUT, messageResponse.direction );
+		assertEquals( MessageDirection.OUT, messageResponse.direction );
 		assertEquals( ChannelType.whatsapp, messageResponse.channel );
 	}
 

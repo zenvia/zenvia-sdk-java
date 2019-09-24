@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.client.config.RequestConfig;
@@ -22,13 +23,10 @@ import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
-import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.MessageResponse;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class ClientTest {
-	
 	private final Field apiTokenField;
 
 
@@ -336,10 +334,36 @@ public class ClientTest {
 
 
 		@Override
-		protected MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException,
-			HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 			return null;
 		}
+
+
+		@Override
+		protected <RESPONSE> RESPONSE get( String url, String id, Class<RESPONSE> responseBodyType )
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			return null;
+		}
+
+
+		@Override
+		protected <REQUEST,RESPONSE> RESPONSE post( String url, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			return null;
+		}
+
+
+		@Override
+		protected <REQUEST,RESPONSE> RESPONSE patch( String url, String id, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			return null;
+		}
+
+
+		@Override
+		protected void delete( String url, String id )
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException,
+			HttpIOException {}
 	}
 }
