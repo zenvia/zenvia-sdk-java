@@ -16,6 +16,13 @@ public class UnsuccessfulRequestException extends Exception {
 	}
 
 
+	public UnsuccessfulRequestException( String url, int httpStatusCode, Throwable cause ) {
+		super( "Unsuccessful request on: " + url, cause );
+		this.httpStatusCode = httpStatusCode;
+		this.body = null;
+	}
+
+
 	public int getHttpStatusCode() {
 		return httpStatusCode;
 	}

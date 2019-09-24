@@ -1,38 +1,178 @@
 package com.zenvia.api.sdk.client;
 
+import java.io.Closeable;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.http.ConnectionReuseStrategy;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.config.ConnectionConfig;
+import org.apache.http.impl.DefaultConnectionReuseStrategy;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
-import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
 
 
-public abstract class AbstractClient {
-	public static final String DEFAULT_URI = "https://api.zenvia.com";
+public abstract class AbstractClient implements Closeable {
+	private static final String DEFAULT_URI = "https://api.zenvia.com";
 
 	protected final String apiToken;
 
 	protected final String apiUrl;
+	
+	protected final HttpClient httpClient;
+	
+	private final ConnectionConfig connectionConfig;
+	
+	private final RequestConfig requestConfig;
+	
+	private final ConnectionReuseStrategy connectionReuseStrategy;
+	
+	private final DefaultHttpRequestRetryHandler requestRetryHandler;
+	
+	private final PoolingHttpClientConnectionManager connectionPool;
 
 
 	public AbstractClient( String apiToken ) {
-		this( apiToken, DEFAULT_URI );
+		this( apiToken, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries
+	) {
+		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections
+	) {
+		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections,
+		Integer connectionPoolTimeout,
+		Integer checkStaleConnectionAfterInactivityTime
+	) {
+		this( apiToken, null, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
 	public AbstractClient( String apiToken, String apiUrl ) {
+		this( apiToken, apiUrl, null, null, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		String apiUrl,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries
+	) {
+		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		String apiUrl,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections
+	) {
+		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		String apiUrl,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
+		Integer maxConnections,
+		Integer connectionPoolTimeout,
+		Integer checkStaleConnectionAfterInactivityTime
+	) {
+		this(
+			apiToken,
+			apiUrl,
+			buildConnectionPool(
+				valueOrDefault( maxConnections, 100 ),
+				valueOrDefault( checkStaleConnectionAfterInactivityTime, 5000 )
+			),
+			buildRequestConfig(
+				valueOrDefault( connectionTimeout, 25000 ),
+				valueOrDefault( socketTimeout, 60000 ),
+				valueOrDefault( connectionPoolTimeout, 0 )
+			),
+			new DefaultHttpRequestRetryHandler(
+				valueOrDefault( maxAutoRetries, 4 ),
+				false
+			),
+			ConnectionConfig.custom().setCharset( StandardCharsets.UTF_8 ).build(),
+			DefaultConnectionReuseStrategy.INSTANCE
+		);
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		String apiUrl,
+		PoolingHttpClientConnectionManager connectionPool,
+		RequestConfig defaultRequestConfig,
+		DefaultHttpRequestRetryHandler requestRetryHandler,
+		ConnectionConfig defaultConnectionConfig,
+		ConnectionReuseStrategy connectionReuseStrategy
+	) {
 		this.apiToken = apiToken;
-		this.apiUrl = apiUrl;
+		this.apiUrl = valueOrDefault( apiUrl, DEFAULT_URI );
+		
+		this.connectionPool = connectionPool;
+		this.connectionConfig = defaultConnectionConfig;
+		this.requestConfig = defaultRequestConfig;
+		this.connectionReuseStrategy = connectionReuseStrategy;
+		this.requestRetryHandler = requestRetryHandler;
+		
+		httpClient = HttpClientBuilder.create()
+			.setConnectionManager( this.connectionPool )
+			.setDefaultConnectionConfig( this.connectionConfig )
+			.setDefaultRequestConfig( this.requestConfig )
+			.setConnectionReuseStrategy( this.connectionReuseStrategy )
+			.setRetryHandler( this.requestRetryHandler )
+			.disableCookieManagement()
+			.build();
 	}
 
 
 	protected abstract MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-		throws UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
 
 
 	public String getApiUrl() {
@@ -47,5 +187,88 @@ public abstract class AbstractClient {
 
 	public Channel getChannel( ChannelType channelType ) throws UnsupportedChannelException {
 		return new Channel( channelType, this );
+	}
+
+
+	@Override
+	public void close() {
+		if( this.connectionPool != null ) {
+			this.connectionPool.shutdown();
+		}
+	}
+
+
+	public static final PoolingHttpClientConnectionManager buildConnectionPool(
+		int maxConnections, int validateAfterInactivity
+	) {
+		PoolingHttpClientConnectionManager connectionPool = new PoolingHttpClientConnectionManager();
+		connectionPool.setMaxTotal( maxConnections );
+		connectionPool.setDefaultMaxPerRoute( maxConnections );
+		connectionPool.setValidateAfterInactivity( validateAfterInactivity );
+		
+		return connectionPool;
+	}
+
+
+	public static final RequestConfig buildRequestConfig( int connectionTimeout, int socketTimeout, int poolTimeout ) {
+		return RequestConfig.custom()
+			.setConnectionRequestTimeout( poolTimeout )
+			.setConnectTimeout( connectionTimeout )
+			.setSocketTimeout( socketTimeout )
+			.build();
+	}
+
+
+	private static final <TYPE> TYPE valueOrDefault( TYPE value, TYPE defaultValue ) {
+		return value == null ? defaultValue : value;
+	}
+
+
+	public int getMaxTotalConnections() {
+		return connectionPool.getMaxTotal();
+	}
+
+
+	public int getMaxPerHostConnections() {
+		return connectionPool.getDefaultMaxPerRoute();
+	}
+
+
+	public int getCheckStaleConnectionAfterInactivityTime() {
+		return connectionPool.getValidateAfterInactivity();
+	}
+
+
+	public int getConnectionPoolTimeout() {
+		return requestConfig.getConnectionRequestTimeout();
+	}
+
+
+	public int getConnectionTimeout() {
+		return requestConfig.getConnectTimeout();
+	}
+
+
+	public int getSocketTimeout() {
+		return requestConfig.getSocketTimeout();
+	}
+
+
+	public int getMaxAutoRetries() {
+		return requestRetryHandler.getRetryCount();
+	}
+
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "{"
+			+ "\n apiUrl = [" + getApiUrl() + "]"
+			+ "\n maxTotalConnections = [" + getMaxTotalConnections() + "]"
+			+ "\n maxPerHostConnections = [" + getMaxPerHostConnections() + "]"
+			+ "\n checkStaleConnectionAfterInactivityTime = [" + getCheckStaleConnectionAfterInactivityTime() + "]"
+			+ "\n connectionPoolTimeout = [" + getConnectionPoolTimeout() + "]"
+			+ "\n connectionTimeout = [" + getConnectionTimeout() + "]"
+			+ "\n socketTimeout = [" + getSocketTimeout() + "]"
+			+ "\n}";
 	}
 }

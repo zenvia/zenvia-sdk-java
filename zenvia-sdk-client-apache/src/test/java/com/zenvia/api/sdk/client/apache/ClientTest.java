@@ -34,7 +34,6 @@ import com.zenvia.api.sdk.client.errors.ErrorResponse;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
-import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
@@ -289,7 +288,7 @@ public class ClientTest {
 		try {
 			client.sendMessage( client.getChannel( "facebook" ), messageRequest() );
 			fail();
-		} catch( UnexpectedResponseBodyException exception ) {
+		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastBody );
 			assertEquals( "from", server.lastBody.from );
 			assertEquals( "to", server.lastBody.to );
@@ -298,9 +297,33 @@ public class ClientTest {
 			assertEquals( ContentType.text, server.lastBody.contents.get( 0 ).type );
 			assertEquals( "This is a test!", ( (TextContent) server.lastBody.contents.get( 0 ) ).text );
 
-			assertEquals( "", exception.getBody() );
+			assertNull( exception.getBody() );
+			assertNull( exception.getCause() );
 		} catch( Exception exception ) {
-			exception.printStackTrace();
+			fail();
+		}
+		client.close();
+	}
+
+
+	@Test
+	public void nonJsonReply() {
+		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/invalid" );
+		try {
+			client.sendMessage( client.getChannel( "facebook" ), messageRequest() );
+			fail();
+		} catch( UnsuccessfulRequestException exception ) {
+			assertNotNull( server.lastBody );
+			assertEquals( "from", server.lastBody.from );
+			assertEquals( "to", server.lastBody.to );
+			assertNotNull( server.lastBody.contents );
+			assertEquals( 1, server.lastBody.contents.size() );
+			assertEquals( ContentType.text, server.lastBody.contents.get( 0 ).type );
+			assertEquals( "This is a test!", ( (TextContent) server.lastBody.contents.get( 0 ) ).text );
+
+			assertNull( exception.getBody() );
+			assertEquals( "Unrecognized token 'invalid': was expecting ('true', 'false' or 'null')\n at [Source: (byte[])\"invalid\"; line: 1, column: 15]", exception.getCause().getMessage() );
+		} catch( Exception exception ) {
 			fail();
 		}
 		client.close();
@@ -316,7 +339,6 @@ public class ClientTest {
 		} catch( HttpConnectionFailException exception ) {
 			assertNull( server.lastBody );
 		} catch( Exception exception ) {
-			exception.printStackTrace();
 			fail();
 		}
 		client.close();
@@ -332,7 +354,6 @@ public class ClientTest {
 		} catch( HttpConnectionTimeoutException exception ) {
 			assertNull( server.lastBody );
 		} catch( Exception exception ) {
-			exception.printStackTrace();
 			fail();
 		}
 		client.close();
@@ -354,7 +375,6 @@ public class ClientTest {
 			assertEquals( ContentType.text, server.lastBody.contents.get( 0 ).type );
 			assertEquals( "This is a test!", ( (TextContent) server.lastBody.contents.get( 0 ) ).text );
 		} catch( Exception exception ) {
-			exception.printStackTrace();
 			fail();
 		}
 		client.close();
@@ -415,6 +435,19 @@ public class ClientTest {
 			return Response
 				.status( 500 )
 				.entity( "" )
+				.build();
+		}
+
+
+		@POST
+		@Path( "/invalid/v1/channels/facebook/messages" )
+		@Consumes( MediaType.APPLICATION_JSON )
+		@Produces( MediaType.APPLICATION_JSON )
+		public Response invalidResource( MessageRequest messageRequest ) {
+			this.lastBody = messageRequest;
+			return Response
+				.status( 500 )
+				.entity( "invalid" )
 				.build();
 		}
 

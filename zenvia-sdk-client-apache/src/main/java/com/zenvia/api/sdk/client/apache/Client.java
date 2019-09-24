@@ -1,7 +1,6 @@
 package com.zenvia.api.sdk.client.apache;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -17,17 +16,15 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,34 +36,20 @@ import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
-import com.zenvia.api.sdk.client.exceptions.HttpRequestException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
-import com.zenvia.api.sdk.client.exceptions.UnexpectedResponseBodyException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
 
 
-public class Client extends AbstractClient implements Closeable {
+public class Client extends AbstractClient {
 	private static final Logger LOG = LoggerFactory.getLogger( Client.class );
-	
-	private final ConnectionConfig connectionConfig;
-	
-	private final RequestConfig requestConfig;
-	
-	private final ConnectionReuseStrategy connectionReuseStrategy;
-	
-	private final DefaultHttpRequestRetryHandler requestRetryHandler;
-	
-	private final PoolingHttpClientConnectionManager connectionPool;
-
-	private final HttpClient httpClient;
 	
 	private final ObjectMapper jsonMapper = new ObjectMapper();
 
 
 	public Client( String apiToken ) {
-		this( apiToken, null );
+		super( apiToken );
 	}
 
 
@@ -76,7 +59,7 @@ public class Client extends AbstractClient implements Closeable {
 		Integer socketTimeout,
 		Integer maxAutoRetries
 	) {
-		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, null );
+		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries );
 	}
 
 
@@ -87,7 +70,7 @@ public class Client extends AbstractClient implements Closeable {
 		Integer maxAutoRetries,
 		Integer maxConnections
 	) {
-		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
+		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
 	}
 
 
@@ -100,12 +83,12 @@ public class Client extends AbstractClient implements Closeable {
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		this( apiToken, null, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
 	public Client( String apiToken, String apiUrl ) {
-		this( apiToken, apiUrl, null, null, null );
+		super( apiToken, apiUrl );
 	}
 
 
@@ -116,7 +99,7 @@ public class Client extends AbstractClient implements Closeable {
 		Integer socketTimeout,
 		Integer maxAutoRetries
 	) {
-		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, null );
+		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries );
 	}
 
 
@@ -128,7 +111,7 @@ public class Client extends AbstractClient implements Closeable {
 		Integer maxAutoRetries,
 		Integer maxConnections
 	) {
-		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
+		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
 	}
 
 
@@ -142,25 +125,7 @@ public class Client extends AbstractClient implements Closeable {
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		this(
-			apiToken,
-			valueOrDefault( apiUrl, DEFAULT_URI ),
-			buildConnectionPool(
-				valueOrDefault( maxConnections, 100 ),
-				valueOrDefault( checkStaleConnectionAfterInactivityTime, 5000 )
-			),
-			buildRequestConfig(
-				valueOrDefault( connectionTimeout, 25000 ),
-				valueOrDefault( socketTimeout, 60000 ),
-				valueOrDefault( connectionPoolTimeout, 0 )
-			),
-			new DefaultHttpRequestRetryHandler(
-				valueOrDefault( maxAutoRetries, 4 ),
-				false
-			),
-			ConnectionConfig.custom().setCharset( StandardCharsets.UTF_8 ).build(),
-			DefaultConnectionReuseStrategy.INSTANCE
-		);
+		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
@@ -173,68 +138,50 @@ public class Client extends AbstractClient implements Closeable {
 		ConnectionConfig defaultConnectionConfig,
 		ConnectionReuseStrategy connectionReuseStrategy
 	) {
-		super( apiToken, apiUrl );
-		
-		this.connectionPool = connectionPool;
-		this.connectionConfig = defaultConnectionConfig;
-		this.requestConfig = defaultRequestConfig;
-		this.connectionReuseStrategy = connectionReuseStrategy;
-		this.requestRetryHandler = requestRetryHandler;
-		
-		httpClient = HttpClientBuilder.create()
-			.setConnectionManager( this.connectionPool )
-			.setDefaultConnectionConfig( this.connectionConfig )
-			.setDefaultRequestConfig( this.requestConfig )
-			.setConnectionReuseStrategy( this.connectionReuseStrategy )
-			.setRetryHandler( this.requestRetryHandler )
-			.disableCookieManagement()
-			.build();
+		super( apiToken, apiUrl, connectionPool, defaultRequestConfig, requestRetryHandler, defaultConnectionConfig, connectionReuseStrategy );
 	}
 
 
 	@Override
 	public MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-		throws UnsuccessfulRequestException, UnexpectedResponseBodyException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException{
-		HttpResponse httpResponse = executeRequest( channel.url, THttpMethod.POST, messageRequest );
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException{
+		HttpResponse httpResponse = executeRequest( channel.url, new HttpPost( channel.url ), messageRequest );
 		int httpStatus = httpResponse.getStatusLine().getStatusCode();
 		if ( httpStatus < 200 || httpStatus >= 300 ) {
-			throw new UnsuccessfulRequestException(
+			throw logException( new UnsuccessfulRequestException(
 				channel.url,
-				httpResponse.getStatusLine().getStatusCode(),
-				deserialize( httpResponse.getEntity(), ErrorResponse.class, channel.url )
-			);
+				httpStatus,
+				deserialize( httpResponse.getEntity(), ErrorResponse.class, channel.url, httpStatus )
+			) );
 		}
-		return deserialize( httpResponse.getEntity(), MessageResponse.class, channel.url );
+		return deserialize( httpResponse.getEntity(), MessageResponse.class, channel.url, httpStatus );
 	}
 
 
-	protected <TYPE> TYPE deserialize( HttpEntity entity, Class<TYPE>type, String url ) throws HttpIOException, UnexpectedResponseBodyException {
-		if( entity == null ) {
+	protected <TYPE> TYPE deserialize( HttpEntity entity, Class<TYPE>type, String url, int httpStatus ) throws UnsuccessfulRequestException, HttpIOException {
+		if( entity == null || entity.getContentLength() == 0 ) {
 			return null;
 		}
-		byte[] data = null;
 		try {
-			if( LOG.isTraceEnabled() ) {
-				LOG.trace( "Deserialing: {}", new String( data, StandardCharsets.UTF_8 ) );
-			}
-
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 			entity.writeTo( buffer );
-			data = buffer.toByteArray();
+			byte[] data = buffer.toByteArray();
+			if( LOG.isTraceEnabled() ) {
+				LOG.trace( "Response body: {}", new String( data, StandardCharsets.UTF_8 ) );
+			}
 			return jsonMapper.readValue( data, type );
 		} catch( JsonMappingException | JsonParseException exception ) {
-			throw  logException( new UnexpectedResponseBodyException( url, data, exception ) );
+			throw logException( new UnsuccessfulRequestException( url, httpStatus, exception ) );
 		} catch( IOException exception ) {
 			throw logException( new HttpIOException( url, exception ) );
 		}
 	}
 
 
-	protected <REQUEST> HttpResponse executeRequest( String url, THttpMethod method, REQUEST requestBody )
+	protected <REQUEST> HttpResponse executeRequest( String url, HttpUriRequest httpMethod, REQUEST requestBody )
 		throws HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 		
 		HttpClientContext httpContext = new HttpClientContext();
-		HttpUriRequest httpMethod = method.create( url );
 		
 		httpMethod.addHeader( "X-API-Token", apiToken );
 		if( requestBody != null && httpMethod instanceof HttpEntityEnclosingRequest ) {
@@ -263,103 +210,20 @@ public class Client extends AbstractClient implements Closeable {
 		try {
 			byte[] serialized = jsonMapper.writeValueAsBytes( data );
 			if( LOG.isTraceEnabled() ) {
-				LOG.trace( "Serialized: {}", new String( serialized, StandardCharsets.UTF_8 ) );
+				LOG.trace( "Request body: {}", new String( serialized, StandardCharsets.UTF_8 ) );
 			}
 			return serialized;
 		}
 		catch( JsonProcessingException exception ) {
-			LOG.error( "Exception serializing", exception );
-			throw new IllegalArgumentException( "Exception serializing", exception );
+			LOG.error( "Exception serializing request body", exception );
+			throw new IllegalArgumentException( "Exception serializing request body", exception );
 		}
 	}
 
 
-	private <EXCEPTION extends HttpRequestException> EXCEPTION logException( EXCEPTION exception ) {
+	private <EXCEPTION extends Exception> EXCEPTION logException( EXCEPTION exception ) {
 		LOG.warn( exception.getMessage() );
 		LOG.debug( "Request error", exception );
 		return exception;
-	}
-
-
-	@Override
-	public void close() {
-		if( this.connectionPool != null ) {
-			this.connectionPool.shutdown();
-		}
-	}
-
-
-	public static final PoolingHttpClientConnectionManager buildConnectionPool(
-		int maxConnections, int validateAfterInactivity
-	) {
-		PoolingHttpClientConnectionManager connectionPool = new PoolingHttpClientConnectionManager();
-		connectionPool.setMaxTotal( maxConnections );
-		connectionPool.setDefaultMaxPerRoute( maxConnections );
-		connectionPool.setValidateAfterInactivity( validateAfterInactivity );
-		
-		return connectionPool;
-	}
-
-
-	public static final RequestConfig buildRequestConfig( int connectionTimeout, int socketTimeout, int poolTimeout ) {
-		return RequestConfig.custom()
-			.setConnectionRequestTimeout( poolTimeout )
-			.setConnectTimeout( connectionTimeout )
-			.setSocketTimeout( socketTimeout )
-			.build();
-	}
-
-
-	private static final <TYPE> TYPE valueOrDefault( TYPE value, TYPE defaultValue ) {
-		return value == null ? defaultValue : value;
-	}
-
-
-	public int getMaxTotalConnections() {
-		return connectionPool.getMaxTotal();
-	}
-
-
-	public int getMaxPerHostConnections() {
-		return connectionPool.getDefaultMaxPerRoute();
-	}
-
-
-	public int getCheckStaleConnectionAfterInactivityTime() {
-		return connectionPool.getValidateAfterInactivity();
-	}
-
-
-	public int getConnectionPoolTimeout() {
-		return requestConfig.getConnectionRequestTimeout();
-	}
-
-
-	public int getConnectionTimeout() {
-		return requestConfig.getConnectTimeout();
-	}
-
-
-	public int getSocketTimeout() {
-		return requestConfig.getSocketTimeout();
-	}
-
-
-	public int getMaxAutoRetries() {
-		return requestRetryHandler.getRetryCount();
-	}
-
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "{"
-			+ "\n apiUrl = [" + getApiUrl() + "]"
-			+ "\n maxTotalConnections = [" + getMaxTotalConnections() + "]"
-			+ "\n maxPerHostConnections = [" + getMaxPerHostConnections() + "]"
-			+ "\n checkStaleConnectionAfterInactivityTime = [" + getCheckStaleConnectionAfterInactivityTime() + "]"
-			+ "\n connectionPoolTimeout = [" + getConnectionPoolTimeout() + "]"
-			+ "\n connectionTimeout = [" + getConnectionTimeout() + "]"
-			+ "\n socketTimeout = [" + getSocketTimeout() + "]"
-			+ "\n}";
 	}
 }
