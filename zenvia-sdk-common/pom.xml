@@ -14,5 +14,14 @@
 
 	<name>Zenvia API Java SDK Common</name>
 	<description>Core classes for Zenvia API Java SDK, used by multiple SDK modules.</description>
+	
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
+	</dependencies>
 
 </project>
