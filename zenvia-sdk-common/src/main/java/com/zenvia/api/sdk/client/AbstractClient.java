@@ -2,6 +2,7 @@ package com.zenvia.api.sdk.client;
 
 import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.client.HttpClient;
@@ -21,6 +22,8 @@ import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
+import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
+import com.zenvia.api.sdk.client.subscriptions.Subscription;
 
 
 public abstract class AbstractClient implements Closeable {
@@ -171,15 +174,6 @@ public abstract class AbstractClient implements Closeable {
 	}
 
 
-	protected abstract MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
-
-
-	public String getApiUrl() {
-		return apiUrl;
-	}
-
-
 	public Channel getChannel( String channelType ) throws UnsupportedChannelException {
 		return getChannel( ChannelType.parse( channelType ) );
 	}
@@ -187,6 +181,73 @@ public abstract class AbstractClient implements Closeable {
 
 	public Channel getChannel( ChannelType channelType ) throws UnsupportedChannelException {
 		return new Channel( channelType, this );
+	}
+
+
+	public List<Subscription> listSubscriptions()
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return list( "/v1/subscriptions", Subscription.class );
+	}
+
+
+	public Subscription createSubscription( Subscription subscription )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return post( "/v1/subscriptions", subscription, Subscription.class );
+	}
+
+
+	public Subscription getSubscription( String id )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return get( "/v1/subscriptions", id, Subscription.class );
+	}
+
+
+	public Subscription updateSubscription( Subscription subscription )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return updateSubscription( subscription.id, new PartialSubscription( subscription ) );
+	}
+
+
+	public Subscription updateSubscription( String id, PartialSubscription partialSubscription )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return patch( "/v1/subscriptions", id, partialSubscription, Subscription.class );
+	}
+
+
+	public void deleteSubscription( String id )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		delete( "/v1/subscriptions", id );
+	}
+
+
+	protected MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return post( channel.url, messageRequest, MessageResponse.class );
+	}
+
+
+	protected abstract <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+
+
+	protected abstract <RESPONSE> RESPONSE get( String url, String id, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+
+
+	protected abstract <REQUEST,RESPONSE> RESPONSE post( String url, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+
+
+	protected abstract <REQUEST,RESPONSE> RESPONSE patch( String url, String id, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+
+
+	protected abstract void delete( String url, String id )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
+
+
+	public String getApiUrl() {
+		return apiUrl;
 	}
 
 
