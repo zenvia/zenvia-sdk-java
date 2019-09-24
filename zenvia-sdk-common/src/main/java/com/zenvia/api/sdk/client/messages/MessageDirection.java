@@ -1,6 +1,6 @@
 package com.zenvia.api.sdk.client.messages;
 
-public enum TMessageDirection {
+public enum MessageDirection {
 	IN,
 	OUT
 }

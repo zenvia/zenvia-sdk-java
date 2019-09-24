@@ -19,7 +19,7 @@ public class MessageResponse {
 
 	public final String to;
 
-	public final TMessageDirection direction;
+	public final MessageDirection direction;
 
 	public final ChannelType channel;
 
@@ -31,7 +31,7 @@ public class MessageResponse {
 		@JsonProperty( "id" ) String id,
 		@JsonProperty( "from" ) String from,
 		@JsonProperty( "to" ) String to,
-		@JsonProperty( "direction" ) TMessageDirection direction,
+		@JsonProperty( "direction" ) MessageDirection direction,
 		@JsonProperty( "channel" ) ChannelType channel,
 		@JsonProperty( "contents" ) List<Content> contents
 	) {
