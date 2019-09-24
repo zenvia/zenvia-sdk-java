@@ -3,6 +3,7 @@ package com.zenvia.api.sdk.client.spring;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.client.ClientProtocolException;
@@ -13,6 +14,8 @@ import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -25,7 +28,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.zenvia.api.sdk.client.AbstractClient;
-import com.zenvia.api.sdk.client.Channel;
 import com.zenvia.api.sdk.client.errors.ErrorResponse;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
@@ -33,8 +35,6 @@ import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
-import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.MessageResponse;
 
 
 public class Client extends AbstractClient {
@@ -147,34 +147,69 @@ public class Client extends AbstractClient {
 
 
 	@Override
-	public MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
+	@SuppressWarnings( "unchecked" )
+	protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return (List<RESPONSE>) executeRequest( url, HttpMethod.GET, null, responseBodyType );
+	}
+
+
+	@Override
+	protected <RESPONSE> RESPONSE get( String url, String id, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( url + "/" + id, HttpMethod.GET, null, responseBodyType );
+	}
+
+
+	@Override
+	protected <REQUEST,RESPONSE> RESPONSE post( String url, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( url, HttpMethod.POST, requestBody, responseBodyType );
+	}
+
+
+	@Override
+	protected <REQUEST,RESPONSE> RESPONSE patch( String url, String id, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( url + "/" + id, HttpMethod.PATCH, requestBody, responseBodyType );
+	}
+
+
+	@Override
+	protected void delete( String url, String id )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		executeRequest( url, HttpMethod.DELETE, null, null );
+	}
+
+
+	private <RESPONSE> RESPONSE executeRequest( String url, HttpMethod httpMethod, Object requestBody, Class<RESPONSE> responseBodyType )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException{
 		
 		try {
-			return restTemplate.postForEntity( channel.url, messageRequest, MessageResponse.class ).getBody();
+			return restTemplate.exchange( url, httpMethod, new HttpEntity<>( requestBody ), responseBodyType ).getBody();
 		} catch( ResourceAccessException exception ) {
 			Throwable cause = exception.getCause();
 			if( cause instanceof ErrorResponseException ) {
 				ErrorResponseException errorResponseException = (ErrorResponseException) cause;
 				if( errorResponseException.errorResponse == null ) {
-					throw logException( new UnsuccessfulRequestException( channel.url, errorResponseException.httpStatus, errorResponseException.getCause() ) );
+					throw logException( new UnsuccessfulRequestException( url, errorResponseException.httpStatus, errorResponseException.getCause() ) );
 				} else {
-					throw logException( new UnsuccessfulRequestException( channel.url, errorResponseException.httpStatus, errorResponseException.errorResponse ) );
+					throw logException( new UnsuccessfulRequestException( url, errorResponseException.httpStatus, errorResponseException.errorResponse ) );
 				}
 			}
 			if( cause instanceof SocketTimeoutException ) {
-				throw logException( new HttpSocketTimeoutException( channel.url, exception ) );
+				throw logException( new HttpSocketTimeoutException( url, exception ) );
 			}
 			if( cause instanceof ConnectTimeoutException ) {
-				throw logException( new HttpConnectionTimeoutException( channel.url, cause ) );
+				throw logException( new HttpConnectionTimeoutException( url, cause ) );
 			}
 			if( cause instanceof ConnectException ) {
-				throw logException( new HttpConnectionFailException( channel.url, cause ) );
+				throw logException( new HttpConnectionFailException( url, cause ) );
 			}
 			if( cause instanceof ClientProtocolException ) {
-				throw logException( new HttpProtocolException( channel.url, cause ) );
+				throw logException( new HttpProtocolException( url, cause ) );
 			}
-			throw logException( new HttpIOException( channel.url, exception ) );
+			throw logException( new HttpIOException( url, exception ) );
 		}
 	}
 

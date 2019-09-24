@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +18,9 @@ import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -30,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zenvia.api.sdk.client.AbstractClient;
-import com.zenvia.api.sdk.client.Channel;
 import com.zenvia.api.sdk.client.errors.ErrorResponse;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
@@ -38,8 +41,6 @@ import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
-import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.MessageResponse;
 
 
 public class Client extends AbstractClient {
@@ -143,18 +144,83 @@ public class Client extends AbstractClient {
 
 
 	@Override
-	public MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
-		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException{
-		HttpResponse httpResponse = executeRequest( channel.url, new HttpPost( channel.url ), messageRequest );
+	@SuppressWarnings( "unchecked" )
+	protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( new HttpGet( url ), null, List.class );
+	}
+
+
+	@Override
+	protected <RESPONSE> RESPONSE get( String url, String id, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( new HttpGet( url + "/" + id ), null, responseBodyType );
+	}
+
+
+	@Override
+	protected <REQUEST,RESPONSE> RESPONSE post( String url, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( new HttpPost( url ), requestBody, responseBodyType );
+	}
+
+
+	@Override
+	protected <REQUEST,RESPONSE> RESPONSE patch( String url, String id, REQUEST requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		return executeRequest( new HttpPatch( url + "/" + id ), requestBody, responseBodyType );
+	}
+
+
+	@Override
+	protected void delete( String url, String id )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		executeRequest( new HttpDelete( url ), null, null );
+	}
+
+
+	private <RESPONSE> RESPONSE executeRequest( HttpUriRequest httpMethod, Object requestBody, Class<RESPONSE> responseBodyType )
+		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		HttpResponse httpResponse = executeRequest( httpMethod, requestBody );
 		int httpStatus = httpResponse.getStatusLine().getStatusCode();
 		if ( httpStatus < 200 || httpStatus >= 300 ) {
 			throw logException( new UnsuccessfulRequestException(
-				channel.url,
+				httpMethod.getURI().toString(),
 				httpStatus,
-				deserialize( httpResponse.getEntity(), ErrorResponse.class, channel.url, httpStatus )
+				deserialize( httpResponse.getEntity(), ErrorResponse.class,  httpMethod.getURI().toString(), httpStatus )
 			) );
 		}
-		return deserialize( httpResponse.getEntity(), MessageResponse.class, channel.url, httpStatus );
+		return deserialize( httpResponse.getEntity(), responseBodyType,  httpMethod.getURI().toString(), httpStatus );
+	}
+	
+
+
+	private HttpResponse executeRequest( HttpUriRequest httpMethod, Object requestBody )
+		throws HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+		
+		HttpClientContext httpContext = new HttpClientContext();
+		
+		httpMethod.addHeader( "X-API-Token", apiToken );
+		if( requestBody != null && httpMethod instanceof HttpEntityEnclosingRequest ) {
+			( (HttpEntityEnclosingRequest) httpMethod ).setEntity(
+				new ByteArrayEntity( serialize( requestBody ), ContentType.APPLICATION_JSON )
+			);
+		}
+		
+		String url = httpMethod.getURI().toString();
+		try {
+			return httpClient.execute( httpMethod, httpContext );
+		} catch( SocketTimeoutException cause ) {
+			throw logException( new HttpSocketTimeoutException( url, cause ) );
+		} catch( ConnectTimeoutException cause ) {
+			throw logException( new HttpConnectionTimeoutException( url, cause ) );
+		} catch( ConnectException cause ) {
+			throw logException( new HttpConnectionFailException( url, cause ) );
+		} catch( ClientProtocolException cause ) {
+			throw logException( new HttpProtocolException( url, cause ) );
+		} catch( IOException cause ) {
+			throw logException( new HttpIOException( url, cause ) );
+		}
 	}
 
 
@@ -178,35 +244,7 @@ public class Client extends AbstractClient {
 	}
 
 
-	protected <REQUEST> HttpResponse executeRequest( String url, HttpUriRequest httpMethod, REQUEST requestBody )
-		throws HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		
-		HttpClientContext httpContext = new HttpClientContext();
-		
-		httpMethod.addHeader( "X-API-Token", apiToken );
-		if( requestBody != null && httpMethod instanceof HttpEntityEnclosingRequest ) {
-			( (HttpEntityEnclosingRequest) httpMethod ).setEntity(
-				new ByteArrayEntity( serialize( requestBody ), ContentType.APPLICATION_JSON )
-			);
-		}
-		
-		try {
-			return httpClient.execute( httpMethod, httpContext );
-		} catch( SocketTimeoutException cause ) {
-			throw logException( new HttpSocketTimeoutException( url, cause ) );
-		} catch( ConnectTimeoutException cause ) {
-			throw logException( new HttpConnectionTimeoutException( url, cause ) );
-		} catch( ConnectException cause ) {
-			throw logException( new HttpConnectionFailException( url, cause ) );
-		} catch( ClientProtocolException cause ) {
-			throw logException( new HttpProtocolException( url, cause ) );
-		} catch( IOException cause ) {
-			throw logException( new HttpIOException( url, cause ) );
-		}
-	}
-
-
-	protected byte[] serialize( Object data ) throws IllegalArgumentException {
+	private byte[] serialize( Object data ) throws IllegalArgumentException {
 		try {
 			byte[] serialized = jsonMapper.writeValueAsBytes( data );
 			if( LOG.isTraceEnabled() ) {
