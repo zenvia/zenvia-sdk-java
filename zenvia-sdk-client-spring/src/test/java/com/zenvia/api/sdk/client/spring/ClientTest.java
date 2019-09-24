@@ -37,7 +37,7 @@ import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.client.messages.MessageResponse;
-import com.zenvia.api.sdk.client.messages.TMessageDirection;
+import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
 import com.zenvia.api.sdk.contents.TextContent;
 
@@ -199,7 +199,7 @@ public class ClientTest {
 	public void unsuccessfulMessageRequest() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
-			client.sendMessage( client.getChannel( "sms" ), messageRequest() );
+			client.getChannel( "sms" ).sendMessage( messageRequest() );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastBody );
@@ -230,7 +230,7 @@ public class ClientTest {
 	public void wrongTokenMessageRequest() {
 		Client client = new Client( "INCORRECT_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
-			client.sendMessage( client.getChannel( "whatsapp" ), messageRequest() );
+			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastBody );
@@ -257,7 +257,7 @@ public class ClientTest {
 	@Test
 	public void successfulJsonRequest() throws Exception {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
-		MessageResponse messageResponse = client.sendMessage( client.getChannel( "whatsapp" ), messageRequest() );
+		MessageResponse messageResponse = client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 
 		assertNotNull( server.lastBody );
 		assertEquals( "from", server.lastBody.from );
@@ -271,7 +271,7 @@ public class ClientTest {
 		assertEquals( "12345", messageResponse.id );
 		assertEquals( "123", messageResponse.from );
 		assertEquals( "456", messageResponse.to );
-		assertEquals( TMessageDirection.OUT, messageResponse.direction );
+		assertEquals( MessageDirection.OUT, messageResponse.direction );
 		assertEquals( ChannelType.whatsapp, messageResponse.channel );
 		assertNotNull( messageResponse.contents );
 		assertEquals( 1, messageResponse.contents.size() );
@@ -286,7 +286,7 @@ public class ClientTest {
 	public void emptyReply() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
-			client.sendMessage( client.getChannel( "facebook" ), messageRequest() );
+			client.getChannel( "facebook" ).sendMessage( messageRequest() );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastBody );
@@ -310,7 +310,7 @@ public class ClientTest {
 	public void nonJsonReply() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/invalid" );
 		try {
-			client.sendMessage( client.getChannel( "facebook" ), messageRequest() );
+			client.getChannel( "facebook" ).sendMessage( messageRequest() );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastBody );
@@ -334,7 +334,7 @@ public class ClientTest {
 	public void connectionRefused() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:8" );
 		try {
-			client.sendMessage( client.getChannel( "whatsapp" ), messageRequest() );
+			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 			fail();
 		} catch( HttpConnectionFailException exception ) {
 			assertNull( server.lastBody );
@@ -349,7 +349,7 @@ public class ClientTest {
 	public void connectionTimeout() {
 		Client client = new Client( "API_TOKEN", "http://192.168.255.253:8", 1000, 1000, null );
 		try {
-			client.sendMessage( client.getChannel( "whatsapp" ), messageRequest() );
+			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 			fail();
 		} catch( HttpConnectionTimeoutException exception ) {
 			assertNull( server.lastBody );
@@ -364,7 +364,7 @@ public class ClientTest {
 	public void socketTimeout() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/timeout", 1000, 1000, null );
 		try {
-			client.sendMessage( client.getChannel( "whatsapp" ), messageRequest() );
+			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 			fail();
 		} catch( HttpSocketTimeoutException exception ) {
 			assertNotNull( server.lastBody );
