@@ -22,13 +22,13 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public abstract class AbstractChannelTest {
+public abstract class ChannelTest {
 	protected final AbstractClient client = Mockito.mock( AbstractClient.class );
 
 	protected final Channel channel;
 
 
-	public AbstractChannelTest( ChannelType channelType ) {
+	public ChannelTest( ChannelType channelType ) {
 		this.channel = new Channel( channelType, client );
 	}
 

@@ -13,7 +13,7 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class WhatsAppChannelTest extends AbstractChannelTest {
+public class WhatsAppChannelTest extends ChannelTest {
 	public WhatsAppChannelTest() {
 		super( ChannelType.whatsapp ); 
 	}

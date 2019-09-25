@@ -38,11 +38,11 @@ import com.zenvia.api.sdk.client.subscriptions.Webhook;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class ClientTest {
+public class AbstractClientTest {
 	private final Field apiTokenField;
 
 
-	public ClientTest() throws Exception {
+	public AbstractClientTest() throws Exception {
 		apiTokenField = AbstractClient.class.getDeclaredField( "apiToken" );
 		apiTokenField.setAccessible( true );
 	}

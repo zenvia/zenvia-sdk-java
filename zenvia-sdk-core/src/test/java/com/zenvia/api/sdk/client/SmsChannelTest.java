@@ -13,7 +13,7 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class SmsChannelTest extends AbstractChannelTest {
+public class SmsChannelTest extends ChannelTest {
 	public SmsChannelTest() {
 		super( ChannelType.sms ); 
 	}

@@ -13,7 +13,7 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class FacebookChannelTest extends AbstractChannelTest {
+public class FacebookChannelTest extends ChannelTest {
 	public FacebookChannelTest() {
 		super( ChannelType.facebook ); 
 	}
