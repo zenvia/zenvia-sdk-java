@@ -22,7 +22,7 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class ContentJsonTest {
+public class ContentTest {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 

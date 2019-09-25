@@ -32,11 +32,11 @@ import com.zenvia.api.sdk.client.subscriptions.Webhook;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class SubscriptionJsonTest {
+public class SubscriptionTest {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 
-	public SubscriptionJsonTest() {
+	public SubscriptionTest() {
 		jsonMapper.registerModule( new JavaTimeModule() );
 		jsonMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
 	}

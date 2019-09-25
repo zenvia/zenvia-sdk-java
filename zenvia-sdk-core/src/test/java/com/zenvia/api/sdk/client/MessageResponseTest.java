@@ -21,7 +21,7 @@ import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class MessageResponseJsonTest {
+public class MessageResponseTest {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 

@@ -17,7 +17,7 @@ import com.zenvia.api.sdk.client.errors.ErrorResponse;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class ErrorResponseJsonTest {
+public class ErrorResponseTest {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 
