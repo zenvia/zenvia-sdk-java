@@ -33,6 +33,8 @@ public abstract class AbstractClient implements Closeable {
 
 	protected final String apiUrl;
 	
+	protected final String subscriptionApiUrl;
+	
 	protected final HttpClient httpClient;
 	
 	private final ConnectionConfig connectionConfig;
@@ -156,6 +158,7 @@ public abstract class AbstractClient implements Closeable {
 	) {
 		this.apiToken = apiToken;
 		this.apiUrl = valueOrDefault( apiUrl, DEFAULT_URI );
+		this.subscriptionApiUrl = this.apiUrl + "/v1/subscriptions";
 		
 		this.connectionPool = connectionPool;
 		this.connectionConfig = defaultConnectionConfig;
@@ -186,19 +189,19 @@ public abstract class AbstractClient implements Closeable {
 
 	public List<Subscription> listSubscriptions()
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return list( "/v1/subscriptions", Subscription.class );
+		return list( subscriptionApiUrl, Subscription.class );
 	}
 
 
 	public Subscription createSubscription( Subscription subscription )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return post( "/v1/subscriptions", subscription, Subscription.class );
+		return post( subscriptionApiUrl, subscription, Subscription.class );
 	}
 
 
 	public Subscription getSubscription( String id )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return get( "/v1/subscriptions", id, Subscription.class );
+		return get( subscriptionApiUrl, id, Subscription.class );
 	}
 
 
@@ -210,13 +213,13 @@ public abstract class AbstractClient implements Closeable {
 
 	public Subscription updateSubscription( String id, PartialSubscription partialSubscription )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return patch( "/v1/subscriptions", id, partialSubscription, Subscription.class );
+		return patch( subscriptionApiUrl, id, partialSubscription, Subscription.class );
 	}
 
 
 	public void deleteSubscription( String id )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		delete( "/v1/subscriptions", id );
+		delete( subscriptionApiUrl, id );
 	}
 
 
