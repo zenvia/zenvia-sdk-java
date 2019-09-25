@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MessageSubscription extends Subscription {
 	public static final String EVENT_TYPE = "MESSAGE";
 
+	@SuppressWarnings( "hiding" )
+	public final MessageCriteria criteria;
+
 
 	@JsonCreator
 	public MessageSubscription(
@@ -20,6 +23,7 @@ public class MessageSubscription extends Subscription {
 		@JsonProperty( "updatedAt" ) ZonedDateTime updatedAt
 	) {
 		super( id, EventType.MESSAGE, webhook, criteria, status, createdAt, updatedAt );
+		this.criteria = criteria;
 	}
 
 
@@ -40,10 +44,6 @@ public class MessageSubscription extends Subscription {
 			createdAt,
 			updatedAt
 		);
-	}
-
-
-	public MessageCriteria criteria() {
-		return (MessageCriteria) criteria;
+		this.criteria = criteria;
 	}
 }
