@@ -193,27 +193,30 @@ public abstract class AbstractClient implements Closeable {
 	}
 
 
-	public Subscription createSubscription( Subscription subscription )
+	@SuppressWarnings( "unchecked" )
+	public <SUBSCRIPTION extends Subscription> SUBSCRIPTION createSubscription( SUBSCRIPTION subscription )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return post( subscriptionApiUrl, subscription, Subscription.class );
+		return (SUBSCRIPTION) post( subscriptionApiUrl, subscription, Subscription.class );
 	}
 
 
-	public Subscription getSubscription( String id )
+	@SuppressWarnings( "unchecked" )
+	public <SUBSCRIPTION extends Subscription> SUBSCRIPTION getSubscription( String id )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return get( subscriptionApiUrl, id, Subscription.class );
+		return (SUBSCRIPTION) get( subscriptionApiUrl, id, Subscription.class );
 	}
 
 
-	public Subscription updateSubscription( Subscription subscription )
+	public <SUBSCRIPTION extends Subscription> SUBSCRIPTION updateSubscription( SUBSCRIPTION subscription )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
 		return updateSubscription( subscription.id, new PartialSubscription( subscription ) );
 	}
 
 
-	public Subscription updateSubscription( String id, PartialSubscription partialSubscription )
+	@SuppressWarnings( "unchecked" )
+	public <SUBSCRIPTION extends Subscription> SUBSCRIPTION updateSubscription( String id, PartialSubscription partialSubscription )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return patch( subscriptionApiUrl, id, partialSubscription, Subscription.class );
+		return (SUBSCRIPTION) patch( subscriptionApiUrl, id, partialSubscription, Subscription.class );
 	}
 
 
