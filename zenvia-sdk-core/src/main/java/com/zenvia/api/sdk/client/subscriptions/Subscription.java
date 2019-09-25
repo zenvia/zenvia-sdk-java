@@ -3,6 +3,7 @@ package com.zenvia.api.sdk.client.subscriptions;
 import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 	@JsonSubTypes.Type( value = MessageSubscription.class, name = MessageSubscription.EVENT_TYPE ),
 	@JsonSubTypes.Type( value = MessageStatusSubscription.class, name = MessageStatusSubscription.EVENT_TYPE )
 } )
+@JsonPropertyOrder( { "eventType" } )
 public abstract class Subscription {
 	public final String id;
 
