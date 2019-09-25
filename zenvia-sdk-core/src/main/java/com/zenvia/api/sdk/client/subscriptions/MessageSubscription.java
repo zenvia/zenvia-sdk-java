@@ -46,4 +46,11 @@ public class MessageSubscription extends Subscription {
 		);
 		this.criteria = criteria;
 	}
+
+
+	@Override
+	@SuppressWarnings( "unchecked" )
+	public <SUBSCRIPTION extends Subscription> SUBSCRIPTION apply( Webhook webhook, SubscriptionStatus status ) {
+		return (SUBSCRIPTION) new MessageSubscription( id, webhook, criteria, status, createdAt, updatedAt );
+	}
 }

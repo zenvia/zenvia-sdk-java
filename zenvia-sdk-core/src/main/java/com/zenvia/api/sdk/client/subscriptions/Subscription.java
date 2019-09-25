@@ -49,4 +49,12 @@ public abstract class Subscription {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
+
+
+	public <SUBSCRIPTION extends Subscription> SUBSCRIPTION apply( PartialSubscription partialSubscription ) {
+		return apply( partialSubscription.webhook, partialSubscription.status );
+	}
+
+
+	public abstract <SUBSCRIPTION extends Subscription> SUBSCRIPTION apply( Webhook webhook, SubscriptionStatus status );
 }
