@@ -196,7 +196,7 @@ public class ClientTest {
 
 
 	@Test
-	public void unsuccessfulMessageRequest() {
+	public void messageRequestUnsuccessful() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
 			client.getChannel( "sms" ).sendMessage( messageRequest() );
@@ -227,7 +227,7 @@ public class ClientTest {
 
 
 	@Test
-	public void wrongTokenMessageRequest() {
+	public void messageRequestWithWrongToken() {
 		Client client = new Client( "INCORRECT_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
 			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
@@ -255,7 +255,7 @@ public class ClientTest {
 
 
 	@Test
-	public void successfulJsonRequest() throws Exception {
+	public void messageRequestSuccessful() throws Exception {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		MessageResponse messageResponse = client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 
@@ -283,7 +283,7 @@ public class ClientTest {
 
 
 	@Test
-	public void emptyReply() {
+	public void messageRequestWithEmptyReply() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
 			client.getChannel( "facebook" ).sendMessage( messageRequest() );
@@ -307,7 +307,7 @@ public class ClientTest {
 
 
 	@Test
-	public void nonJsonReply() {
+	public void messageRequestWithNonJsonReply() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/invalid" );
 		try {
 			client.getChannel( "facebook" ).sendMessage( messageRequest() );
@@ -331,7 +331,7 @@ public class ClientTest {
 
 
 	@Test
-	public void connectionRefused() {
+	public void messageRequestWithConnectionRefused() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:8" );
 		try {
 			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
@@ -346,7 +346,7 @@ public class ClientTest {
 
 
 	@Test
-	public void connectionTimeout() {
+	public void messageRequestWithConnectionTimeout() {
 		Client client = new Client( "API_TOKEN", "http://192.168.255.253:8", 1000, 1000, null );
 		try {
 			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
@@ -361,7 +361,7 @@ public class ClientTest {
 
 
 	@Test
-	public void socketTimeout() {
+	public void messageRequestWithSocketTimeout() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/timeout", 1000, 1000, null );
 		try {
 			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
