@@ -12,7 +12,7 @@
 	<artifactId>zenvia-api-sdk-core</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Zenvia API Java SDK Common</name>
+	<name>Zenvia API Java SDK Core</name>
 	<description>Core classes for Zenvia API Java SDK, used by multiple SDK modules.</description>
 	
 	<dependencies>
