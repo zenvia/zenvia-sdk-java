@@ -21,7 +21,7 @@
 	</properties>
 
 	<modules>
-		<module>zenvia-sdk-common</module>
+		<module>zenvia-sdk-core</module>
 		<module>zenvia-sdk-client-apache</module>
 		<module>zenvia-sdk-client-spring</module>
 	</modules>

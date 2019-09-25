@@ -9,7 +9,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>zenvia-api-sdk-common</artifactId>
+	<artifactId>zenvia-api-sdk-core</artifactId>
 	<packaging>jar</packaging>
 
 	<name>Zenvia API Java SDK Common</name>
