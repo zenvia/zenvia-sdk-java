@@ -2,9 +2,14 @@ package com.zenvia.api.sdk.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
@@ -23,6 +28,13 @@ import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
+import com.zenvia.api.sdk.client.messages.MessageDirection;
+import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
+import com.zenvia.api.sdk.client.subscriptions.MessageSubscription;
+import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
+import com.zenvia.api.sdk.client.subscriptions.Subscription;
+import com.zenvia.api.sdk.client.subscriptions.SubscriptionStatus;
+import com.zenvia.api.sdk.client.subscriptions.Webhook;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
@@ -106,6 +118,71 @@ public class ClientTest {
 		Channel channel = client.getChannel( ChannelType.facebook );
 		assertNotNull( channel );
 		assertEquals( channel.type, ChannelType.facebook );
+		client.close();
+	}
+
+
+	@Test
+	public void listSubscriptions() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN" );
+		List<Subscription> result = client.listSubscriptions();
+		assertNotNull( result );
+		assertEquals( 1, result.size() );
+		assertNotNull( result.get( 0 ) );
+		client.close();
+	}
+
+
+	@Test
+	public void createSubscription() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN" );
+		Subscription expected = subscription();
+		Subscription subscription = client.createSubscription( expected );
+		assertSame( expected, subscription );
+		client.close();
+	}
+
+
+	@Test
+	public void getSubscription() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN" );
+		Subscription subscription = client.getSubscription( "123" );
+		assertNotNull( subscription );
+		client.close();
+	}
+
+
+	@Test
+	public void updateSubscriptionUsingSubscription() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN" );
+		Webhook webhook = new Webhook( "url", null );
+		Subscription input = subscription().apply( webhook, SubscriptionStatus.INACTIVE );
+		Subscription output = client.updateSubscription( input );
+		assertNotSame( input, output );
+		assertSame( webhook, output.webhook );
+		assertSame( SubscriptionStatus.INACTIVE, output.status );
+		client.close();
+	}
+
+
+	@Test
+	public void updateSubscriptionUsingPartialSubscription() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN" );
+		Webhook webhook = new Webhook( "url", null );
+		Subscription output = client.updateSubscription(
+			"123",
+			new PartialSubscription( webhook, SubscriptionStatus.INACTIVE )
+		);
+		assertSame( webhook, output.webhook );
+		assertSame( SubscriptionStatus.INACTIVE, output.status );
+		client.close();
+	}
+
+
+	@Test
+	public void deleteSubscription() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN" );
+		client.deleteSubscription( "123" );
 		client.close();
 	}
 
@@ -238,6 +315,18 @@ public class ClientTest {
 	}
 
 
+	private static MessageSubscription subscription() {
+		return new MessageSubscription(
+			"123",
+			new Webhook( "http://localhost/", null ),
+			new MessageCriteria( ChannelType.whatsapp, MessageDirection.IN ),
+			SubscriptionStatus.ACTIVE,
+			ZonedDateTime.of( 2019, 9, 24, 21, 1, 30, 500000000, ZoneId.of( "America/Sao_Paulo" ) ),
+			ZonedDateTime.of( 2019, 9, 24, 21, 8, 0, 100000000, ZoneId.of( "America/Sao_Paulo" ) )
+		);
+	}
+
+
 	private static class TestClient extends AbstractClient {
 		private TestClient( String apiToken ) {
 			super( apiToken );
@@ -334,36 +423,58 @@ public class ClientTest {
 
 
 		@Override
+		@SuppressWarnings( "unchecked" )
 		protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
 			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-			return null;
+			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && responseBodyType == Subscription.class ) {
+				List<RESPONSE> expected = new ArrayList<RESPONSE>();
+				expected.add( (RESPONSE) subscription() );
+				return expected;
+			}
+			throw new IllegalArgumentException();
 		}
 
 
 		@Override
+		@SuppressWarnings( "unchecked" )
 		protected <RESPONSE> RESPONSE get( String url, String id, Class<RESPONSE> responseBodyType )
 			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-			return null;
+			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && id.equals( "123" ) && responseBodyType == Subscription.class ) {
+				return (RESPONSE) subscription();
+			}
+			throw new IllegalArgumentException();
 		}
 
 
 		@Override
+		@SuppressWarnings( "unchecked" )
 		protected <REQUEST,RESPONSE> RESPONSE post( String url, REQUEST requestBody, Class<RESPONSE> responseBodyType )
 			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-			return null;
+			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && Subscription.class.isAssignableFrom( requestBody.getClass() ) && responseBodyType == Subscription.class ) {
+				return (RESPONSE) requestBody;
+			}
+			throw new IllegalArgumentException();
 		}
 
 
 		@Override
+		@SuppressWarnings( "unchecked" )
 		protected <REQUEST,RESPONSE> RESPONSE patch( String url, String id, REQUEST requestBody, Class<RESPONSE> responseBodyType )
 			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-			return null;
+			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && PartialSubscription.class == requestBody.getClass() && responseBodyType == Subscription.class ) {
+				return (RESPONSE) subscription().apply( (PartialSubscription) requestBody );
+			}
+			throw new IllegalArgumentException();
 		}
 
 
 		@Override
 		protected void delete( String url, String id )
 			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException,
-			HttpIOException {}
+			HttpIOException {
+			if( !url.equals( "https://api.zenvia.com/v1/subscriptions" ) || !id.equals( "123" ) ) {
+				throw new IllegalArgumentException();
+			}
+		}
 	}
 }
