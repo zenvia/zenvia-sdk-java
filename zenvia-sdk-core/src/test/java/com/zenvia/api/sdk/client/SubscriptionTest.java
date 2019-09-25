@@ -42,6 +42,21 @@ public class SubscriptionTest {
 	}
 
 
+	public void messageSubscriptionApplyReturnType() {
+		@SuppressWarnings( "unused" )
+		MessageSubscription subscription;
+		subscription = new MessageSubscription( null, null, null, SubscriptionStatus.ACTIVE, null, null ).apply( null, null );
+		subscription = new MessageSubscription( null, null, null, SubscriptionStatus.ACTIVE, null, null ).apply( null );
+	}
+
+
+	public void messageStatusSubscriptionApplyReturnType() {
+		@SuppressWarnings( "unused" )
+		MessageStatusSubscription subscription = new MessageStatusSubscription( null, null, null, SubscriptionStatus.ACTIVE, null, null ).apply( null, null );
+		subscription = new MessageStatusSubscription( null, null, null, SubscriptionStatus.ACTIVE, null, null ).apply( null );
+	}
+
+
 	@Test
 	public void messageStatusSubscriptionSerialization() throws IOException {
 		Map<String,String> headers = new HashMap<>();
