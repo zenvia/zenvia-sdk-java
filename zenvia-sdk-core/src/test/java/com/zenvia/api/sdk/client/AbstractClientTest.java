@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 import java.lang.reflect.Field;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
@@ -473,12 +472,10 @@ public class AbstractClientTest {
 
 		@Override
 		@SuppressWarnings( "unchecked" )
-		protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+		protected <RESPONSE> RESPONSE list( String url, Class<RESPONSE> responseBodyType )
 			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && responseBodyType == Subscription.class ) {
-				List<RESPONSE> expected = new ArrayList<RESPONSE>();
-				expected.add( (RESPONSE) subscription() );
-				return expected;
+			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && responseBodyType == Subscription[].class ) {
+				return (RESPONSE) new Subscription[] { subscription() };
 			}
 			throw new IllegalArgumentException();
 		}
