@@ -3,7 +3,6 @@ package com.zenvia.api.sdk.client.spring;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.client.ClientProtocolException;
@@ -159,10 +158,9 @@ public class Client extends AbstractClient {
 
 
 	@Override
-	@SuppressWarnings( "unchecked" )
-	protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+	protected <RESPONSE> RESPONSE list( String url, Class<RESPONSE> responseBodyType )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return (List<RESPONSE>) executeRequest( url, HttpMethod.GET, null, responseBodyType );
+		return executeRequest( url, HttpMethod.GET, null, responseBodyType );
 	}
 
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -154,10 +153,9 @@ public class Client extends AbstractClient {
 
 
 	@Override
-	@SuppressWarnings( "unchecked" )
-	protected <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+	protected <RESPONSE> RESPONSE list( String url, Class<RESPONSE> responseBodyType )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return executeRequest( new HttpGet( url ), null, List.class );
+		return executeRequest( new HttpGet( url ), null, responseBodyType );
 	}
 
 
