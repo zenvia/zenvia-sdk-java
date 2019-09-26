@@ -24,12 +24,12 @@ public class MessageRequest {
 
 
 	public MessageRequest( String from, String to, Content... contents ) {
-		this( from, to, Arrays.asList( contents ) );
+		this( from, to, contents == null ? null : Arrays.asList( contents ) );
 	}
 
 
 	public MessageRequest( String from, String to, Collection<Content> contents ) {
-		this( from, to, new ArrayList<>( contents ) );
+		this( from, to, contents == null ? null : new ArrayList<>( contents ) );
 	}
 
 
@@ -41,6 +41,6 @@ public class MessageRequest {
 	) {
 		this.from = from;
 		this.to = to;
-		this.contents = Collections.unmodifiableList( contents );
+		this.contents = contents == null ? Collections.emptyList() : Collections.unmodifiableList( contents );
 	}
 }

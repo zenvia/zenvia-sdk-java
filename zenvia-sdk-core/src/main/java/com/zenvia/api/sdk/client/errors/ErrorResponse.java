@@ -21,12 +21,12 @@ public class ErrorResponse {
 
 
 	public ErrorResponse( String code, String message, ErrorDetail... details ) {
-		this( code, message, Arrays.asList( details ) );
+		this( code, message, details == null ? null : Arrays.asList( details ) );
 	}
 
 
 	public ErrorResponse( String code, String message, Collection<ErrorDetail> details ) {
-		this( code, message, new ArrayList<>( details ) );
+		this( code, message, details == null ? null : new ArrayList<>( details ) );
 	}
 
 
