@@ -204,6 +204,22 @@ public class AbstractClientTest {
 
 
 	@Test
+	public void constructor2() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN", 10 );
+		assertEquals( "https://api.zenvia.com", client.getApiUrl() );
+		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
+		assertEquals( 25000, client.getConnectionTimeout() );
+		assertEquals( 60000, client.getSocketTimeout() );
+		assertEquals( 4, client.getMaxAutoRetries() );
+		assertEquals( 10, client.getMaxTotalConnections() );
+		assertEquals( 10, client.getMaxPerHostConnections() );
+		assertEquals( 0, client.getConnectionPoolTimeout() );
+		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		client.close();
+	}
+
+
+	@Test
 	public void constructor4() throws Exception {
 		AbstractClient client = new TestClient( "API_TOKEN", 11, 12, 13 );
 		assertEquals( "https://api.zenvia.com", client.getApiUrl() );
@@ -221,7 +237,7 @@ public class AbstractClientTest {
 
 	@Test
 	public void constructor5() throws Exception {
-		AbstractClient client = new TestClient( "API_TOKEN", 11, 12, 13, 14 );
+		AbstractClient client = new TestClient( "API_TOKEN", 14, 11, 12, 13 );
 		assertEquals( "https://api.zenvia.com", client.getApiUrl() );
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
@@ -237,7 +253,7 @@ public class AbstractClientTest {
 
 	@Test
 	public void constructor7() throws Exception {
-		AbstractClient client = new TestClient( "API_TOKEN", 11, 12, 13, 14, 15, 16 );
+		AbstractClient client = new TestClient( "API_TOKEN", 14, 11, 12, 13, 15, 16 );
 		assertEquals( "https://api.zenvia.com", client.getApiUrl() );
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
@@ -268,6 +284,22 @@ public class AbstractClientTest {
 
 
 	@Test
+	public void constructorWithUrl2() throws Exception {
+		AbstractClient client = new TestClient( "API_TOKEN", "https://zenvia.com", 10 );
+		assertEquals( "https://zenvia.com", client.getApiUrl() );
+		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
+		assertEquals( 25000, client.getConnectionTimeout() );
+		assertEquals( 60000, client.getSocketTimeout() );
+		assertEquals( 4, client.getMaxAutoRetries() );
+		assertEquals( 10, client.getMaxTotalConnections() );
+		assertEquals( 10, client.getMaxPerHostConnections() );
+		assertEquals( 0, client.getConnectionPoolTimeout() );
+		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		client.close();
+	}
+
+
+	@Test
 	public void constructorWithUrl4() throws Exception {
 		AbstractClient client = new TestClient( "API_TOKEN", "https://zenvia.com", 11, 12, 13 );
 		assertEquals( "https://zenvia.com", client.getApiUrl() );
@@ -285,7 +317,7 @@ public class AbstractClientTest {
 
 	@Test
 	public void constructorWithUrl5() throws Exception {
-		AbstractClient client = new TestClient( "API_TOKEN", "https://zenvia.com", 11, 12, 13, 14 );
+		AbstractClient client = new TestClient( "API_TOKEN", "https://zenvia.com", 14, 11, 12, 13 );
 		assertEquals( "https://zenvia.com", client.getApiUrl() );
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
@@ -301,7 +333,7 @@ public class AbstractClientTest {
 
 	@Test
 	public void constructorWithUrl7() throws Exception {
-		AbstractClient client = new TestClient( "API_TOKEN", "https://zenvia.com", 11, 12, 13, 14, 15, 16 );
+		AbstractClient client = new TestClient( "API_TOKEN", "https://zenvia.com", 14, 11, 12, 13, 15, 16 );
 		assertEquals( "https://zenvia.com", client.getApiUrl() );
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
@@ -335,6 +367,14 @@ public class AbstractClientTest {
 
 		private TestClient(
 			String apiToken,
+			Integer maxConnections
+		) {
+			super( apiToken, maxConnections, null, null, null );
+		}
+
+
+		private TestClient(
+			String apiToken,
 			Integer connectionTimeout,
 			Integer socketTimeout,
 			Integer maxAutoRetries
@@ -345,30 +385,39 @@ public class AbstractClientTest {
 
 		private TestClient(
 			String apiToken,
+			Integer maxConnections,
 			Integer connectionTimeout,
 			Integer socketTimeout,
-			Integer maxAutoRetries,
-			Integer maxConnections
+			Integer maxAutoRetries
 		) {
-			super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
+			super( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries );
 		}
 
 
 		private TestClient(
 			String apiToken,
+			Integer maxConnections,
 			Integer connectionTimeout,
 			Integer socketTimeout,
 			Integer maxAutoRetries,
-			Integer maxConnections,
 			Integer connectionPoolTimeout,
 			Integer checkStaleConnectionAfterInactivityTime
 		) {
-			super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+			super( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 		}
 
 
 		private TestClient( String apiToken, String apiUrl ) {
 			super( apiToken, apiUrl );
+		}
+
+
+		private TestClient(
+			String apiToken,
+			String apiUrl,
+			Integer maxConnections
+		) {
+			super( apiToken, apiUrl, maxConnections, null, null, null );
 		}
 
 
@@ -386,26 +435,26 @@ public class AbstractClientTest {
 		private TestClient(
 			String apiToken,
 			String apiUrl,
+			Integer maxConnections,
 			Integer connectionTimeout,
 			Integer socketTimeout,
-			Integer maxAutoRetries,
-			Integer maxConnections
+			Integer maxAutoRetries
 		) {
-			super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
+			super( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries );
 		}
 
 
 		private TestClient(
 			String apiToken,
 			String apiUrl,
+			Integer maxConnections,
 			Integer connectionTimeout,
 			Integer socketTimeout,
 			Integer maxAutoRetries,
-			Integer maxConnections,
 			Integer connectionPoolTimeout,
 			Integer checkStaleConnectionAfterInactivityTime
 		) {
-			super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+			super( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 		}
 
 

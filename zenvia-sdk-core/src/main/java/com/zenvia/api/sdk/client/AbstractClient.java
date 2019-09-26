@@ -49,7 +49,15 @@ public abstract class AbstractClient implements Closeable {
 
 
 	public AbstractClient( String apiToken ) {
-		this( apiToken, null );
+		this( apiToken, (String) null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		Integer maxConnections
+	) {
+		this( apiToken, maxConnections, null, null, null );
 	}
 
 
@@ -59,31 +67,31 @@ public abstract class AbstractClient implements Closeable {
 		Integer socketTimeout,
 		Integer maxAutoRetries
 	) {
-		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, null );
+		this( apiToken, (Integer) null, connectionTimeout, socketTimeout, maxAutoRetries );
 	}
 
 
 	public AbstractClient(
 		String apiToken,
-		Integer connectionTimeout,
-		Integer socketTimeout,
-		Integer maxAutoRetries,
-		Integer maxConnections
-	) {
-		this( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
-	}
-
-
-	public AbstractClient(
-		String apiToken,
-		Integer connectionTimeout,
-		Integer socketTimeout,
-		Integer maxAutoRetries,
 		Integer maxConnections,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries
+	) {
+		this( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, null, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		Integer maxConnections,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		this( apiToken, null, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+		this( apiToken, null, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
@@ -95,33 +103,42 @@ public abstract class AbstractClient implements Closeable {
 	public AbstractClient(
 		String apiToken,
 		String apiUrl,
+		Integer maxConnections
+	) {
+		this( apiToken, apiUrl, maxConnections, null, null, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		String apiUrl,
 		Integer connectionTimeout,
 		Integer socketTimeout,
 		Integer maxAutoRetries
 	) {
-		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, null );
+		this( apiToken, apiUrl, null, connectionTimeout, socketTimeout, maxAutoRetries );
 	}
 
 
 	public AbstractClient(
 		String apiToken,
 		String apiUrl,
-		Integer connectionTimeout,
-		Integer socketTimeout,
-		Integer maxAutoRetries,
-		Integer maxConnections
-	) {
-		this( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, null, null );
-	}
-
-
-	public AbstractClient(
-		String apiToken,
-		String apiUrl,
-		Integer connectionTimeout,
-		Integer socketTimeout,
-		Integer maxAutoRetries,
 		Integer maxConnections,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries
+	) {
+		this( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, null, null );
+	}
+
+
+	public AbstractClient(
+		String apiToken,
+		String apiUrl,
+		Integer maxConnections,
+		Integer connectionTimeout,
+		Integer socketTimeout,
+		Integer maxAutoRetries,
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
