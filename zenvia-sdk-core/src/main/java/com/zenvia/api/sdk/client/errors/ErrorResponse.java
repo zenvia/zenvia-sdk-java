@@ -1,5 +1,8 @@
 package com.zenvia.api.sdk.client.errors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +18,16 @@ public class ErrorResponse {
 	public final String message;
 
 	public final List<ErrorDetail> details;
+
+
+	public ErrorResponse( String code, String message, ErrorDetail... details ) {
+		this( code, message, Arrays.asList( details ) );
+	}
+
+
+	public ErrorResponse( String code, String message, Collection<ErrorDetail> details ) {
+		this( code, message, new ArrayList<>( details ) );
+	}
 
 
 	@JsonCreator
