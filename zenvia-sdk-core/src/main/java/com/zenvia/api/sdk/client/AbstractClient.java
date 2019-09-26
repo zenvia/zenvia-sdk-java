@@ -2,6 +2,7 @@ package com.zenvia.api.sdk.client;
 
 import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.ConnectionReuseStrategy;
@@ -206,7 +207,7 @@ public abstract class AbstractClient implements Closeable {
 
 	public List<Subscription> listSubscriptions()
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return list( subscriptionApiUrl, Subscription.class );
+		return Arrays.asList( list( subscriptionApiUrl, Subscription[].class ) );
 	}
 
 
@@ -249,7 +250,7 @@ public abstract class AbstractClient implements Closeable {
 	}
 
 
-	protected abstract <RESPONSE> List<RESPONSE> list( String url, Class<RESPONSE> responseBodyType )
+	protected abstract <RESPONSE> RESPONSE list( String url, Class<RESPONSE> responseBodyType )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException;
 
 
