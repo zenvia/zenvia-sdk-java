@@ -13,8 +13,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -34,12 +32,6 @@ import com.zenvia.api.sdk.client.subscriptions.Webhook;
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class SubscriptionTest {
 	private ObjectMapper jsonMapper = new ObjectMapper();
-
-
-	public SubscriptionTest() {
-		jsonMapper.registerModule( new JavaTimeModule() );
-		jsonMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
-	}
 
 
 	public void messageSubscriptionApplyReturnType() {
@@ -72,7 +64,7 @@ public class SubscriptionTest {
 		
 		String json = jsonMapper.writeValueAsString( subscription );
 		
-		assertEquals( "{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.5-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.1-03:00\"}", json );
+		assertEquals( "{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}", json );
 	}
 
 
@@ -91,14 +83,14 @@ public class SubscriptionTest {
 		
 		String json = jsonMapper.writeValueAsString( subscription );
 		
-		assertEquals( "{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.5-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.1-03:00\"}", json );
+		assertEquals( "{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}", json );
 	}
 
 
 	@Test
 	public void messageSubscriptionDeserialization() throws IOException {
 		Subscription subscription = jsonMapper.readValue(
-			"{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.5-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.1-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
+			"{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
 			Subscription.class
 		);
 		
@@ -121,7 +113,7 @@ public class SubscriptionTest {
 	@Test
 	public void messageStatusSubscriptionDeserialization() throws IOException {
 		Subscription subscription = jsonMapper.readValue(
-			"{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.5-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.1-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
+			"{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
 			Subscription.class
 		);
 		

@@ -2,11 +2,17 @@ package com.zenvia.api.sdk.client.subscriptions;
 
 import java.time.ZonedDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+
+import com.zenvia.api.sdk.ZonedDateTimeDeserializer;
 
 
 @JsonIgnoreProperties( ignoreUnknown = true )
@@ -27,8 +33,14 @@ public abstract class Subscription {
 
 	public final SubscriptionStatus status;
 
+	@JsonDeserialize( using = ZonedDateTimeDeserializer.class )
+	@JsonSerialize( using = ZonedDateTimeSerializer.class )
+	@JsonFormat( pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX" )
 	public final ZonedDateTime createdAt;
 
+	@JsonDeserialize( using = ZonedDateTimeDeserializer.class )
+	@JsonSerialize( using = ZonedDateTimeSerializer.class )
+	@JsonFormat( pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX" )
 	public final ZonedDateTime updatedAt;
 
 
