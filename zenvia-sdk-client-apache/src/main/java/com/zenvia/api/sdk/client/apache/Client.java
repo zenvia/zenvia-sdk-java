@@ -54,6 +54,11 @@ public class Client extends AbstractClient {
 	}
 
 
+	public Client( String apiToken, Integer maxConnections ) {
+		super( apiToken, maxConnections );
+	}
+
+
 	public Client(
 		String apiToken,
 		Integer connectionTimeout,
@@ -66,30 +71,35 @@ public class Client extends AbstractClient {
 
 	public Client(
 		String apiToken,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
-		Integer maxAutoRetries,
-		Integer maxConnections
+		Integer maxAutoRetries
 	) {
-		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
+		super( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries );
 	}
 
 
 	public Client(
 		String apiToken,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
 		Integer maxAutoRetries,
-		Integer maxConnections,
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+		super( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
 	public Client( String apiToken, String apiUrl ) {
 		super( apiToken, apiUrl );
+	}
+
+
+	public Client( String apiToken, String apiUrl, Integer maxConnections ) {
+		super( apiToken, apiUrl, maxConnections );
 	}
 
 
@@ -107,26 +117,26 @@ public class Client extends AbstractClient {
 	public Client(
 		String apiToken,
 		String apiUrl,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
-		Integer maxAutoRetries,
-		Integer maxConnections
+		Integer maxAutoRetries
 	) {
-		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
+		super( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries );
 	}
 
 
 	public Client(
 		String apiToken,
 		String apiUrl,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
 		Integer maxAutoRetries,
-		Integer maxConnections,
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+		super( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 	}
 
 
@@ -175,7 +185,7 @@ public class Client extends AbstractClient {
 	@Override
 	protected void delete( String url, String id )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		executeRequest( new HttpDelete( url ), null, null );
+		executeRequest( new HttpDelete( url + "/" + id ), null, null );
 	}
 
 

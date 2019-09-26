@@ -49,6 +49,12 @@ public class Client extends AbstractClient {
 	}
 
 
+	public Client( String apiToken, Integer maxConnections ) {
+		super( apiToken, maxConnections );
+		restTemplate = buildRestTemplate();
+	}
+
+
 	public Client(
 		String apiToken,
 		Integer connectionTimeout,
@@ -62,32 +68,38 @@ public class Client extends AbstractClient {
 
 	public Client(
 		String apiToken,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
-		Integer maxAutoRetries,
-		Integer maxConnections
+		Integer maxAutoRetries
 	) {
-		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
+		super( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries );
 		restTemplate = buildRestTemplate();
 	}
 
 
 	public Client(
 		String apiToken,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
 		Integer maxAutoRetries,
-		Integer maxConnections,
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		super( apiToken, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+		super( apiToken, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 		restTemplate = buildRestTemplate();
 	}
 
 
 	public Client( String apiToken, String apiUrl ) {
 		super( apiToken, apiUrl );
+		restTemplate = buildRestTemplate();
+	}
+
+
+	public Client( String apiToken, String apiUrl, Integer maxConnections ) {
+		super( apiToken, apiUrl, maxConnections );
 		restTemplate = buildRestTemplate();
 	}
 
@@ -107,12 +119,12 @@ public class Client extends AbstractClient {
 	public Client(
 		String apiToken,
 		String apiUrl,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
-		Integer maxAutoRetries,
-		Integer maxConnections
+		Integer maxAutoRetries
 	) {
-		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections );
+		super( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries );
 		restTemplate = buildRestTemplate();
 	}
 
@@ -120,14 +132,14 @@ public class Client extends AbstractClient {
 	public Client(
 		String apiToken,
 		String apiUrl,
+		Integer maxConnections,
 		Integer connectionTimeout,
 		Integer socketTimeout,
 		Integer maxAutoRetries,
-		Integer maxConnections,
 		Integer connectionPoolTimeout,
 		Integer checkStaleConnectionAfterInactivityTime
 	) {
-		super( apiToken, apiUrl, connectionTimeout, socketTimeout, maxAutoRetries, maxConnections, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
+		super( apiToken, apiUrl, maxConnections, connectionTimeout, socketTimeout, maxAutoRetries, connectionPoolTimeout, checkStaleConnectionAfterInactivityTime );
 		restTemplate = buildRestTemplate();
 	}
 
@@ -178,7 +190,7 @@ public class Client extends AbstractClient {
 	@Override
 	protected void delete( String url, String id )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		executeRequest( url, HttpMethod.DELETE, null, null );
+		executeRequest( url + "/" + id, HttpMethod.DELETE, null, null );
 	}
 
 
