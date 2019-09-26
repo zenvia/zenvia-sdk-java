@@ -350,7 +350,7 @@ public class AbstractClientTest {
 	private static MessageSubscription subscription() {
 		return new MessageSubscription(
 			"123",
-			new Webhook( "http://localhost/", null ),
+			new Webhook( "http://localhost", null ),
 			new MessageCriteria( ChannelType.whatsapp, MessageDirection.IN ),
 			SubscriptionStatus.ACTIVE,
 			ZonedDateTime.of( 2019, 9, 24, 21, 1, 30, 500000000, ZoneId.of( "America/Sao_Paulo" ) ),

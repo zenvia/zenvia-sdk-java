@@ -55,7 +55,7 @@ public class SubscriptionTest {
 		headers.put( "name", "value" );
 		MessageStatusSubscription subscription = new MessageStatusSubscription(
 			"123",
-			new Webhook( "http://localhost/", headers ),
+			new Webhook( "http://localhost", headers ),
 			new Criteria( ChannelType.whatsapp ),
 			SubscriptionStatus.ACTIVE,
 			ZonedDateTime.of( 2019, 9, 24, 21, 1, 30, 500000000, ZoneId.of( "America/Sao_Paulo" ) ),
@@ -64,7 +64,7 @@ public class SubscriptionTest {
 		
 		String json = jsonMapper.writeValueAsString( subscription );
 		
-		assertEquals( "{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}", json );
+		assertEquals( "{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}", json );
 	}
 
 
@@ -74,7 +74,7 @@ public class SubscriptionTest {
 		headers.put( "name", "value" );
 		MessageSubscription subscription = new MessageSubscription(
 			"123",
-			new Webhook( "http://localhost/", headers ),
+			new Webhook( "http://localhost", headers ),
 			new MessageCriteria( ChannelType.whatsapp, MessageDirection.IN ),
 			SubscriptionStatus.ACTIVE,
 			ZonedDateTime.of( 2019, 9, 24, 21, 1, 30, 500000000, ZoneId.of( "America/Sao_Paulo" ) ),
@@ -83,14 +83,14 @@ public class SubscriptionTest {
 		
 		String json = jsonMapper.writeValueAsString( subscription );
 		
-		assertEquals( "{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}", json );
+		assertEquals( "{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}", json );
 	}
 
 
 	@Test
 	public void messageSubscriptionDeserialization() throws IOException {
 		Subscription subscription = jsonMapper.readValue(
-			"{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
+			"{\"eventType\":\"MESSAGE\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\",\"direction\":\"IN\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
 			Subscription.class
 		);
 		
@@ -104,6 +104,7 @@ public class SubscriptionTest {
 		assertEquals( ChannelType.whatsapp, messageSubscription.criteria.channel );
 		assertEquals( MessageDirection.IN, messageSubscription.criteria.direction );
 		assertNotNull( messageSubscription.webhook );
+		assertEquals( "http://localhost", messageSubscription.webhook.url );
 		assertNotNull( messageSubscription.webhook.headers );
 		assertEquals( 1, messageSubscription.webhook.headers.size() );
 		assertEquals( "value", messageSubscription.webhook.headers.get( "name" ) );
@@ -113,7 +114,7 @@ public class SubscriptionTest {
 	@Test
 	public void messageStatusSubscriptionDeserialization() throws IOException {
 		Subscription subscription = jsonMapper.readValue(
-			"{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost/\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
+			"{\"eventType\":\"MESSAGE_STATUS\",\"id\":\"123\",\"webhook\":{\"url\":\"http://localhost\",\"headers\":{\"name\":\"value\"}},\"criteria\":{\"channel\":\"whatsapp\"},\"status\":\"ACTIVE\",\"createdAt\":\"2019-09-24T21:01:30.500-03:00\",\"updatedAt\":\"2019-09-24T21:08:00.100-03:00\"}".getBytes( StandardCharsets.UTF_8 ),
 			Subscription.class
 		);
 		
@@ -127,6 +128,7 @@ public class SubscriptionTest {
 		assertEquals( ChannelType.whatsapp, messageStatusSubscription.criteria.channel );
 		assertNotNull( messageStatusSubscription.webhook );
 		assertNotNull( messageStatusSubscription.webhook.headers );
+		assertEquals( "http://localhost", messageStatusSubscription.webhook.url );
 		assertEquals( 1, messageStatusSubscription.webhook.headers.size() );
 		assertEquals( "value", messageStatusSubscription.webhook.headers.get( "name" ) );
 	}
