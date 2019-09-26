@@ -8,11 +8,13 @@ import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.zenvia.api.sdk.contents.Content;
 
 
+@JsonIgnoreProperties( ignoreUnknown = true )
 public class MessageRequest {
 	public final String from;
 

@@ -47,7 +47,7 @@ import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.MessageResponse;
+import com.zenvia.api.sdk.client.messages.Message;
 import com.zenvia.api.sdk.client.subscriptions.Criteria;
 import com.zenvia.api.sdk.client.subscriptions.EventType;
 import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
@@ -302,7 +302,7 @@ public class ClientTest {
 	@Test
 	public void messageRequestSuccessful() throws Exception {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
-		MessageResponse messageResponse = client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
+		Message message = client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
 
 		assertNotNull( server.lastMessagePost );
 		assertEquals( "from", server.lastMessagePost.from );
@@ -312,16 +312,16 @@ public class ClientTest {
 		assertEquals( ContentType.text, server.lastMessagePost.contents.get( 0 ).type );
 		assertEquals( "This is a test!", ( (TextContent) server.lastMessagePost.contents.get( 0 ) ).text );
 
-		assertNotNull( messageResponse );
-		assertEquals( "12345", messageResponse.id );
-		assertEquals( "123", messageResponse.from );
-		assertEquals( "456", messageResponse.to );
-		assertEquals( MessageDirection.OUT, messageResponse.direction );
-		assertEquals( ChannelType.whatsapp, messageResponse.channel );
-		assertNotNull( messageResponse.contents );
-		assertEquals( 1, messageResponse.contents.size() );
-		assertEquals( ContentType.text, messageResponse.contents.get( 0 ).type );
-		assertEquals( "This is a test!", ( (TextContent) messageResponse.contents.get( 0 ) ).text );
+		assertNotNull( message );
+		assertEquals( "12345", message.id );
+		assertEquals( "123", message.from );
+		assertEquals( "456", message.to );
+		assertEquals( MessageDirection.OUT, message.direction );
+		assertEquals( ChannelType.whatsapp, message.channel );
+		assertNotNull( message.contents );
+		assertEquals( 1, message.contents.size() );
+		assertEquals( ContentType.text, message.contents.get( 0 ).type );
+		assertEquals( "This is a test!", ( (TextContent) message.contents.get( 0 ) ).text );
 
 		client.close();
 	}

@@ -14,66 +14,66 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.zenvia.api.sdk.client.messages.MessageResponse;
+import com.zenvia.api.sdk.client.messages.Message;
 import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
 import com.zenvia.api.sdk.contents.TextContent;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
-public class MessageResponseTest {
+public class MessageTest {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 
 	@Test
 	public void deserializationMissingContents() throws IOException {
-		MessageResponse messageResponse = jsonMapper.readValue(
+		Message message = jsonMapper.readValue(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\"}".getBytes( StandardCharsets.UTF_8 ),
-			MessageResponse.class
+			Message.class
 		);
 
-		assertNotNull( messageResponse );
-		assertEquals( "12345", messageResponse.id );
-		assertEquals( "123", messageResponse.from );
-		assertEquals( "456", messageResponse.to );
-		assertEquals( MessageDirection.OUT, messageResponse.direction );
-		assertEquals( ChannelType.whatsapp, messageResponse.channel );
+		assertNotNull( message );
+		assertEquals( "12345", message.id );
+		assertEquals( "123", message.from );
+		assertEquals( "456", message.to );
+		assertEquals( MessageDirection.OUT, message.direction );
+		assertEquals( ChannelType.whatsapp, message.channel );
 	}
 
 
 	@Test
 	public void deserialization() throws IOException {
-		MessageResponse messageResponse = jsonMapper.readValue(
+		Message message = jsonMapper.readValue(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\",\"contents\":[{\"type\":\"text\",\"text\":\"This is a test!\"}]}".getBytes( StandardCharsets.UTF_8 ),
-			MessageResponse.class
+			Message.class
 		);
 
-		assertNotNull( messageResponse );
-		assertEquals( "12345", messageResponse.id );
-		assertEquals( "123", messageResponse.from );
-		assertEquals( "456", messageResponse.to );
-		assertEquals( MessageDirection.OUT, messageResponse.direction );
-		assertEquals( ChannelType.whatsapp, messageResponse.channel );
-		assertNotNull( messageResponse.contents );
-		assertEquals( 1, messageResponse.contents.size() );
-		assertEquals( ContentType.text, messageResponse.contents.get( 0 ).type );
-		assertEquals( "This is a test!", ( (TextContent) messageResponse.contents.get( 0 ) ).text );
+		assertNotNull( message );
+		assertEquals( "12345", message.id );
+		assertEquals( "123", message.from );
+		assertEquals( "456", message.to );
+		assertEquals( MessageDirection.OUT, message.direction );
+		assertEquals( ChannelType.whatsapp, message.channel );
+		assertNotNull( message.contents );
+		assertEquals( 1, message.contents.size() );
+		assertEquals( ContentType.text, message.contents.get( 0 ).type );
+		assertEquals( "This is a test!", ( (TextContent) message.contents.get( 0 ) ).text );
 	}
 
 
 	@Test
 	public void deserializationWithUnsupportedAttributes() throws IOException {
-		MessageResponse messageResponse = jsonMapper.readValue(
+		Message message = jsonMapper.readValue(
 			"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"whatsapp\",\"contents\":[]}".getBytes( StandardCharsets.UTF_8 ),
-			MessageResponse.class
+			Message.class
 		);
 
-		assertNotNull( messageResponse );
-		assertEquals( "12345", messageResponse.id );
-		assertEquals( "123", messageResponse.from );
-		assertEquals( "456", messageResponse.to );
-		assertEquals( MessageDirection.OUT, messageResponse.direction );
-		assertEquals( ChannelType.whatsapp, messageResponse.channel );
+		assertNotNull( message );
+		assertEquals( "12345", message.id );
+		assertEquals( "123", message.from );
+		assertEquals( "456", message.to );
+		assertEquals( MessageDirection.OUT, message.direction );
+		assertEquals( ChannelType.whatsapp, message.channel );
 	}
 
 
@@ -82,7 +82,7 @@ public class MessageResponseTest {
 		try {
 			jsonMapper.readValue(
 				"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"new\",\"contents\":[]}".getBytes( StandardCharsets.UTF_8 ),
-				MessageResponse.class
+				Message.class
 			);
 			fail();
 		} catch( JsonMappingException exception ) {

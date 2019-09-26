@@ -22,7 +22,7 @@ import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
 import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.MessageResponse;
+import com.zenvia.api.sdk.client.messages.Message;
 import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
 
@@ -244,9 +244,9 @@ public abstract class AbstractClient implements Closeable {
 	}
 
 
-	protected MessageResponse sendMessage( Channel channel, MessageRequest messageRequest )
+	protected Message sendMessage( Channel channel, MessageRequest messageRequest )
 		throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
-		return post( channel.url, messageRequest, MessageResponse.class );
+		return post( channel.url, messageRequest, Message.class );
 	}
 
 
