@@ -649,6 +649,34 @@ public class ClientTest {
 
 
 	@Test
+	public void subscriptionSuccessfulSingleValueList() throws Exception {
+		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/single" );
+		List<Subscription> subscriptions = client.listSubscriptions();
+
+		assertNotNull( subscriptions );
+		assertEquals( 1, subscriptions.size() );
+		
+		assertNotNull( subscriptions.get( 0 ) );
+		assertEquals( EventType.MESSAGE, subscriptions.get( 0 ).eventType );
+		assertEquals( MessageSubscription.class, subscriptions.get( 0 ).getClass() );
+		assertEquals( "123", subscriptions.get( 0 ).id );
+		assertNotNull( subscriptions.get( 0 ).criteria );
+		assertEquals( ChannelType.whatsapp, subscriptions.get( 0 ).criteria.channel );
+		assertEquals(
+			MessageDirection.IN,
+			( (MessageSubscription) subscriptions.get( 0 ) ).criteria.direction
+		);
+		assertNotNull( subscriptions.get( 0 ).webhook );
+		assertEquals( "http://localhost", subscriptions.get( 0 ).webhook.url );
+		assertNotNull( subscriptions.get( 0 ).webhook.headers );
+		assertEquals( 1, subscriptions.get( 0 ).webhook.headers.size() );
+		assertEquals( "value", subscriptions.get( 0 ).webhook.headers.get( "name" ) );
+
+		client.close();
+	}
+
+
+	@Test
 	public void subscriptionSuccessfulEmptyList() throws Exception {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/empty" );
 		List<Subscription> subscriptions = client.listSubscriptions();
@@ -862,6 +890,23 @@ public class ClientTest {
 			if( token != null && token.equals( "API_TOKEN" ) ) {
 				return Response
 					.ok( new Subscription[] { messageSubscription(), messageStatusSubscription() } )
+					.build();
+			} else {
+				return Response
+					.status( 401 )
+					.entity( "{\"code\":\"AUTHENTICATION_ERROR\",\"message\":\"No authorization token was found\"}" )
+					.build();
+			}
+		}
+
+
+		@GET
+		@Path( "/single/v1/subscriptions" )
+		@Produces( MediaType.APPLICATION_JSON )
+		public Response singleValueListSubscriptionsResource( @HeaderParam( "x-api-token" ) String token ) {
+			if( token != null && token.equals( "API_TOKEN" ) ) {
+				return Response
+					.ok( new Subscription[] { messageSubscription() } )
 					.build();
 			} else {
 				return Response
