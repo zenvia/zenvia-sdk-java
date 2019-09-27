@@ -20,4 +20,19 @@ public abstract class Content {
 	protected Content( ContentType type ) {
 		this.type = type;
 	}
+
+
+	public TextContent asTextContent() {
+		return (TextContent) this;
+	}
+
+
+	public FileContent asFileContent() {
+		return (FileContent) this;
+	}
+
+
+	public TemplateContent asTemplateContent() {
+		return (TemplateContent) this;
+	}
 }
