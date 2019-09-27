@@ -60,4 +60,10 @@ public class Channel {
 			throw new UnsupportedContentException( content.type, type );
 		}
 	}
+
+
+	@Override
+	public String toString() {
+		return type.name();
+	}
 }
