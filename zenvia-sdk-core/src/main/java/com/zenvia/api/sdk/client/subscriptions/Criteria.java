@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.zenvia.api.sdk.Json;
 import com.zenvia.api.sdk.client.ChannelType;
 
 
@@ -20,5 +21,11 @@ public class Criteria {
 
 	public Criteria( String channel ) {
 		this( ChannelType.valueOf( channel ) );
+	}
+
+
+	@Override
+	public String toString() {
+		return Json.pretty( this );
 	}
 }

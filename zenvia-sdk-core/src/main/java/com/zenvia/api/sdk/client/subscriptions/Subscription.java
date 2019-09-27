@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 
+import com.zenvia.api.sdk.Json;
 import com.zenvia.api.sdk.ZonedDateTimeDeserializer;
 
 
@@ -78,5 +79,11 @@ public abstract class Subscription {
 
 	public MessageStatusSubscription ofMessageStatus() {
 		return (MessageStatusSubscription) this;
+	}
+
+
+	@Override
+	public String toString() {
+		return Json.pretty( this );
 	}
 }

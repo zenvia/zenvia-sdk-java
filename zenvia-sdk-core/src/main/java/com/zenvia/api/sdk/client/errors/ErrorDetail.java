@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.zenvia.api.sdk.Json;
+
 
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class ErrorDetail {
@@ -23,5 +25,11 @@ public class ErrorDetail {
 		this.code = code;
 		this.path = path;
 		this.message = message;
+	}
+
+
+	@Override
+	public String toString() {
+		return Json.pretty( this );
 	}
 }

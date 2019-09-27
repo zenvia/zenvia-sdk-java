@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.zenvia.api.sdk.Json;
+
 
 @JsonIgnoreProperties( ignoreUnknown = true )
 public class ErrorResponse {
@@ -39,5 +41,11 @@ public class ErrorResponse {
 		this.code = code;
 		this.message = message;
 		this.details = details == null ? Collections.emptyList() : Collections.unmodifiableList( details );
+	}
+
+
+	@Override
+	public String toString() {
+		return Json.pretty( this );
 	}
 }

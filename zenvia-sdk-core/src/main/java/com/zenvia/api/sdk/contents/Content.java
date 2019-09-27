@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
+import com.zenvia.api.sdk.Json;
+
 
 @JsonIgnoreProperties( ignoreUnknown = true )
 @JsonTypeInfo( use = JsonTypeInfo.Id.NAME, property = "type", include = As.EXISTING_PROPERTY )
@@ -34,5 +36,11 @@ public abstract class Content {
 
 	public TemplateContent ofTemplate() {
 		return (TemplateContent) this;
+	}
+
+
+	@Override
+	public String toString() {
+		return Json.pretty( this );
 	}
 }

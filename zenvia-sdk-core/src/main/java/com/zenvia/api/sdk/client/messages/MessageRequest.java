@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.zenvia.api.sdk.Json;
 import com.zenvia.api.sdk.contents.Content;
 
 
@@ -42,5 +43,11 @@ public class MessageRequest {
 		this.from = from;
 		this.to = to;
 		this.contents = contents == null ? Collections.emptyList() : Collections.unmodifiableList( contents );
+	}
+
+
+	@Override
+	public String toString() {
+		return Json.pretty( this );
 	}
 }
