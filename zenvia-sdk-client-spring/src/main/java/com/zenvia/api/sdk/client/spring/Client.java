@@ -201,23 +201,19 @@ public class Client extends AbstractClient {
 			Throwable cause = exception.getCause();
 			if( cause instanceof ErrorResponseException ) {
 				ErrorResponseException errorResponseException = (ErrorResponseException) cause;
-				if( errorResponseException.errorResponse == null ) {
-					throw logException( new UnsuccessfulRequestException( url, errorResponseException.httpStatus, errorResponseException.getCause() ) );
-				} else {
-					throw logException( new UnsuccessfulRequestException( url, errorResponseException.httpStatus, errorResponseException.errorResponse ) );
-				}
+				throw logException( new UnsuccessfulRequestException( url, errorResponseException.httpStatusCode, errorResponseException.body, errorResponseException.causedBy ) );
 			}
 			if( cause instanceof SocketTimeoutException ) {
 				throw logException( new HttpSocketTimeoutException( url, exception ) );
 			}
 			if( cause instanceof ConnectTimeoutException ) {
-				throw logException( new HttpConnectionTimeoutException( url, cause ) );
+				throw logException( new HttpConnectionTimeoutException( url, exception ) );
 			}
 			if( cause instanceof ConnectException ) {
-				throw logException( new HttpConnectionFailException( url, cause ) );
+				throw logException( new HttpConnectionFailException( url, exception ) );
 			}
 			if( cause instanceof ClientProtocolException ) {
-				throw logException( new HttpProtocolException( url, cause ) );
+				throw logException( new HttpProtocolException( url, exception ) );
 			}
 			throw logException( new HttpIOException( url, exception ) );
 		}
@@ -267,21 +263,25 @@ public class Client extends AbstractClient {
 
 	@SuppressWarnings( "serial" )
 	private static class ErrorResponseException extends IOException {
-		private final int httpStatus;
+		private final int httpStatusCode;
 
-		private final ErrorResponse errorResponse;
+		private final ErrorResponse body;
+
+		private final Exception causedBy;
 
 
 		private ErrorResponseException( int httpStatus, ErrorResponse errorResponse ) {
-			this.httpStatus = httpStatus;
-			this.errorResponse = errorResponse;
+			this.httpStatusCode = httpStatus;
+			this.body = errorResponse;
+			this.causedBy = null;
 		}
 
 
 		private ErrorResponseException( int httpStatus, Exception cause ) {
 			super( cause );
-			this.httpStatus = httpStatus;
-			this.errorResponse = null;
+			this.httpStatusCode = httpStatus;
+			this.body = null;
+			this.causedBy = cause;
 		}
 	}
 }

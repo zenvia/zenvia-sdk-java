@@ -5,7 +5,7 @@ import com.zenvia.api.sdk.contents.ContentType;
 
 
 @SuppressWarnings( "serial" )
-public class UnsupportedContentException extends RuntimeException {
+public class UnsupportedContentException extends ApiException {
 	private final String contentType;
 	
 	private final String channelType;

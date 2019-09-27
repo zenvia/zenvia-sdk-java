@@ -4,7 +4,7 @@ import com.zenvia.api.sdk.client.ChannelType;
 
 
 @SuppressWarnings( "serial" )
-public class UnsupportedChannelException extends RuntimeException {
+public class UnsupportedChannelException extends ApiException {
 	private final String channelType;
 
 
