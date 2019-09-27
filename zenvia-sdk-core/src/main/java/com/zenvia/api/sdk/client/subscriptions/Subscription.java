@@ -69,4 +69,14 @@ public abstract class Subscription {
 
 
 	public abstract <SUBSCRIPTION extends Subscription> SUBSCRIPTION apply( Webhook webhook, SubscriptionStatus status );
+
+
+	public MessageSubscription asMessageSubscription() {
+		return (MessageSubscription) this;
+	}
+
+
+	public MessageStatusSubscription asMessageStatusSubscription() {
+		return (MessageStatusSubscription) this;
+	}
 }
