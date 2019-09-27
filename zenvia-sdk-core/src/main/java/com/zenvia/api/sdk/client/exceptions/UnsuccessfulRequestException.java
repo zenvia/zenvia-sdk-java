@@ -3,7 +3,7 @@ package com.zenvia.api.sdk.client.exceptions;
 import com.zenvia.api.sdk.client.errors.ErrorResponse;
 
 @SuppressWarnings( "serial" )
-public class UnsuccessfulRequestException extends Exception {
+public class UnsuccessfulRequestException extends RuntimeException {
 	private final int httpStatusCode;
 	
 	private final ErrorResponse body;
