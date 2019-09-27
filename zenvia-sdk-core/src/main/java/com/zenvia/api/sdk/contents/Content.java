@@ -22,17 +22,17 @@ public abstract class Content {
 	}
 
 
-	public TextContent asTextContent() {
+	public TextContent ofText() {
 		return (TextContent) this;
 	}
 
 
-	public FileContent asFileContent() {
+	public FileContent ofFile() {
 		return (FileContent) this;
 	}
 
 
-	public TemplateContent asTemplateContent() {
+	public TemplateContent ofTemplate() {
 		return (TemplateContent) this;
 	}
 }
