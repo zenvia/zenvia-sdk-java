@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<root level="ERROR">
+		<appender class="ch.qos.logback.core.ConsoleAppender">
+			<encoder>
+				<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			</encoder>
+		</appender>
+	</root>
+	<logger name="com.zenvia" level="ERROR" />
+	<logger name="com.zenvia.api.sdk.client.apache.Client" level="ERROR" />
+	<logger name="com.zenvia.api.sdk.client.apache.ClientTest" level="ERROR" />
+	<logger name="org.apache.http.wire" level="INFO"/>
+</configuration>

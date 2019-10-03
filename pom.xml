@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.zenvia</groupId>
+	<artifactId>zenvia-api-sdk</artifactId>
+	<version>0.9.0</version>
+	<packaging>pom</packaging>
+
+	<name>Zenvia API Java SDK</name>
+	<description>SDK for Zenvia's CPaaS API.</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.8.RELEASE</version>
+	</parent>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<modules>
+		<module>zenvia-sdk-core</module>
+		<module>zenvia-sdk-client-apache</module>
+		<module>zenvia-sdk-client-spring</module>
+	</modules>
+
+	<scm>
+		<connection>scm:git:git://github.com/zenvia/zenvia-sdk-java.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/zenvia/zenvia-sdk-java.git</developerConnection>
+		<url>https://github.com/zenvia/zenvia-sdk-java/tree/master</url>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/zenvia/zenvia-sdk-java/issues</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>https://github.com/zenvia/zenvia-sdk-node/blob/master/LICENSE.md</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Zenvia</name>
+		<url>https://www.zenvia.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>rafael.souza</id>
+			<name>Rafael Souza</name>
+			<email>rafael.souza@zenvia.com</email>
+			<url>https://github.com/rafael-org</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+		<developer>
+			<id>rodrigo.kamada</id>
+			<name>Rodrigo Kamada</name>
+			<email>rodrigo.kamada@zenvia.com</email>
+			<url>https://github.com/rodrigokamada</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+		<developer>
+			<id>henrique.magarotto</id>
+			<name>Henrique Magarotto</name>
+			<email>henrique.magarotto@zenvia.com</email>
+			<url>https://github.com/hmagarotto</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+		<developer>
+			<id>wladimir.mangelardo</id>
+			<name>Wladimir Mangelardo</name>
+			<email>wladimir.mangelardo@zenvia.com</email>
+			<url>https://github.com/wmangelardo</url>
+			<timezone>America/Sao_Paulo</timezone>
+		</developer>
+	</developers>
+
+	<build>
+		<plugins>
+
+			<!-- Coveralls -->
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.3.0</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.4</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Maven central -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<!-- Sources -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Sign the artifacts -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>
