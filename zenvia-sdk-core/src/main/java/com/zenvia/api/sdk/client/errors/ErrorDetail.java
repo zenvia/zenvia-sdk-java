@@ -28,6 +28,9 @@ public class ErrorDetail {
 	}
 
 
+	/** String containg the object as an indented JSON.
+	 * 
+	 *  @since 0.9.0 */
 	@Override
 	public String toString() {
 		return Json.pretty( this );
