@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.zenvia.api.sdk.client.ChannelType;
-import com.zenvia.api.sdk.client.messages.MessageDirection;
+import com.zenvia.api.sdk.messages.MessageDirection;
 
 
 /** Indicates the criteria necessary to trigger a callback on a

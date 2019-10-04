@@ -46,8 +46,6 @@ import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
-import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.Message;
 import com.zenvia.api.sdk.client.subscriptions.Criteria;
 import com.zenvia.api.sdk.client.subscriptions.EventType;
 import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
@@ -57,9 +55,11 @@ import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
 import com.zenvia.api.sdk.client.subscriptions.SubscriptionStatus;
 import com.zenvia.api.sdk.client.subscriptions.Webhook;
-import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
 import com.zenvia.api.sdk.contents.TextContent;
+import com.zenvia.api.sdk.messages.Message;
+import com.zenvia.api.sdk.messages.MessageDirection;
+import com.zenvia.api.sdk.messages.MessageRequest;
 
 
 @RunWith( SpringRunner.class )

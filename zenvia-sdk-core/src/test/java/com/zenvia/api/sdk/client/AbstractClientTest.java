@@ -21,13 +21,13 @@ import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
-import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
 import com.zenvia.api.sdk.client.subscriptions.MessageSubscription;
 import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
 import com.zenvia.api.sdk.client.subscriptions.SubscriptionStatus;
 import com.zenvia.api.sdk.client.subscriptions.Webhook;
+import com.zenvia.api.sdk.messages.MessageDirection;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )

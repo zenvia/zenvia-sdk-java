@@ -14,10 +14,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.zenvia.api.sdk.client.messages.Message;
-import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.contents.ContentType;
 import com.zenvia.api.sdk.contents.TextContent;
+import com.zenvia.api.sdk.messages.Message;
+import com.zenvia.api.sdk.messages.MessageDirection;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )

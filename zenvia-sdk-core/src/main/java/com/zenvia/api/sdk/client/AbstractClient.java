@@ -20,12 +20,12 @@ import com.zenvia.api.sdk.client.exceptions.HttpIOException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
-import com.zenvia.api.sdk.client.messages.MessageRequest;
-import com.zenvia.api.sdk.client.messages.Message;
 import com.zenvia.api.sdk.client.subscriptions.MessageStatusSubscription;
 import com.zenvia.api.sdk.client.subscriptions.MessageSubscription;
 import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
+import com.zenvia.api.sdk.messages.Message;
+import com.zenvia.api.sdk.messages.MessageRequest;
 
 
 /** Core class for the client side of this SDK.

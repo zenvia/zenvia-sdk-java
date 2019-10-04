@@ -18,9 +18,9 @@ import org.mockito.Mockito;
 import com.zenvia.api.sdk.client.exceptions.HttpRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedContentException;
-import com.zenvia.api.sdk.client.messages.MessageRequest;
 import com.zenvia.api.sdk.contents.Content;
 import com.zenvia.api.sdk.contents.TextContent;
+import com.zenvia.api.sdk.messages.MessageRequest;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )

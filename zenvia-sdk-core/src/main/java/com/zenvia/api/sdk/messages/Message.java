@@ -1,4 +1,4 @@
-package com.zenvia.api.sdk.client.messages;
+package com.zenvia.api.sdk.messages;
 
 import java.util.List;
 

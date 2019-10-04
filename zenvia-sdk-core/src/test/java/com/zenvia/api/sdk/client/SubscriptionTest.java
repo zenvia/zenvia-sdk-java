@@ -18,7 +18,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.client.subscriptions.Criteria;
 import com.zenvia.api.sdk.client.subscriptions.EventType;
 import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
@@ -27,6 +26,7 @@ import com.zenvia.api.sdk.client.subscriptions.MessageSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
 import com.zenvia.api.sdk.client.subscriptions.SubscriptionStatus;
 import com.zenvia.api.sdk.client.subscriptions.Webhook;
+import com.zenvia.api.sdk.messages.MessageDirection;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
