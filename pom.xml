@@ -155,22 +155,25 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<phase>prepare-package</phase>
 					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Sign the artifacts -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
 					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
+						<id>aggregate-javadocs</id>
 						<goals>
-							<goal>sign</goal>
+							<goal>aggregate</goal>
 						</goals>
+						<phase>package</phase>
+						<inherited>false</inherited>
+						<configuration>
+							<reportSets>
+								<reportSet>
+									<id>aggregate</id>
+									<reports>
+										<report>aggregate</report>
+									</reports>
+								</reportSet>
+							</reportSets>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
