@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import java.lang.reflect.Field;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,11 +88,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -103,11 +103,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 10, client.getMaxTotalConnections() );
-		assertEquals( 10, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 10, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -119,11 +118,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -135,11 +133,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -151,11 +148,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 15, client.getConnectionPoolTimeout() );
-		assertEquals( 16, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 16, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -167,11 +163,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -183,11 +178,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 10, client.getMaxTotalConnections() );
-		assertEquals( 10, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 10, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -199,11 +193,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -215,11 +208,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -231,11 +223,10 @@ public class ClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 15, client.getConnectionPoolTimeout() );
-		assertEquals( 16, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 16, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -244,7 +235,9 @@ public class ClientTest {
 	public void messageRequestUnsuccessful() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
-			client.getChannel( "sms" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "sms" )
+				.sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastMessagePost );
@@ -275,7 +268,9 @@ public class ClientTest {
 	public void messageRequestWithWrongToken() {
 		Client client = new Client( "INCORRECT_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
-			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "whatsapp" )
+				.sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastMessagePost );
@@ -302,7 +297,9 @@ public class ClientTest {
 	@Test
 	public void messageRequestSuccessful() throws Exception {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
-		Message message = client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
+		MessageRequest request = messageRequest();
+		Message message = client.getChannel( "whatsapp" )
+			.sendMessage( request.from, request.to, request.contents );
 
 		assertNotNull( server.lastMessagePost );
 		assertEquals( "from", server.lastMessagePost.from );
@@ -331,7 +328,8 @@ public class ClientTest {
 	public void messageRequestWithEmptyReply() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort );
 		try {
-			client.getChannel( "facebook" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "facebook" ).sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastMessagePost );
@@ -355,7 +353,9 @@ public class ClientTest {
 	public void messageRequestWithNonJsonReply() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/invalid" );
 		try {
-			client.getChannel( "facebook" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "facebook" )
+				.sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( UnsuccessfulRequestException exception ) {
 			assertNotNull( server.lastMessagePost );
@@ -379,7 +379,9 @@ public class ClientTest {
 	public void messageRequestWithConnectionRefused() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:8" );
 		try {
-			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "whatsapp" )
+				.sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( HttpConnectionFailException exception ) {
 			assertNull( server.lastMessagePost );
@@ -394,7 +396,9 @@ public class ClientTest {
 	public void messageRequestWithConnectionTimeout() {
 		Client client = new Client( "API_TOKEN", "http://192.168.255.253:8", 1000, 1000, null );
 		try {
-			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "whatsapp" )
+				.sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( HttpConnectionTimeoutException exception ) {
 			assertNull( server.lastMessagePost );
@@ -409,7 +413,9 @@ public class ClientTest {
 	public void messageRequestWithSocketTimeout() {
 		Client client = new Client( "API_TOKEN", "http://127.0.0.1:" + serverPort + "/timeout", 1000, 1000, null );
 		try {
-			client.getChannel( "whatsapp" ).sendMessage( messageRequest() );
+			MessageRequest request = messageRequest();
+			client.getChannel( "whatsapp" )
+				.sendMessage( request.from, request.to, request.contents );
 			fail();
 		} catch( HttpSocketTimeoutException exception ) {
 			assertNotNull( server.lastMessagePost );
@@ -705,7 +711,7 @@ public class ClientTest {
 
 
 	private MessageRequest messageRequest() {
-		return new MessageRequest( "from", "to", new TextContent( "This is a test!" ) ); 
+		return new MessageRequest( "from", "to", Arrays.asList( new TextContent( "This is a test!" ) ) ); 
 	}
 
 
@@ -827,7 +833,7 @@ public class ClientTest {
 			}
 			return Response
 				.status( 404 )
-				.entity( new ErrorResponse( "NOT_FOUND", "Subscription with id [" +id + "] not found" ) )
+				.entity( new ErrorResponse( "NOT_FOUND", "Subscription with id [" +id + "] not found", null ) )
 				.build();
 		}
 
@@ -852,7 +858,7 @@ public class ClientTest {
 			}
 			return Response
 				.status( 404 )
-				.entity( new ErrorResponse( "NOT_FOUND", "Subscription with id [" +id + "] not found" ) )
+				.entity( new ErrorResponse( "NOT_FOUND", "Subscription with id [" +id + "] not found", null ) )
 				.build();
 		}
 
@@ -878,7 +884,7 @@ public class ClientTest {
 			}
 			return Response
 				.status( 404 )
-				.entity( new ErrorResponse( "NOT_FOUND", "Subscription with id [" +id + "] not found" ) )
+				.entity( new ErrorResponse( "NOT_FOUND", "Subscription with id [" +id + "] not found", null ) )
 				.build();
 		}
 
