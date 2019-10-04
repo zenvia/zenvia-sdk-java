@@ -1,8 +1,5 @@
 package com.zenvia.api.sdk.client.messages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -12,24 +9,41 @@ import com.zenvia.api.sdk.client.ChannelType;
 import com.zenvia.api.sdk.contents.Content;
 
 
+/** Either the result from a message request, or a message sent by a contact.
+ *
+ * @since 0.9.0 */
 public class Message extends MessageRequest {
+	/** While sending a message, this id is the one that will be used on message status callbacks.
+	 * 
+	 *  @since 0.9.0 */
 	public final String id;
 
+	/** Indicates the origin of a message. IN means it originated from the contact, OUT means it was
+	 *  sent to the contact.
+	 *
+	 *  @since 0.9.0 */
 	public final MessageDirection direction;
 
+	/** Channel where the message will go through while sending a message, the source channel when
+	 *  receiving a message.
+	 *
+	 *  @since 0.9.0 */
 	public final ChannelType channel;
 
 
-	public Message( String id, String from, String to, MessageDirection direction, ChannelType channel, Content... contents ) {
-		this( id, from, to, direction, channel, contents == null ? null : Arrays.asList(  ) );
-	}
-
-
-	public Message( String id, String from, String to, MessageDirection direction, ChannelType channel, Collection<Content> contents ) {
-		this( id, from, to, direction, channel, contents == null ? null : new ArrayList<>( contents ) );
-	}
-
-
+	/** @param id Message id.
+	 *
+	 *  @param from Id of the sender of the message.
+	 *
+	 *  @param to Id of the receiver of the message.
+	 *
+	 *  @param direction Indicates the origin of a message.
+	 *
+	 *  @param channel Channel the message went or will go through. 
+	 *
+	 *  @param contents List of contents.
+	 *
+	 *  @since 0.9.0 */
 	@JsonCreator
 	public Message(
 		@JsonProperty( "id" ) String id,

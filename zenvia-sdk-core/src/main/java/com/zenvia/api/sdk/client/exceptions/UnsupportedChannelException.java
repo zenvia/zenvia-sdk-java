@@ -1,25 +1,30 @@
 package com.zenvia.api.sdk.client.exceptions;
 
-import com.zenvia.api.sdk.client.ChannelType;
 
-
+/** Exception generated when a unsupported channel is attempted to be used.
+ *
+ *  @since 0.9.0 */
 @SuppressWarnings( "serial" )
 public class UnsupportedChannelException extends ApiException {
-	private final String channelType;
+	/** Channel that is unsupported by the API/SDK. Same as {@link #getChannel}.
+	 *
+	 *  @since 1.0.0 */
+	public final String channel;
 
 
-	public UnsupportedChannelException( ChannelType channelType ) {
-		this( channelType == null ? null : channelType.name() );
+	/** @param channel Channel that is unsupported by the API/SDK.
+	 *
+	 *  @since 0.9.0 */
+	public UnsupportedChannelException( String channel ) {
+		super( "Unsupported channel: " + channel );
+		this.channel = channel;
 	}
 
 
-	public UnsupportedChannelException( String channelType ) {
-		super( "Unsupported channel: " + channelType );
-		this.channelType = channelType;
-	}
-
-
-	public String getChannelType() {
-		return channelType;
+	/** Channel that is unsupported by the API/SDK. Same as {@link #channel}.
+	 *
+	 *  @since 1.0.0 */
+	public String getChannel() {
+		return channel;
 	}
 }
