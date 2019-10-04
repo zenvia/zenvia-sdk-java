@@ -87,7 +87,7 @@ public class MessageTest {
 			fail();
 		} catch( JsonMappingException exception ) {
 			assertEquals(
-				"Cannot deserialize value of type `com.zenvia.api.sdk.client.ChannelType` from String \"new\": value not one of declared Enum instance names: [sms, whatsapp, facebook]\n at [Source: (byte[])\"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"new\",\"contents\":[]}\"; line: 1, column: 67] (through reference chain: com.zenvia.api.sdk.client.messages.Message[\"channel\"])",
+				"Cannot deserialize value of type `com.zenvia.api.sdk.client.ChannelType` from String \"new\": value not one of declared Enum instance names: [sms, whatsapp, facebook]\n at [Source: (byte[])\"{\"id\":\"12345\",\"from\":\"123\",\"to\":\"456\",\"direction\":\"OUT\",\"channel\":\"new\",\"contents\":[]}\"; line: 1, column: 67] (through reference chain: com.zenvia.api.sdk.messages.Message[\"channel\"])",
 				exception.getMessage()
 			);
 		}
