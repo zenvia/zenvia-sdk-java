@@ -48,7 +48,7 @@ You need to create an API token in the Zenvia [API console](https://app.zenvia.c
 
 
 ## Installation
-If using maven, add to you pom this SDK:
+If using maven, add to your pom this SDK:
 
 ```xml
 <dependency>
