@@ -1,7 +1,7 @@
 # Zenvia CPaaS SDK for Java
 
 This SDK for [Java](https://www.java.com/) was created based on the [Zenvia](https://www.zenvia.com/) [API](https://zenvia.github.io/zenvia-openapi-spec/) and
-[Zenvia CPaaS SDF for Node.js](https://github.com/zenvia/zenvia-sdk-node).
+[Zenvia CPaaS SDK for Node.js](https://github.com/zenvia/zenvia-sdk-node).
 
 [![License](https://img.shields.io/github/license/zenvia/zenvia-sdk-java.svg)](LICENSE.md)
 [![Build Status](https://travis-ci.com/zenvia/zenvia-sdk-java.svg?branch=master)](https://travis-ci.com/zenvia/zenvia-sdk-java)
