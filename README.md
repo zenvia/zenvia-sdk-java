@@ -48,7 +48,7 @@ You need to create an API token in the Zenvia [API console](https://app.zenvia.c
 
 
 ## Installation
-If using maven, add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia AND a:zenvia-api-sdk-client-apache):
+If using maven, add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-client-apache):
 
 ```xml
 <dependency>
@@ -59,7 +59,7 @@ If using maven, add to your pom [this SDK](https://search.maven.org/search?q=g:c
 ```
 
 
-or [the one](https://search.maven.org/search?q=g:com.zenvia AND a:zenvia-api-sdk-client-spring) that includes [Spring Boot](https://spring.io/projects/spring-boot):
+or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-client-spring) that includes [Spring Boot](https://spring.io/projects/spring-boot):
 
 ```xml
 <dependency>
