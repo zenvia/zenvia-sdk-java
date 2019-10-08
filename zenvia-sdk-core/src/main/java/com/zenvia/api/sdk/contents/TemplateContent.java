@@ -7,14 +7,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
+/** Content used for sending pre-defined messages. Currently only available for
+ *  WhatsApp channel to send notification messages.
+ *
+ * @since 0.9.0 */
 public class TemplateContent extends Content {
+	/** @since 0.9.0 */
 	public static final String TYPE = "template";
-	
+
+	/** Id used to select the pre-defined message to be sent.
+	 *
+	 *  @since 0.9.0 */
 	public final String templateId;
-	
+
+	/** Sets the values of variables in the pre-defined message.
+	 *  The map key is the name of the variable.
+	 *
+	 *  @since 0.9.0 */
 	public final Map<String,String> fields;
 
 
+	/** @param templateId Id used to select the pre-defined message to be sent 
+	 *
+	 *  @param fields Sets the values of variables in the pre-defined message.
+	 *  The map key is the name of the variable.
+	 *
+	 *  @since 0.9.0 */
 	@JsonCreator
 	public TemplateContent(
 		@JsonProperty( "templateId" ) String templateId,

@@ -6,13 +6,89 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
+/** Describes a webkook {@link "https://en.wikipedia.org/wiki/Webhook"}) setup on
+ *  Zenvia CPaaS API ({@link "https://app.zenvia.com/home/api"}) for receiving messages
+ *  trafficking on a specific channel.
+ *
+ *  @since 0.9.0 */
 public class MessageSubscription extends Subscription {
+	/** @since 0.9.0 */
 	public static final String EVENT_TYPE = "MESSAGE";
 
 	@SuppressWarnings( "hiding" )
 	public final MessageCriteria criteria;
 
 
+	/** Creates a message subscription without id and timestamps, and with status ACTIVE.
+	 *  <br><br>
+	 *  Useful for subscription creation.
+	 *
+	 *  @param webhook Setup how to execute de callbacks on webhooks.
+	 *
+	 *  @param criteria Indicates the criteria necessary to trigger a callback.
+	 *
+	 *  @since 1.0.0 */
+	public MessageSubscription(
+		Webhook webhook,
+		MessageCriteria criteria
+	) {
+		this( null, webhook, criteria, SubscriptionStatus.ACTIVE, null, null );
+	}
+
+
+	/** Creates a message subscription without id and timestamps.
+	 *  <br><br>
+	 *  Useful for subscription creation.
+	 *
+	 *  @param webhook Setup how to execute de callbacks on webhooks.
+	 *
+	 *  @param criteria Indicates the criteria necessary to trigger a callback.
+	 *
+	 *  @param status Indicate if subscription is enabled.
+	 *
+	 *  @since 1.0.0 */
+	public MessageSubscription(
+		Webhook webhook,
+		MessageCriteria criteria,
+		SubscriptionStatus status
+	) {
+		this( null, webhook, criteria, status, null, null );
+	}
+
+
+	/** Creates a message subscription without id and timestamps.
+	 *  <br><br>
+	 *  Useful for subscription creation.
+	 *
+	 *  @param webhook Setup how to execute de callbacks on webhooks.
+	 *
+	 *  @param criteria Indicates the criteria necessary to trigger a callback.
+	 *
+	 *  @param status Indicate if subscription is enabled.
+	 *
+	 *  @since 1.0.0 */
+	public MessageSubscription(
+		Webhook webhook,
+		MessageCriteria criteria,
+		String status
+	) {
+		this( null, webhook, criteria, SubscriptionStatus.valueOf( status ), null, null );
+	}
+
+
+	/** @param id Ignored on subscription creation and update.
+	 *
+	 *  @param webhook Setup how to execute de callbacks on webhooks.
+	 *
+	 *  @param criteria Indicates the criteria necessary to trigger a callback.
+	 *
+	 *  @param status Indicate if subscription is enabled.
+	 *
+	 *  @param createdAt Ignored on subscription creation and update.
+	 *
+	 *  @param updatedAt Ignored on subscription creation and update.
+	 *
+	 *  @since 0.9.0 */
 	@JsonCreator
 	public MessageSubscription(
 		@JsonProperty( "id" ) String id,
@@ -23,27 +99,6 @@ public class MessageSubscription extends Subscription {
 		@JsonProperty( "updatedAt" ) ZonedDateTime updatedAt
 	) {
 		super( id, EventType.MESSAGE, webhook, criteria, status, createdAt, updatedAt );
-		this.criteria = criteria;
-	}
-
-
-	public MessageSubscription(
-		String id,
-		Webhook webhook,
-		MessageCriteria criteria,
-		String status,
-		ZonedDateTime createdAt,
-		ZonedDateTime updatedAt
-	) {
-		super(
-			id,
-			EventType.MESSAGE,
-			webhook,
-			criteria,
-			SubscriptionStatus.valueOf( status ),
-			createdAt,
-			updatedAt
-		);
 		this.criteria = criteria;
 	}
 

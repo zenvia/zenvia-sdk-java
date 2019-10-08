@@ -11,11 +11,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import org.apache.http.ConnectionReuseStrategy;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.ConnectionConfig;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -23,17 +18,16 @@ import org.junit.runners.MethodSorters;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionFailException;
 import com.zenvia.api.sdk.client.exceptions.HttpConnectionTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.HttpIOException;
-import com.zenvia.api.sdk.client.exceptions.HttpProtocolException;
 import com.zenvia.api.sdk.client.exceptions.HttpSocketTimeoutException;
 import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.exceptions.UnsupportedChannelException;
-import com.zenvia.api.sdk.client.messages.MessageDirection;
 import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
 import com.zenvia.api.sdk.client.subscriptions.MessageSubscription;
 import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
 import com.zenvia.api.sdk.client.subscriptions.SubscriptionStatus;
 import com.zenvia.api.sdk.client.subscriptions.Webhook;
+import com.zenvia.api.sdk.messages.MessageDirection;
 
 
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
@@ -55,7 +49,7 @@ public class AbstractClientTest {
 			fail();
 			client.close();
 		} catch( UnsupportedChannelException exception ) {
-			assertEquals( "new" , exception.getChannelType() );
+			assertEquals( "new" , exception.getChannel() );
 			assertEquals( "Unsupported channel: new" , exception.getMessage() );
 		}
 	}
@@ -193,11 +187,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -209,11 +202,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 10, client.getMaxTotalConnections() );
-		assertEquals( 10, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 10, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -225,11 +217,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -241,11 +232,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -257,11 +247,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 15, client.getConnectionPoolTimeout() );
-		assertEquals( 16, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 16, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -273,11 +262,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -289,11 +277,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 25000, client.getConnectionTimeout() );
 		assertEquals( 60000, client.getSocketTimeout() );
-		assertEquals( 4, client.getMaxAutoRetries() );
-		assertEquals( 10, client.getMaxTotalConnections() );
-		assertEquals( 10, client.getMaxPerHostConnections() );
+		assertEquals( 4, client.getMaxConnectionRetries() );
+		assertEquals( 10, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -305,11 +292,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 100, client.getMaxTotalConnections() );
-		assertEquals( 100, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 100, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -321,11 +307,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 0, client.getConnectionPoolTimeout() );
-		assertEquals( 5000, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 5000, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -337,11 +322,10 @@ public class AbstractClientTest {
 		assertEquals( "API_TOKEN", apiTokenField.get( client ) );
 		assertEquals( 11, client.getConnectionTimeout() );
 		assertEquals( 12, client.getSocketTimeout() );
-		assertEquals( 13, client.getMaxAutoRetries() );
-		assertEquals( 14, client.getMaxTotalConnections() );
-		assertEquals( 14, client.getMaxPerHostConnections() );
+		assertEquals( 13, client.getMaxConnectionRetries() );
+		assertEquals( 14, client.getMaxConnections() );
 		assertEquals( 15, client.getConnectionPoolTimeout() );
-		assertEquals( 16, client.getCheckStaleConnectionAfterInactivityTime() );
+		assertEquals( 16, client.getInactivityTimeBeforeStaleCheck() );
 		client.close();
 	}
 
@@ -457,23 +441,10 @@ public class AbstractClientTest {
 		}
 
 
-		private TestClient(
-			String apiToken,
-			String apiUrl,
-			PoolingHttpClientConnectionManager connectionPool,
-			RequestConfig defaultRequestConfig,
-			DefaultHttpRequestRetryHandler requestRetryHandler,
-			ConnectionConfig defaultConnectionConfig,
-			ConnectionReuseStrategy connectionReuseStrategy
-		) {
-			super( apiToken, apiUrl, connectionPool, defaultRequestConfig, requestRetryHandler, defaultConnectionConfig, connectionReuseStrategy );
-		}
-
-
 		@Override
 		@SuppressWarnings( "unchecked" )
 		protected <RESPONSE> RESPONSE list( String url, Class<RESPONSE> responseBodyType )
-			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpIOException {
 			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && responseBodyType == Subscription[].class ) {
 				return (RESPONSE) new Subscription[] { subscription() };
 			}
@@ -484,7 +455,7 @@ public class AbstractClientTest {
 		@Override
 		@SuppressWarnings( "unchecked" )
 		protected <RESPONSE> RESPONSE get( String url, String id, Class<RESPONSE> responseBodyType )
-			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpIOException {
 			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && id.equals( "123" ) && responseBodyType == Subscription.class ) {
 				return (RESPONSE) subscription();
 			}
@@ -495,7 +466,7 @@ public class AbstractClientTest {
 		@Override
 		@SuppressWarnings( "unchecked" )
 		protected <REQUEST,RESPONSE> RESPONSE post( String url, REQUEST requestBody, Class<RESPONSE> responseBodyType )
-			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpIOException {
 			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && Subscription.class.isAssignableFrom( requestBody.getClass() ) && responseBodyType == Subscription.class ) {
 				return (RESPONSE) requestBody;
 			}
@@ -506,7 +477,7 @@ public class AbstractClientTest {
 		@Override
 		@SuppressWarnings( "unchecked" )
 		protected <REQUEST,RESPONSE> RESPONSE patch( String url, String id, REQUEST requestBody, Class<RESPONSE> responseBodyType )
-			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException, HttpIOException {
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpIOException {
 			if( url.equals( "https://api.zenvia.com/v1/subscriptions" ) && PartialSubscription.class == requestBody.getClass() && responseBodyType == Subscription.class ) {
 				return (RESPONSE) subscription().apply( (PartialSubscription) requestBody );
 			}
@@ -516,8 +487,7 @@ public class AbstractClientTest {
 
 		@Override
 		protected void delete( String url, String id )
-			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpProtocolException,
-			HttpIOException {
+			throws UnsuccessfulRequestException, HttpSocketTimeoutException, HttpConnectionTimeoutException, HttpConnectionFailException, HttpIOException {
 			if( !url.equals( "https://api.zenvia.com/v1/subscriptions" ) || !id.equals( "123" ) ) {
 				throw new IllegalArgumentException();
 			}
