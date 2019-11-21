@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>com.zenvia</groupId>
-		<artifactId>zenvia-api-sdk</artifactId>
+		<artifactId>zenvia-api-sdk-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
