@@ -24,9 +24,9 @@ public abstract class AbstractWebhookController {
 	/** {@value} */
 	public static final String DEFAULT_PATH = "/";
 
-	protected final MessageEventCallback messageEventCallback;
+	protected final MessageEventCallback messageEventHandler;
 	
-	protected final MessageStatusEventCallback messageStatusEventCallback;
+	protected final MessageStatusEventCallback messageStatusEventHandler;
 
 	protected final String path;
 
@@ -36,76 +36,76 @@ public abstract class AbstractWebhookController {
 
 	protected final ChannelType channel;
 	
-	public AbstractWebhookController(MessageEventCallback messageEventCallback) {
-		this(messageEventCallback, null, null);
+	public AbstractWebhookController(MessageEventCallback messageEventHandler) {
+		this(messageEventHandler, null, null);
 	}
 
 	public AbstractWebhookController(
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler
 	) {
-		this(messageEventCallback, messageStatusEventCallback, null, null, null, null);
+		this(messageEventHandler, messageStatusEventHandler, null, null, null, null);
 	}
 
 	public AbstractWebhookController(
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler,
 		String path
 	) {
-		this(messageEventCallback, messageStatusEventCallback, path, null, null, null);
+		this(messageEventHandler, messageStatusEventHandler, path, null, null, null);
 	}
 
-	public AbstractWebhookController(MessageEventCallback messageEventCallback, String path) {
-		this(messageEventCallback, null, path, null, null, null);
+	public AbstractWebhookController(MessageEventCallback messageEventHandler, String path) {
+		this(messageEventHandler, null, path, null, null, null);
 	}
 
-	public AbstractWebhookController(MessageStatusEventCallback messageStatusEventCallback) {
-		this(null, messageStatusEventCallback, null);
+	public AbstractWebhookController(MessageStatusEventCallback messageStatusEventHandler) {
+		this(null, messageStatusEventHandler, null);
 	}
 	
-	public AbstractWebhookController(MessageStatusEventCallback messageStatusEventCallback, String path) {
-		this(null, messageStatusEventCallback, path);
+	public AbstractWebhookController(MessageStatusEventCallback messageStatusEventHandler, String path) {
+		this(null, messageStatusEventHandler, path);
 	}
 
 	public AbstractWebhookController(
-		MessageEventCallback messageEventCallback,
+		MessageEventCallback messageEventHandler,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		this(messageEventCallback, null, null, client, url, channel);
+		this(messageEventHandler, null, null, client, url, channel);
 	}
 
 	public AbstractWebhookController(
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageStatusEventCallback messageStatusEventHandler,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		this(null, messageStatusEventCallback, null, client, url, channel);
+		this(null, messageStatusEventHandler, null, client, url, channel);
 	}
 	
 	public AbstractWebhookController(
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler,
 		AbstractClient client,
 		String url,
 		ChannelType
 		channel
 	) {
-		this(messageEventCallback, messageStatusEventCallback, null, client, url, channel);
+		this(messageEventHandler, messageStatusEventHandler, null, client, url, channel);
 	}
 	
 	public AbstractWebhookController(
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler,
 		String path,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		this.messageEventCallback = messageEventCallback;
-		this.messageStatusEventCallback = messageStatusEventCallback;
+		this.messageEventHandler = messageEventHandler;
+		this.messageStatusEventHandler = messageStatusEventHandler;
 		this.path = valueOrDefault( path, DEFAULT_PATH );
 		this.client = client;
 		this.url = url;
@@ -125,7 +125,7 @@ public abstract class AbstractWebhookController {
 	}
 	
 	private void createSubscriptions() {
-		if (client == null || url == null || channel == null || (messageEventCallback == null && messageStatusEventCallback == null)) {
+		if (client == null || url == null || channel == null || (messageEventHandler == null && messageStatusEventHandler == null)) {
 			return;
 		}
 
@@ -153,13 +153,13 @@ public abstract class AbstractWebhookController {
 		if (shouldCreateMessageSubscription || shouldCreateMessageStatusSubscription) {
 			Webhook webhook = new Webhook(url);
 			
-			if (messageEventCallback != null && shouldCreateMessageSubscription) {
+			if (messageEventHandler != null && shouldCreateMessageSubscription) {
 				MessageCriteria criteria = new MessageCriteria(channel, MessageDirection.IN);
 				LOG.debug("Trying to create subscription for MESSAGE event of channel {}", channel);
 				client.createSubscription(new MessageSubscription(webhook, criteria));
 			}
 			
-			if (messageStatusEventCallback != null && shouldCreateMessageStatusSubscription) {
+			if (messageStatusEventHandler != null && shouldCreateMessageStatusSubscription) {
 				Criteria criteria = new Criteria(channel);
 				LOG.debug("Trying to create subscription for MESSAGE_STATUS event of channel {}", channel);
 				client.createSubscription(new MessageStatusSubscription(webhook, criteria));
@@ -177,8 +177,8 @@ public abstract class AbstractWebhookController {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "{"
-			+ "\n  messageEventCallback = [" + messageEventCallback + "]"
-			+ "\n  messageStatusEventCallback = [" + messageStatusEventCallback + "]"
+			+ "\n  messageEventHandler = [" + messageEventHandler + "]"
+			+ "\n  messageStatusEventHandler = [" + messageStatusEventHandler + "]"
 			+ "\n  path = [" + path + "]"
 			+ "\n  url = [" + url + "]"
 			+ "\n  channel = [" + channel + "]"

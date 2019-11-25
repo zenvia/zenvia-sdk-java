@@ -34,9 +34,9 @@ import com.zenvia.api.sdk.messages.MessageDirection;
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class AbstractWebhookControllerTest {
 	
-	private final Field messageEventCallbackField;
+	private final Field messageEventHandlerField;
 	
-	protected final Field messageStatusEventCallbackField;
+	protected final Field messageStatusEventHandlerField;
 
 	private final Field pathField;
 
@@ -52,11 +52,11 @@ public class AbstractWebhookControllerTest {
 	
 	private static Subscription[] subscriptions;
 	
-	private MessageEventCallback messageCallback = new MessageEventCallback() {
+	private MessageEventCallback messageHandler = new MessageEventCallback() {
 		public void onMessageEvent(MessageEvent message) {}
 	};
 	
-	private MessageStatusEventCallback messageStatusCallback = new MessageStatusEventCallback() {
+	private MessageStatusEventCallback messageStatusHandler = new MessageStatusEventCallback() {
 		public void onMessageStatusEvent(MessageStatusEvent status) {}
 	};
 	
@@ -69,11 +69,11 @@ public class AbstractWebhookControllerTest {
 	}
 
 	public AbstractWebhookControllerTest() throws Exception {
-		messageEventCallbackField = AbstractWebhookController.class.getDeclaredField( "messageEventCallback" );
-		messageEventCallbackField.setAccessible( true );
+		messageEventHandlerField = AbstractWebhookController.class.getDeclaredField( "messageEventHandler" );
+		messageEventHandlerField.setAccessible( true );
 		
-		messageStatusEventCallbackField = AbstractWebhookController.class.getDeclaredField( "messageStatusEventCallback" );
-		messageStatusEventCallbackField.setAccessible( true );
+		messageStatusEventHandlerField = AbstractWebhookController.class.getDeclaredField( "messageStatusEventHandler" );
+		messageStatusEventHandlerField.setAccessible( true );
 		
 		pathField = AbstractWebhookController.class.getDeclaredField( "path" );
 		pathField.setAccessible( true );
@@ -90,7 +90,7 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void shouldNotTryToCreateSubscription1() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback);
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler);
 		webhook.init();
 		assertFalse(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -99,7 +99,7 @@ public class AbstractWebhookControllerTest {
 	
 	@Test
 	public void shouldNotTryToCreateSubscription2() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback, messageStatusCallback, "/hook");
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler, messageStatusHandler, "/hook");
 		webhook.init();
 		assertFalse(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -108,7 +108,7 @@ public class AbstractWebhookControllerTest {
 	
 	@Test
 	public void shouldNotTryToCreateSubscription3() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback, "/hook");
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler, "/hook");
 		webhook.init();
 		assertFalse(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -117,7 +117,7 @@ public class AbstractWebhookControllerTest {
 	
 	@Test
 	public void shouldNotTryToCreateSubscription4() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController(messageStatusCallback);
+		AbstractWebhookController webhook = new TestWebhookController(messageStatusHandler);
 		webhook.init();
 		assertFalse(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -126,7 +126,7 @@ public class AbstractWebhookControllerTest {
 	
 	@Test
 	public void shouldNotTryToCreateSubscription5() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController(messageStatusCallback, "/hook");
+		AbstractWebhookController webhook = new TestWebhookController(messageStatusHandler, "/hook");
 		webhook.init();
 		assertFalse(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -137,7 +137,7 @@ public class AbstractWebhookControllerTest {
 	public void shouldCheckThatMessageSubscriptionIsAlreadyCreated() throws Exception {
 		subscriptions = new Subscription[] { messageSubscription() };
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback, client, "http://localhost", ChannelType.whatsapp );
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler, client, "http://localhost", ChannelType.whatsapp );
 		webhook.init();
 		assertTrue(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -148,7 +148,7 @@ public class AbstractWebhookControllerTest {
 	public void shouldCheckThatMessageStatusSubscriptionIsAlreadyCreated() throws Exception {
 		subscriptions = new Subscription[] { messageStatusSubscription() };
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController(messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
+		AbstractWebhookController webhook = new TestWebhookController(messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
 		webhook.init();
 		assertTrue(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -159,7 +159,7 @@ public class AbstractWebhookControllerTest {
 	public void shouldCheckThatBothSubscriptionsIsAlreadyCreated() throws Exception {
 		subscriptions = new Subscription[] { messageSubscription(), messageStatusSubscription() };
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback, messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler, messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
 		webhook.init();
 		assertTrue(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -169,7 +169,7 @@ public class AbstractWebhookControllerTest {
 	@Test
 	public void shouldCreateMessageSubscription() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback, client, "http://localhost", ChannelType.whatsapp );
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler, client, "http://localhost", ChannelType.whatsapp );
 		webhook.init();
 		assertTrue(subscriptionListed);
 		assertTrue(messageSubscriptionCreated);
@@ -179,7 +179,7 @@ public class AbstractWebhookControllerTest {
 	@Test
 	public void shouldCreateMessageStatusSubscription() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController(messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
+		AbstractWebhookController webhook = new TestWebhookController(messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
 		webhook.init();
 		assertTrue(subscriptionListed);
 		assertFalse(messageSubscriptionCreated);
@@ -189,7 +189,7 @@ public class AbstractWebhookControllerTest {
 	@Test
 	public void shouldCreateBothSubscriptions() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController(messageCallback, messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
+		AbstractWebhookController webhook = new TestWebhookController(messageHandler, messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
 		webhook.init();
 		assertTrue(subscriptionListed);
 		assertTrue(messageSubscriptionCreated);
@@ -198,10 +198,10 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void constructor1() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
 		assertEquals( AbstractWebhookController.DEFAULT_PATH, pathField.get( webhook ) );
-		assertNull( messageStatusEventCallbackField.get( webhook ) );
+		assertNull( messageStatusEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -209,9 +209,9 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void constructor2() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback, messageStatusCallback );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler, messageStatusHandler );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( AbstractWebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
@@ -220,9 +220,9 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void constructor3() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback, messageStatusCallback, "/hook" );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler, messageStatusHandler, "/hook" );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
@@ -231,10 +231,10 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void constructor4() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback, "/hook" );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler, "/hook" );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
-		assertNull( messageStatusEventCallbackField.get( webhook ) );
+		assertNull( messageStatusEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -242,10 +242,10 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void constructor5() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController( messageStatusCallback );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageStatusHandler );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( AbstractWebhookController.DEFAULT_PATH, pathField.get( webhook ) );
-		assertNull( messageEventCallbackField.get( webhook ) );
+		assertNull( messageEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -253,10 +253,10 @@ public class AbstractWebhookControllerTest {
 
 	@Test
 	public void constructor6() throws Exception {
-		AbstractWebhookController webhook = new TestWebhookController( messageStatusCallback, "/hook" );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageStatusHandler, "/hook" );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
-		assertNull( messageEventCallbackField.get( webhook ) );
+		assertNull( messageEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -265,33 +265,33 @@ public class AbstractWebhookControllerTest {
 	@Test
 	public void constructor7() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback, client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler, client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
 		assertEquals( AbstractWebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );
 		assertEquals( ChannelType.whatsapp, channelField.get( webhook ) );
-		assertNull( messageStatusEventCallbackField.get( webhook ) );
+		assertNull( messageStatusEventHandlerField.get( webhook ) );
 	}
 
 	@Test
 	public void constructor8() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController( messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( AbstractWebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );
 		assertEquals( ChannelType.whatsapp, channelField.get( webhook ) );
-		assertNull( messageEventCallbackField.get( webhook ) );
+		assertNull( messageEventHandlerField.get( webhook ) );
 	}
 
 	@Test
 	public void constructor9() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback, messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler, messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( AbstractWebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );
@@ -301,9 +301,9 @@ public class AbstractWebhookControllerTest {
 	@Test
 	public void constructor10() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		AbstractWebhookController webhook = new TestWebhookController( messageCallback, messageStatusCallback, "/hook", client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		AbstractWebhookController webhook = new TestWebhookController( messageHandler, messageStatusHandler, "/hook", client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );

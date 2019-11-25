@@ -30,9 +30,9 @@ import com.zenvia.api.sdk.webhook.MessageStatusEventCallback;
 @FixMethodOrder( MethodSorters.NAME_ASCENDING )
 public class WebhookControllerTest {
 	
-	private final Field messageEventCallbackField;
+	private final Field messageEventHandlerField;
 	
-	protected final Field messageStatusEventCallbackField;
+	protected final Field messageStatusEventHandlerField;
 
 	private final Field pathField;
 
@@ -44,11 +44,11 @@ public class WebhookControllerTest {
 
 	private ResourceConfig resourceConfig;
 	
-	private MessageEventCallback messageCallback = new MessageEventCallback() {
+	private MessageEventCallback messageHandler = new MessageEventCallback() {
 		public void onMessageEvent(MessageEvent message) {}
 	};
 	
-	private MessageStatusEventCallback messageStatusCallback = new MessageStatusEventCallback() {
+	private MessageStatusEventCallback messageStatusHandler = new MessageStatusEventCallback() {
 		public void onMessageStatusEvent(MessageStatusEvent status) {}
 	};
 	
@@ -58,11 +58,11 @@ public class WebhookControllerTest {
 	}
 
 	public WebhookControllerTest() throws Exception {
-		messageEventCallbackField = AbstractWebhookController.class.getDeclaredField( "messageEventCallback" );
-		messageEventCallbackField.setAccessible( true );
+		messageEventHandlerField = AbstractWebhookController.class.getDeclaredField( "messageEventHandler" );
+		messageEventHandlerField.setAccessible( true );
 		
-		messageStatusEventCallbackField = AbstractWebhookController.class.getDeclaredField( "messageStatusEventCallback" );
-		messageStatusEventCallbackField.setAccessible( true );
+		messageStatusEventHandlerField = AbstractWebhookController.class.getDeclaredField( "messageStatusEventHandler" );
+		messageStatusEventHandlerField.setAccessible( true );
 		
 		pathField = AbstractWebhookController.class.getDeclaredField( "path" );
 		pathField.setAccessible( true );
@@ -79,10 +79,10 @@ public class WebhookControllerTest {
 
 	@Test
 	public void constructor1() throws Exception {
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
 		assertEquals( WebhookController.DEFAULT_PATH, pathField.get( webhook ) );
-		assertNull( messageStatusEventCallbackField.get( webhook ) );
+		assertNull( messageStatusEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -91,9 +91,9 @@ public class WebhookControllerTest {
 
 	@Test
 	public void constructor2() throws Exception {
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback, messageStatusCallback );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler, messageStatusHandler );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( WebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
@@ -103,9 +103,9 @@ public class WebhookControllerTest {
 
 	@Test
 	public void constructor3() throws Exception {
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback, messageStatusCallback, "/hook" );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler, messageStatusHandler, "/hook" );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
@@ -115,10 +115,10 @@ public class WebhookControllerTest {
 
 	@Test
 	public void constructor4() throws Exception {
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback, "/hook" );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler, "/hook" );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
-		assertNull( messageStatusEventCallbackField.get( webhook ) );
+		assertNull( messageStatusEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -127,10 +127,10 @@ public class WebhookControllerTest {
 
 	@Test
 	public void constructor5() throws Exception {
-		WebhookController webhook = new WebhookController( resourceConfig, messageStatusCallback );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageStatusHandler );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( WebhookController.DEFAULT_PATH, pathField.get( webhook ) );
-		assertNull( messageEventCallbackField.get( webhook ) );
+		assertNull( messageEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -139,10 +139,10 @@ public class WebhookControllerTest {
 
 	@Test
 	public void constructor6() throws Exception {
-		WebhookController webhook = new WebhookController( resourceConfig, messageStatusCallback, "/hook" );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageStatusHandler, "/hook" );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
-		assertNull( messageEventCallbackField.get( webhook ) );
+		assertNull( messageEventHandlerField.get( webhook ) );
 		assertNull( clientField.get( webhook ) );
 		assertNull( urlField.get( webhook ) );
 		assertNull( channelField.get( webhook ) );
@@ -152,35 +152,35 @@ public class WebhookControllerTest {
 	@Test
 	public void constructor7() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback, client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler, client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
 		assertEquals( WebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );
 		assertEquals( ChannelType.whatsapp, channelField.get( webhook ) );
-		assertNull( messageStatusEventCallbackField.get( webhook ) );
+		assertNull( messageStatusEventHandlerField.get( webhook ) );
 		assertResource(WebhookController.DEFAULT_PATH);
 	}
 
 	@Test
 	public void constructor8() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		WebhookController webhook = new WebhookController( resourceConfig, messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( WebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );
 		assertEquals( ChannelType.whatsapp, channelField.get( webhook ) );
-		assertNull( messageEventCallbackField.get( webhook ) );
+		assertNull( messageEventHandlerField.get( webhook ) );
 		assertResource(WebhookController.DEFAULT_PATH);
 	}
 
 	@Test
 	public void constructor9() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback, messageStatusCallback, client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler, messageStatusHandler, client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( WebhookController.DEFAULT_PATH, pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );
@@ -191,9 +191,9 @@ public class WebhookControllerTest {
 	@Test
 	public void constructor10() throws Exception {
 		AbstractClient client = new TestClient("TOKEN");
-		WebhookController webhook = new WebhookController( resourceConfig, messageCallback, messageStatusCallback, "/hook", client, "http://localhost", ChannelType.whatsapp );
-		assertEquals( messageCallback, messageEventCallbackField.get( webhook ) );
-		assertEquals( messageStatusCallback, messageStatusEventCallbackField.get( webhook ) );
+		WebhookController webhook = new WebhookController( resourceConfig, messageHandler, messageStatusHandler, "/hook", client, "http://localhost", ChannelType.whatsapp );
+		assertEquals( messageHandler, messageEventHandlerField.get( webhook ) );
+		assertEquals( messageStatusHandler, messageStatusEventHandlerField.get( webhook ) );
 		assertEquals( "/hook", pathField.get( webhook ) );
 		assertEquals( client, clientField.get( webhook ) );
 		assertEquals( "http://localhost", urlField.get( webhook ) );

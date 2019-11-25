@@ -31,12 +31,12 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *
 	 *  @since 1.1.0 */
-	public WebhookController(ResourceConfig resourceConfig, MessageEventCallback messageEventCallback) {
-		this(resourceConfig, messageEventCallback, null, null);
+	public WebhookController(ResourceConfig resourceConfig, MessageEventCallback messageEventHandler) {
+		this(resourceConfig, messageEventHandler, null, null);
 	}
 
 	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
@@ -50,19 +50,19 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *
 	 *  @since 1.1.0 */
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler
 	) {
-		this(resourceConfig, messageEventCallback, messageStatusEventCallback, null, null, null, null);
+		this(resourceConfig, messageEventHandler, messageStatusEventHandler, null, null, null, null);
 	}
 
 	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
@@ -71,10 +71,10 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *
 	 *  @param path
@@ -84,11 +84,11 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler,
 		String path
 	) {
-		this(resourceConfig, messageEventCallback, messageStatusEventCallback, path, null, null, null);
+		this(resourceConfig, messageEventHandler, messageStatusEventHandler, path, null, null, null);
 	}
 
 	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE} events
@@ -97,7 +97,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *  
 	 *  @param path
@@ -107,10 +107,10 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageEventCallback messageEventCallback,
+		MessageEventCallback messageEventHandler,
 		String path
 	) {
-		this(resourceConfig, messageEventCallback, null, path, null, null, null);
+		this(resourceConfig, messageEventHandler, null, path, null, null, null);
 	}
 	
 	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE_STATUS} events
@@ -123,14 +123,14 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *  
 	 *  @since 1.1.0 */
 	public WebhookController(ResourceConfig resourceConfig,
-		MessageStatusEventCallback messageStatusEventCallback
+		MessageStatusEventCallback messageStatusEventHandler
 	) {
-		this(resourceConfig, null, messageStatusEventCallback, null);
+		this(resourceConfig, null, messageStatusEventHandler, null);
 	}
 
 	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE_STATUS} events
@@ -139,7 +139,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *  
 	 *  @param path
@@ -149,10 +149,10 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageStatusEventCallback messageStatusEventHandler,
 		String path
 	) {
-		this(resourceConfig, null, messageStatusEventCallback, path);
+		this(resourceConfig, null, messageStatusEventHandler, path);
 	}
 
 	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE} events
@@ -167,7 +167,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *
 	 *  @param client
@@ -182,12 +182,12 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */	
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageEventCallback messageEventCallback,
+		MessageEventCallback messageEventHandler,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		this(resourceConfig, messageEventCallback, null, null, client, url, channel);
+		this(resourceConfig, messageEventHandler, null, null, client, url, channel);
 	}
 
 	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE_STATUS} events
@@ -202,7 +202,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *
 	 *  @param client
@@ -217,12 +217,12 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */	
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageStatusEventCallback messageStatusEventHandler,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		this(resourceConfig, null, messageStatusEventCallback, null, client, url, channel);
+		this(resourceConfig, null, messageStatusEventHandler, null, client, url, channel);
 	}
 
 	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
@@ -238,10 +238,10 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *
 	 *  @param client
@@ -256,13 +256,13 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		this(resourceConfig, messageEventCallback, messageStatusEventCallback, null, client, url, channel);
+		this(resourceConfig, messageEventHandler, messageStatusEventHandler, null, client, url, channel);
 	}
 
 	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
@@ -272,10 +272,10 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
 	 *
-	 *  @param messageEventCallback
+	 *  @param messageEventHandler
 	 *  An implementation of {@link MessageEventCallback} to receive a message event.
 	 *
-	 *  @param messageStatusEventCallback
+	 *  @param messageStatusEventHandler
 	 *  An implementation of {@link MessageStatusEventCallback} to receive a message status event.
 	 *
 	 *  @param path
@@ -294,14 +294,14 @@ public class WebhookController extends AbstractWebhookController {
 	 *  @since 1.1.0 */
 	public WebhookController(
 		ResourceConfig resourceConfig,
-		MessageEventCallback messageEventCallback,
-		MessageStatusEventCallback messageStatusEventCallback,
+		MessageEventCallback messageEventHandler,
+		MessageStatusEventCallback messageStatusEventHandler,
 		String path,
 		AbstractClient client,
 		String url,
 		ChannelType channel
 	) {
-		super(messageEventCallback, messageStatusEventCallback, path, client, url, channel);
+		super(messageEventHandler, messageStatusEventHandler, path, client, url, channel);
 		this.create(resourceConfig, this.path);
 	}
 
@@ -314,9 +314,9 @@ public class WebhookController extends AbstractWebhookController {
 				Event event = ((ContainerRequest) data).readEntity(Event.class);
 				switch (event.type) {
 				case MESSAGE:
-					if (messageEventCallback != null) {
+					if (messageEventHandler != null) {
 						try {
-							messageEventCallback.onMessageEvent(event.ofMessage());
+							messageEventHandler.onMessageEvent(event.ofMessage());
 						} catch (Exception e) {
 							LOG.warn("Error on handling MESSAGE event", e);
 						}
@@ -324,9 +324,9 @@ public class WebhookController extends AbstractWebhookController {
 					break;
 
 				case MESSAGE_STATUS:
-					if (messageStatusEventCallback != null) {
+					if (messageStatusEventHandler != null) {
 						try {
-							messageStatusEventCallback.onMessageStatusEvent(event.ofMessageStatus());
+							messageStatusEventHandler.onMessageStatusEvent(event.ofMessageStatus());
 						} catch( Exception e) {
 							LOG.warn("Error on handling MESSAGE_STATUS event", e);
 						}
