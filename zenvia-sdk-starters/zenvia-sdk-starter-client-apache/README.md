@@ -33,9 +33,6 @@ The property `apiToken` is required to the Client be auto-created.
 | zenvia.api.sdk.client.maxConnections                 | 100                    | The maximum number of connections the pool can have
 | zenvia.api.sdk.client.connectionTimeout              | 25000                  | The amount of time in milliseconds for a connection attempt to timeout
 | zenvia.api.sdk.client.socketTimeout                  | 60000                  | The amount of time in milliseconds for a server reply to timeout
-| zenvia.api.sdk.client.maxConnectionRetries           | 4                      | The maximum amount of connection retries automatically made by the HTTP client in
-	 *  case of connection failure
-| zenvia.api.sdk.client.connectionPoolTimeout          | 0                      | The amount of time in milliseconds for a request to timeout when wait for a free connection
-	 *  from the pool. When zero, it means it will wait indefinitely for a connection
-| zenvia.api.sdk.client.inactivityTimeBeforeStaleCheck | 5000                   | The amount of time in milliseconds of inactivity necessary to trigger a stale check on
-	 *  idle pool connections
+| zenvia.api.sdk.client.maxConnectionRetries           | 4                      | The maximum amount of connection retries automatically made by the HTTP client in case of connection failure
+| zenvia.api.sdk.client.connectionPoolTimeout          | 0                      | The amount of time in milliseconds for a request to timeout when wait for a free connection from the pool. When zero, it means it will wait indefinitely for a connection
+| zenvia.api.sdk.client.inactivityTimeBeforeStaleCheck | 5000                   | The amount of time in milliseconds of inactivity necessary to trigger a stale check on idle pool connections
