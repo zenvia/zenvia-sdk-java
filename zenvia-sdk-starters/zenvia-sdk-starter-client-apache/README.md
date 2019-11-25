@@ -28,7 +28,7 @@ The property `apiToken` is required to the Client be auto-created.
 
 | Property | Default | Details |
 |----------|---------|---------|
-| zenvia.api.sdk.client.apiToken                       | N/A                    | Your [api token](https://app.zenvia.com/home/api
+| zenvia.api.sdk.client.apiToken                       | N/A                    | Your [api token](https://app.zenvia.com/home/api)
 | zenvia.api.sdk.client.apiUrl                         | https://api.zenvia.com | The URL for the API service. Usually the default value is used, but change it can be useful for testing
 | zenvia.api.sdk.client.maxConnections                 | 100                    | The maximum number of connections the pool can have
 | zenvia.api.sdk.client.connectionTimeout              | 25000                  | The amount of time in milliseconds for a connection attempt to timeout
