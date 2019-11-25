@@ -24,27 +24,27 @@ import com.zenvia.api.sdk.webhook.jersey.WebhookController;
 
 public class WebhookControllerJerseyAutoConfigurationTest {
 	
-	private final Field messageEventCallbackField;
-	private final Field messageStatusEventCallbackField;
+	private final Field messageEventHandlerField;
+	private final Field messageStatusEventHandlerField;
 	private final Field pathField;
 	private final Field clientField;
 	private final Field urlField;
 	private final Field channelField;
 
-	private static MessageEventCallback messageEventCallback = new MessageEventCallback() {
+	private static MessageEventCallback messageEventHandler = new MessageEventCallback() {
 		public void onMessageEvent(MessageEvent message) {}
 	};
 	
-	private static MessageStatusEventCallback messageStatusEventCallback = new MessageStatusEventCallback() {
+	private static MessageStatusEventCallback messageStatusEventHandler = new MessageStatusEventCallback() {
 		public void onMessageStatusEvent(MessageStatusEvent status) {}
 	};
 
 	public WebhookControllerJerseyAutoConfigurationTest() throws Exception {
-		messageEventCallbackField = AbstractWebhookController.class.getDeclaredField( "messageEventCallback" );
-		messageEventCallbackField.setAccessible( true );
+		messageEventHandlerField = AbstractWebhookController.class.getDeclaredField( "messageEventHandler" );
+		messageEventHandlerField.setAccessible( true );
 		
-		messageStatusEventCallbackField = AbstractWebhookController.class.getDeclaredField( "messageStatusEventCallback" );
-		messageStatusEventCallbackField.setAccessible( true );
+		messageStatusEventHandlerField = AbstractWebhookController.class.getDeclaredField( "messageStatusEventHandler" );
+		messageStatusEventHandlerField.setAccessible( true );
 		
 		pathField = AbstractWebhookController.class.getDeclaredField( "path" );
 		pathField.setAccessible( true );
@@ -63,15 +63,6 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 			.withConfiguration(AutoConfigurations.of(ClientApacheAutoConfiguration.class, WebhookControllerJerseyAutoConfiguration.class));
 
 	@Test
-	void testWhenThereIsNoResourceConfigOnClasspathTheWebhookControllerShouldNotBeCreated() {
-		this.contextRunner.withUserConfiguration(MessageEventCallbackConfiguration.class).run((context) -> {
-			assertThat(catchThrowable(() -> { context.getBean(WebhookController.class); }))
-				.isInstanceOf(NoSuchBeanDefinitionException.class)
-				.hasMessageContaining("No qualifying bean of type 'com.zenvia.api.sdk.webhook.jersey.WebhookController' available");
-		});
-	}
-	
-	@Test
 	void testWhenThereIsNoEventCallbacksOnClasspathTheWebhookControllerShouldNotBeCreated() {
 		this.contextRunner.withUserConfiguration(ResourceConfig.class).run((context) -> {
 			assertThat(catchThrowable(() -> { context.getBean(WebhookController.class); }))
@@ -81,13 +72,27 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 	}
 
 	@Test
+	void testWhenThereIsNoResourceConfigOnClasspathTheResourceConfigAndWebhookControllerShouldBeCreated() {
+		this.contextRunner.withUserConfiguration(MessageEventCallbackConfiguration.class).run((context) -> {
+			WebhookController controller = context.getBean(WebhookController.class);
+			assertThat(controller).isNotNull();
+			assertThat(messageEventHandlerField.get(controller)).isEqualTo(messageEventHandler);
+			assertThat(pathField.get(controller)).isEqualTo(AbstractWebhookController.DEFAULT_PATH);
+			assertThat(messageStatusEventHandlerField.get(controller)).isNull();
+			assertThat(clientField.get(controller)).isNull();
+			assertThat(urlField.get(controller)).isNull();
+			assertThat(channelField.get(controller)).isNull();
+		});
+	}
+
+	@Test
 	void testWhenHasMessageEventCallbackOnClasspathTheWebhookControllerShouldBeCreated() {
 		this.contextRunner.withUserConfiguration(ResourceConfig.class, MessageEventCallbackConfiguration.class).run((context) -> {
 			WebhookController controller = context.getBean(WebhookController.class);
 			assertThat(controller).isNotNull();
-			assertThat(messageEventCallbackField.get(controller)).isEqualTo(messageEventCallback);
+			assertThat(messageEventHandlerField.get(controller)).isEqualTo(messageEventHandler);
 			assertThat(pathField.get(controller)).isEqualTo(AbstractWebhookController.DEFAULT_PATH);
-			assertThat(messageStatusEventCallbackField.get(controller)).isNull();
+			assertThat(messageStatusEventHandlerField.get(controller)).isNull();
 			assertThat(clientField.get(controller)).isNull();
 			assertThat(urlField.get(controller)).isNull();
 			assertThat(channelField.get(controller)).isNull();
@@ -99,9 +104,9 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 		this.contextRunner.withUserConfiguration(ResourceConfig.class, MessageStatusEventCallbackConfiguration.class).run((context) -> {
 			WebhookController controller = context.getBean(WebhookController.class);
 			assertThat(controller).isNotNull();
-			assertThat(messageStatusEventCallbackField.get(controller)).isEqualTo(messageStatusEventCallback);
+			assertThat(messageStatusEventHandlerField.get(controller)).isEqualTo(messageStatusEventHandler);
 			assertThat(pathField.get(controller)).isEqualTo(AbstractWebhookController.DEFAULT_PATH);
-			assertThat(messageEventCallbackField.get(controller)).isNull();
+			assertThat(messageEventHandlerField.get(controller)).isNull();
 			assertThat(clientField.get(controller)).isNull();
 			assertThat(urlField.get(controller)).isNull();
 			assertThat(channelField.get(controller)).isNull();
@@ -113,8 +118,8 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 		this.contextRunner.withUserConfiguration(ResourceConfig.class, MessageEventCallbackConfiguration.class, MessageStatusEventCallbackConfiguration.class).run((context) -> {
 			WebhookController controller = context.getBean(WebhookController.class);
 			assertThat(controller).isNotNull();
-			assertThat(messageEventCallbackField.get(controller)).isEqualTo(messageEventCallback);
-			assertThat(messageStatusEventCallbackField.get(controller)).isEqualTo(messageStatusEventCallback);
+			assertThat(messageEventHandlerField.get(controller)).isEqualTo(messageEventHandler);
+			assertThat(messageStatusEventHandlerField.get(controller)).isEqualTo(messageStatusEventHandler);
 			assertThat(pathField.get(controller)).isEqualTo(AbstractWebhookController.DEFAULT_PATH);
 			assertThat(clientField.get(controller)).isNull();
 			assertThat(urlField.get(controller)).isNull();
@@ -133,10 +138,10 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 			.run((context) -> {
 				WebhookController controller = context.getBean(WebhookController.class);
 				assertThat(controller).isNotNull();
-				assertThat(messageEventCallbackField.get(controller)).isEqualTo(messageEventCallback);
+				assertThat(messageEventHandlerField.get(controller)).isEqualTo(messageEventHandler);
 				assertThat(pathField.get(controller)).isEqualTo(AbstractWebhookController.DEFAULT_PATH);
 				assertThat(clientField.get(controller)).isNotNull();
-				assertThat(messageStatusEventCallbackField.get(controller)).isNull();
+				assertThat(messageStatusEventHandlerField.get(controller)).isNull();
 				assertThat(urlField.get(controller)).isNull();
 				assertThat(channelField.get(controller)).isNull();
 			});
@@ -157,12 +162,12 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 			.run((context) -> {
 				WebhookController controller = context.getBean(WebhookController.class);
 				assertThat(controller).isNotNull();
-				assertThat(messageEventCallbackField.get(controller)).isEqualTo(messageEventCallback);
+				assertThat(messageEventHandlerField.get(controller)).isEqualTo(messageEventHandler);
 				assertThat(pathField.get(controller)).isEqualTo(AbstractWebhookController.DEFAULT_PATH);
 				assertThat(clientField.get(controller)).isNotNull();
 				assertThat(urlField.get(controller)).isEqualTo("http://some-webhook.com");
 				assertThat(channelField.get(controller)).isEqualTo(ChannelType.sms);
-				assertThat(messageStatusEventCallbackField.get(controller)).isNull();
+				assertThat(messageStatusEventHandlerField.get(controller)).isNull();
 			});
 	}
 
@@ -177,9 +182,9 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 			.run((context) -> {
 				WebhookController controller = context.getBean(WebhookController.class);
 				assertThat(controller).isNotNull();
-				assertThat(messageEventCallbackField.get(controller)).isEqualTo(messageEventCallback);
+				assertThat(messageEventHandlerField.get(controller)).isEqualTo(messageEventHandler);
 				assertThat(pathField.get(controller)).isEqualTo("/some-path");
-				assertThat(messageStatusEventCallbackField.get(controller)).isNull();
+				assertThat(messageStatusEventHandlerField.get(controller)).isNull();
 				assertThat(clientField.get(controller)).isNull();
 				assertThat(urlField.get(controller)).isNull();
 				assertThat(channelField.get(controller)).isNull();
@@ -190,7 +195,7 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 	static class MessageEventCallbackConfiguration {
 		@Bean
 		MessageEventCallback createMessageEvent() {
-			return messageEventCallback;
+			return messageEventHandler;
 		}
 	}
 
@@ -198,7 +203,7 @@ public class WebhookControllerJerseyAutoConfigurationTest {
 	static class MessageStatusEventCallbackConfiguration {
 		@Bean
 		MessageStatusEventCallback createMessageStatusEvent() {
-			return messageStatusEventCallback;
+			return messageStatusEventHandler;
 		}
 	}
 

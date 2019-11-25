@@ -1,9 +1,8 @@
 package com.zenvia.api.sdk.autoconfigure.webhook;
 
 import org.glassfish.jersey.server.ResourceConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,44 +20,40 @@ import com.zenvia.api.sdk.webhook.MessageStatusEventCallback;
 import com.zenvia.api.sdk.webhook.jersey.WebhookController;
 
 @Configuration
-@ConditionalOnClass(WebhookController.class)
-@ConditionalOnBean(ResourceConfig.class)
+@ConditionalOnClass({ WebhookController.class, ResourceConfig.class })
 @Conditional(OnEventCallbacksCondition.class)
 @AutoConfigureAfter({ ClientSpringAutoConfiguration.class, ClientApacheAutoConfiguration.class })
 @EnableConfigurationProperties(WebhookProperties.class)
 public class WebhookControllerJerseyAutoConfiguration {
 
-	@Autowired
-	private WebhookProperties webhookProperties;
-
-	@Autowired
-	private ResourceConfig resourceConfig;
-
-	@Autowired(required = false)
-	private MessageEventCallback messageEventCallback;
-
-	@Autowired(required = false)
-	private MessageStatusEventCallback messageStatusEventCallback;
-
-	@Autowired(required = false)
-	private AbstractClient client;
+	@Bean
+	@ConditionalOnMissingBean
+	public WebhookController createWebhookController(
+		WebhookProperties webhookProperties,
+		ObjectProvider<ResourceConfig> resourceConfig,
+		ObjectProvider<MessageEventCallback> messageEventHandler,
+		ObjectProvider<MessageStatusEventCallback> messageStatusEventHandler,
+		ObjectProvider<AbstractClient> client
+	) {
+		ChannelType channel = null;
+		if (webhookProperties.getChannel() != null) {
+			channel = ChannelType.parse(webhookProperties.getChannel());
+		}
+		return new WebhookController(
+    		resourceConfig.getIfAvailable(),
+    		messageEventHandler.getIfAvailable(),
+    		messageStatusEventHandler.getIfAvailable(),
+    		webhookProperties.getPath(),
+    		client.getIfAvailable(),
+    		webhookProperties.getUrl(),
+    		channel
+    	);
+	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public WebhookController createWithClient() {
-		ChannelType channel = null;
-		if (this.webhookProperties.getChannel() != null) {
-			channel = ChannelType.parse(this.webhookProperties.getChannel());
-		}
-		return new WebhookController(
-    		resourceConfig,
-    		messageEventCallback,
-    		messageStatusEventCallback,
-    		this.webhookProperties.getPath(),
-    		client,
-    		this.webhookProperties.getUrl(),
-    		channel
-    	);
+	public ResourceConfig createResourceConfig() {
+		return new ResourceConfig();
 	}
 
 }
