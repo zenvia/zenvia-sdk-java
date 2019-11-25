@@ -87,7 +87,7 @@ For the webhook controller, add to your pom [this SDK](https://search.maven.org/
 
 ### Starters
 
-For those using Spring Boot, consider ours [Starters](https://github.com/zenvia/zenvia-sdk-java/tree/master/zenvia-sdk-starters) to easily configure the Zenvia SDK in your project.
+For those using Spring Boot, consider ours [Starters](./zenvia-sdk-starters/README.md) to easily configure the Zenvia SDK in your project.
 
 
 ## Basic Usage
