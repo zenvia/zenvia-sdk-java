@@ -48,6 +48,9 @@ You need to create an API token in the Zenvia [API console](https://app.zenvia.c
 
 
 ## Installation
+
+### Client
+
 If using maven, add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-client-apache):
 
 ```xml
@@ -69,6 +72,22 @@ or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk
 </dependency>
 ```
 
+### Webhook Controller
+
+For the webhook controller, add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-webhook-jersey):
+
+```xml
+<dependency>
+	<groupId>com.zenvia</groupId>
+	<artifactId>zenvia-api-sdk-webhook-jersey</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
+
+### Starters
+
+For those using Spring Boot, consider ours [Starters](https://github.com/zenvia/zenvia-sdk-java/tree/master/zenvia-sdk-starters) to easily configure the Zenvia SDK in your project.
 
 
 ## Basic Usage
@@ -145,6 +164,32 @@ The content support by channel is described below.
 | WhatsApp | X           | X           | X               |
 | Facebook | X           | X           |                 |
 
+
+
+### Receiving message and message status events
+
+Use the `WebhookController` class to create your webhook to receive message and message status events. The default port is `8080`.
+
+If you inform the `client`, `url`, and `channel` fields, a subscription will be created if it does not exist for these configurations.
+
+In the `messageEventHandler` field you will receive the message events and in the `messageStatusEventHandler` field you will receive the message status events.
+
+```java
+Client client = new Client("YOUR_API_TOKEN");
+WebhookController webhook = new WebhookController(
+  new ResourceConfig(),
+  (MessageEvent messageEvent) -> {
+    System.out.println("Message event:" + messageEvent);
+  },
+  (MessageStatusEvent messageStatusEvent) -> {
+    System.out.println("Message status event:" + messageStatusEvent);
+  },
+  client,
+  "https://my-webhook.company.com",
+  ChannelType.whatsapp
+);
+webhook.init();
+```
 
 
 ## Contributing
