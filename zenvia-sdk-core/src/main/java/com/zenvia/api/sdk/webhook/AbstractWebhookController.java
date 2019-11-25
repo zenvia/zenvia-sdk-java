@@ -171,7 +171,7 @@ public abstract class AbstractWebhookController {
 		return value == null ? defaultValue : value;
 	}
 
-	/** Returns the configuration of this client, except for the token.
+	/** Returns the configuration of this Webhook.
 	 *
 	 *  @since 0.9.0 */
 	@Override

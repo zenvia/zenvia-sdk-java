@@ -26,14 +26,26 @@ public class MessageStatusEvent extends Event {
 	 *  @since 1.1.0 */
 	public final Integer contentIndex;
 	
-	/** Text of the message
+	/** The status of a send message request
 	 *
 	 *  @since 1.1.0 */
 	public final MessageStatus messageStatus;
 
 
-	/** @param text Text of the message.
+	/** @param id Event identifier.
 	 *
+	 *  @param timestamp Timestamp of event occurrence.
+	 *
+	 *  @param subscriptionId Subscription identifier.
+	 *
+	 *  @param channel Channel of sent message.
+	 *
+	 *  @param messageId Message identifier.
+	 *
+	 *  @param contentIndex The index of sent array contents that is receiving the status.
+	 *  
+	 *  @param messageStatus The status of sent message.
+	 *  
 	 *  @since 1.1.0 */
 	@JsonCreator
 	public MessageStatusEvent(
