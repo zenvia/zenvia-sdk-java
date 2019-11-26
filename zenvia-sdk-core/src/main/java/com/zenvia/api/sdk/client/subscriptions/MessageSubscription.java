@@ -15,7 +15,6 @@ public class MessageSubscription extends Subscription {
 	/** @since 0.9.0 */
 	public static final String EVENT_TYPE = "MESSAGE";
 
-	@SuppressWarnings( "hiding" )
 	public final MessageCriteria criteria;
 
 
