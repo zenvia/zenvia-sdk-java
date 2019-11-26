@@ -40,14 +40,14 @@ public class WebhookControllerJerseyAutoConfiguration {
 			channel = ChannelType.parse(webhookProperties.getChannel());
 		}
 		return new WebhookController(
-    		resourceConfig.getIfAvailable(),
-    		messageEventHandler.getIfAvailable(),
-    		messageStatusEventHandler.getIfAvailable(),
-    		webhookProperties.getPath(),
-    		client.getIfAvailable(),
-    		webhookProperties.getUrl(),
-    		channel
-    	);
+			resourceConfig.getIfAvailable(),
+			messageEventHandler.getIfAvailable(),
+			messageStatusEventHandler.getIfAvailable(),
+			webhookProperties.getPath(),
+			client.getIfAvailable(),
+			webhookProperties.getUrl(),
+			channel
+		);
 	}
 
 	@Bean
