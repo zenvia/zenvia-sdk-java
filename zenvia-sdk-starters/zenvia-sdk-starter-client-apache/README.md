@@ -16,7 +16,7 @@ For Apache Maven:
 <dependency>
 	<groupId>com.zenvia</groupId>
 	<artifactId>zenvia-api-sdk-starter-client-apache</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 ```
 

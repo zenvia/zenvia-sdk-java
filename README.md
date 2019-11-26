@@ -57,7 +57,7 @@ If using maven, add to your pom [this SDK](https://search.maven.org/search?q=g:c
 <dependency>
 	<groupId>com.zenvia</groupId>
 	<artifactId>zenvia-api-sdk-client-apache</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 ```
 
@@ -68,7 +68,7 @@ or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk
 <dependency>
 	<groupId>com.zenvia</groupId>
 	<artifactId>zenvia-api-sdk-client-spring</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 ```
 
@@ -80,7 +80,7 @@ Add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:
 <dependency>
 	<groupId>com.zenvia</groupId>
 	<artifactId>zenvia-api-sdk-webhook-jersey</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 ```
 
@@ -90,7 +90,7 @@ or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk
 <dependency>
 	<groupId>com.zenvia</groupId>
 	<artifactId>zenvia-api-sdk-webhook-webmvc</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 </dependency>
 ```
 
