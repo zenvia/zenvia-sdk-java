@@ -26,11 +26,8 @@ public class WebhookController extends AbstractWebhookController {
 	private static final Logger LOG = LoggerFactory.getLogger( WebhookController.class );
 
 	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE}
-	 *  events using the given configurations and below default configurations.
-	 *  <br>
-	 *  <ul>
-	 *    <li><b>Path:</b> {@value #DEFAULT_PATH}</li>
-	 *  </ul>
+	 *  events using the given configurations and default root
+	 *  path ("{@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH}").
 	 *  
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
@@ -45,11 +42,7 @@ public class WebhookController extends AbstractWebhookController {
 
 	/** Creates the {@link WebhookController} to receive both {@link EventType#MESSAGE} and
 	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations
-	 *  and below default configurations.
-	 *  <br>
-	 *  <ul>
-	 *    <li><b>Path:</b> {@value #DEFAULT_PATH}</li>
-	 *  </ul>
+	 *  and default root path ("{@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH}").
 	 *
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
@@ -83,7 +76,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *
 	 *  @param path
 	 *  Identifies the URI path to serve requests for webhook call.
-	 *  When null, the default {@value #DEFAULT_PATH} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH} will be used instead.
 	 *
 	 *  @since 1.1.0 */
 	public WebhookController(
@@ -106,7 +99,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *  
 	 *  @param path
 	 *  Identifies the URI path to serve requests for webhook call.
-	 *  When null, the default {@value #DEFAULT_PATH} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH} will be used instead.
 	 *
 	 *  @since 1.1.0 */
 	public WebhookController(
@@ -118,11 +111,8 @@ public class WebhookController extends AbstractWebhookController {
 	}
 	
 	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE_STATUS} events
-	 *  using the given configurations and below default configurations.
-	 *  <br>
-	 *  <ul>
-	 *    <li><b>Path:</b> {@value #DEFAULT_PATH}</li>
-	 *  </ul>
+	 *  using the given configurations and default root
+	 *  path ("{@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH}").
 	 *  
 	 *  @param resourceConfig
 	 *  The resource configuration to configure the webhook controller.
@@ -148,7 +138,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *  
 	 *  @param path
 	 *  Identifies the URI path to serve requests for webhook call.
-	 *  When null, the default {@value #DEFAULT_PATH} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH} will be used instead.
 	 *
 	 *  @since 1.1.0 */
 	public WebhookController(
@@ -160,11 +150,8 @@ public class WebhookController extends AbstractWebhookController {
 	}
 
 	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE} events
-	 *  using the given configurations and below default configurations.
-	 *  <br>
-	 *  <ul>
-	 *    <li><b>Path:</b> {@value #DEFAULT_PATH}</li>
-	 *  </ul>
+	 *  using the given configurations and default root
+	 *  path ("{@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH}").
 	 *  
 	 *  The subscription will be created if it does not exist for these configurations.
 	 *
@@ -195,11 +182,8 @@ public class WebhookController extends AbstractWebhookController {
 	}
 
 	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE_STATUS} events
-	 *  using the given configurations and below default configurations.
-	 *  <br>
-	 *  <ul>
-	 *    <li><b>Path:</b> {@value #DEFAULT_PATH}</li>
-	 *  </ul>
+	 *  using the given configurations and default root 
+	 *  path ("{@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH}").
 	 *  
 	 *  The subscription will be created if it does not exist for these configurations.
 	 *
@@ -230,12 +214,8 @@ public class WebhookController extends AbstractWebhookController {
 	}
 
 	/** Creates the {@link WebhookController} to receive both {@link EventType#MESSAGE} and
-	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations and 
-	 *  below default configurations.
-	 *  <br>
-	 *  <ul>
-	 *    <li><b>Path:</b> {@value #DEFAULT_PATH}</li>
-	 *  </ul>
+	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations and
+	 *  default root path ("{@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH}").
 	 *  
 	 *  The subscription will be created if it does not exist for these configurations.
 	 *
@@ -284,7 +264,7 @@ public class WebhookController extends AbstractWebhookController {
 	 *
 	 *  @param path
 	 *  Identifies the URI path to serve requests for webhook call.
-	 *  When null, the default {@value #DEFAULT_PATH} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.webhook.AbstractWebhookController#DEFAULT_PATH} will be used instead.
 	 *
 	 *  @param client
 	 *  Zenvia API Client to automatically creates a subscription.

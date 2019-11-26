@@ -65,12 +65,12 @@ public class Client extends AbstractClient {
 	/** Initializes the connection pool using default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Maximum connections:</b> {@value #DEFAULT_MAX_CONNECTIONS}</li>
-	 *    <li><b>Connection timeout:</b> {@value #DEFAULT_CONNECTION_TIMEOUT} ms</li>
-	 *    <li><b>Socket timeout:</b> {@value #DEFAULT_SOCKET_TIMEOUT} ms</li>
-	 *    <li><b>Maximum connection retries:</b> {@value #DEFAULT_MAX_CONNECTION_RETRIES}</li>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Maximum connections:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS}</li>
+	 *    <li><b>Connection timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} ms</li>
+	 *    <li><b>Socket timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} ms</li>
+	 *    <li><b>Maximum connection retries:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES}</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
@@ -86,11 +86,11 @@ public class Client extends AbstractClient {
 	 * and below default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Connection timeout:</b> {@value #DEFAULT_CONNECTION_TIMEOUT} ms</li>
-	 *    <li><b>Socket timeout:</b> {@value #DEFAULT_SOCKET_TIMEOUT} ms</li>
-	 *    <li><b>Maximum connection retries:</b> {@value #DEFAULT_MAX_CONNECTION_RETRIES}</li>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Connection timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} ms</li>
+	 *    <li><b>Socket timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} ms</li>
+	 *    <li><b>Maximum connection retries:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES}</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
@@ -98,7 +98,7 @@ public class Client extends AbstractClient {
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTIONS} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client( String apiToken, Integer maxConnections ) {
@@ -110,9 +110,9 @@ public class Client extends AbstractClient {
 	 * and below default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Maximum connections:</b> {@value #DEFAULT_MAX_CONNECTIONS}</li>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Maximum connections:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS}</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
@@ -120,16 +120,16 @@ public class Client extends AbstractClient {
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} will be used instead.
 	 *
 	 *  @param socketTimeout
 	 *  The amount of time in milliseconds for a server reply to timeout.
-	 *  When null, the default {@value #DEFAULT_SOCKET_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} will be used instead.
 	 *
 	 *  @param maxConnectionRetries
 	 *  The maximum amount of connection retries automatically made by the HTTP client in
 	 *  case of connection failure.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client(
@@ -146,8 +146,8 @@ public class Client extends AbstractClient {
 	 * and below default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
@@ -155,20 +155,20 @@ public class Client extends AbstractClient {
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTIONS} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS} will be used instead.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} will be used instead.
 	 *
 	 *  @param socketTimeout
 	 *  The amount of time in milliseconds for a server reply to timeout.
-	 *  When null, the default {@value #DEFAULT_SOCKET_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} will be used instead.
 	 *
 	 *  @param maxConnectionRetries
 	 *  The maximum amount of connection retries automatically made by the HTTP client in
 	 *  case of connection failure.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client(
@@ -189,30 +189,30 @@ public class Client extends AbstractClient {
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTIONS} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS} will be used instead.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} will be used instead.
 	 *
 	 *  @param socketTimeout
 	 *  The amount of time in milliseconds for a server reply to timeout.
-	 *  When null, the default {@value #DEFAULT_SOCKET_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} will be used instead.
 	 *
 	 *  @param maxConnectionRetries
 	 *  The maximum amount of connection retries automatically made by the HTTP client in
 	 *  case of connection failure.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
 	 *
 	 *  @param connectionPoolTimeout
 	 *  The amount of time in milliseconds for a request to timeout when wait for a free connection
 	 *  from the pool. When zero, it means it will wait indefinitely for a connection.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} will be used instead.
 	 *
 	 *  @param inactivityTimeBeforeStaleCheck
 	 *  The amount of time in milliseconds of inactivity necessary to trigger a stale check on
 	 *  idle pool connections.
-	 *  When null, the default {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client(
@@ -231,21 +231,21 @@ public class Client extends AbstractClient {
 	/** Initializes the connection pool using default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Maximum connections:</b> {@value #DEFAULT_MAX_CONNECTIONS}</li>
-	 *    <li><b>Connection timeout:</b> {@value #DEFAULT_CONNECTION_TIMEOUT} ms</li>
-	 *    <li><b>Socket timeout:</b> {@value #DEFAULT_SOCKET_TIMEOUT} ms</li>
-	 *    <li><b>Maximum connection retries:</b> {@value #DEFAULT_MAX_CONNECTION_RETRIES}</li>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Maximum connections:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS}</li>
+	 *    <li><b>Connection timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} ms</li>
+	 *    <li><b>Socket timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} ms</li>
+	 *    <li><b>Maximum connection retries:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES}</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
 	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
-	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
+	 *  The URL for the API service. Normally the value {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} is used, but can be
 	 *  useful for testing, and in rare cases, for custom integrations.
-	 *  When null, the default {@value #DEFAULT_URL} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client( String apiToken, String apiUrl ) {
@@ -257,24 +257,24 @@ public class Client extends AbstractClient {
 	 * and below default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Connection timeout:</b> {@value #DEFAULT_CONNECTION_TIMEOUT} ms</li>
-	 *    <li><b>Socket timeout:</b> {@value #DEFAULT_SOCKET_TIMEOUT} ms</li>
-	 *    <li><b>Maximum connection retries:</b> {@value #DEFAULT_MAX_CONNECTION_RETRIES}</li>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Connection timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} ms</li>
+	 *    <li><b>Socket timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} ms</li>
+	 *    <li><b>Maximum connection retries:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES}</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
 	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
-	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
+	 *  The URL for the API service. Normally the value {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} is used, but can be
 	 *  useful for testing, and in rare cases, for custom integrations.
-	 *  When null, the default {@value #DEFAULT_URL} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} will be used instead.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTIONS} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client( String apiToken, String apiUrl, Integer maxConnections ) {
@@ -286,31 +286,31 @@ public class Client extends AbstractClient {
 	 * and below default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Maximum connections:</b> {@value #DEFAULT_MAX_CONNECTIONS}</li>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Maximum connections:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS}</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
 	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
-	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
+	 *  The URL for the API service. Normally the value {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} is used, but can be
 	 *  useful for testing, and in rare cases, for custom integrations.
-	 *  When null, the default {@value #DEFAULT_URL} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} will be used instead.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} will be used instead.
 	 *
 	 *  @param socketTimeout
 	 *  The amount of time in milliseconds for a server reply to timeout.
-	 *  When null, the default {@value #DEFAULT_SOCKET_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} will be used instead.
 	 *
 	 *  @param maxConnectionRetries
 	 *  The maximum amount of connection retries automatically made by the HTTP client in
 	 *  case of connection failure.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client(
@@ -328,34 +328,34 @@ public class Client extends AbstractClient {
 	 * and below default configurations.
 	 * <br>
 	 * <ul>
-	 *    <li><b>Connection pool timeout:</b> {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
-	 *    <li><b>Inactivity time before stale checking:</b> {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
+	 *    <li><b>Connection pool timeout:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} ms</li>
+	 *    <li><b>Inactivity time before stale checking:</b> {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} ms</li>
 	 *  </ul>
 	 *
 	 *  @param apiToken
 	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
-	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
+	 *  The URL for the API service. Normally the value {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} is used, but can be
 	 *  useful for testing, and in rare cases, for custom integrations.
-	 *  When null, the default {@value #DEFAULT_URL} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} will be used instead.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTIONS} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS} will be used instead.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} will be used instead.
 	 *
 	 *  @param socketTimeout
 	 *  The amount of time in milliseconds for a server reply to timeout.
-	 *  When null, the default {@value #DEFAULT_SOCKET_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} will be used instead.
 	 *
 	 *  @param maxConnectionRetries
 	 *  The maximum amount of connection retries automatically made by the HTTP client in
 	 *  case of connection failure.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client(
@@ -376,36 +376,36 @@ public class Client extends AbstractClient {
 	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
-	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
+	 *  The URL for the API service. Normally the value {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} is used, but can be
 	 *  useful for testing, and in rare cases, for custom integrations.
-	 *  When null, the default {@value #DEFAULT_URL} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_URL} will be used instead.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTIONS} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTIONS} will be used instead.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_TIMEOUT} will be used instead.
 	 *
 	 *  @param socketTimeout
 	 *  The amount of time in milliseconds for a server reply to timeout.
-	 *  When null, the default {@value #DEFAULT_SOCKET_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_SOCKET_TIMEOUT} will be used instead.
 	 *
 	 *  @param maxConnectionRetries
 	 *  The maximum amount of connection retries automatically made by the HTTP client in
 	 *  case of connection failure.
-	 *  When null, the default {@value #DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_MAX_CONNECTION_RETRIES} will be used instead.
 	 *
 	 *  @param connectionPoolTimeout
 	 *  The amount of time in milliseconds for a request to timeout when wait for a free connection
 	 *  from the pool. When zero, it means it will wait indefinitely for a connection.
-	 *  When null, the default {@value #DEFAULT_CONNECTION_POOL_TIMEOUT} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_CONNECTION_POOL_TIMEOUT} will be used instead.
 	 *
 	 *  @param inactivityTimeBeforeStaleCheck
 	 *  The amount of time in milliseconds of inactivity necessary to trigger a stale check on
 	 *  idle pool connections.
-	 *  When null, the default {@value #DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} will be used instead.
+	 *  When null, the default {@value com.zenvia.api.sdk.client.AbstractClient#DEFAULT_INACTIVITY_TIME_BEFORE_STALE_CHECK} will be used instead.
 	 *
 	 *  @since 0.9.0 */
 	public Client(
