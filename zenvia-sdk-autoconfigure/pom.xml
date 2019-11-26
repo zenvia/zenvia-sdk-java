@@ -38,11 +38,22 @@
 			<version>1.0.0</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.zenvia</groupId>
+			<artifactId>zenvia-api-sdk-webhook-webmvc</artifactId>
+			<version>1.0.0</version>
+			<optional>true</optional>
+		</dependency>
 		<!-- Test -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-test-autoconfigure</artifactId>
 		    <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>

@@ -9,3 +9,4 @@ Starter modules which easily allows you to use Zenvia's CPaaS SDK in your Spring
 * [Client with Apache](./zenvia-sdk-starter-client-apache/README.md)
 * [Client with Spring](./zenvia-sdk-starter-client-spring/README.md)
 * [WebhookController with Jersey](./zenvia-sdk-starter-webhook-jersey/README.md)
+* [WebhookController with Spring Web MVC](./zenvia-sdk-starter-webhook-webmvc/README.md)

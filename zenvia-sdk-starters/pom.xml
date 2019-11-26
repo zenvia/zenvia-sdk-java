@@ -18,8 +18,9 @@
 
 	<modules>
 		<module>zenvia-sdk-starter-client-apache</module>
-        <module>zenvia-sdk-starter-client-spring</module>
+		<module>zenvia-sdk-starter-client-spring</module>
 		<module>zenvia-sdk-starter-webhook-jersey</module>
-    </modules>
+		<module>zenvia-sdk-starter-webhook-webmvc</module>
+	</modules>
 
 </project>

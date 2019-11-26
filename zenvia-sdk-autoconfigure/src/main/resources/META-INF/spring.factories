@@ -2,4 +2,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.zenvia.api.sdk.autoconfigure.client.ClientApacheAutoConfiguration,\
 com.zenvia.api.sdk.autoconfigure.client.ClientSpringAutoConfiguration,\
-com.zenvia.api.sdk.autoconfigure.webhook.WebhookControllerJerseyAutoConfiguration
+com.zenvia.api.sdk.autoconfigure.webhook.WebhookControllerJerseyAutoConfiguration,\
+com.zenvia.api.sdk.autoconfigure.webhook.WebhookControllerWebMvcAutoConfiguration
