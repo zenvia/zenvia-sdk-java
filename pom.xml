@@ -25,6 +25,7 @@
 		<module>zenvia-sdk-client-apache</module>
 		<module>zenvia-sdk-client-spring</module>
 		<module>zenvia-sdk-webhook-jersey</module>
+		<module>zenvia-sdk-webhook-webmvc</module>
 		<module>zenvia-sdk-autoconfigure</module>
 		<module>zenvia-sdk-starters</module>
 	</modules>
