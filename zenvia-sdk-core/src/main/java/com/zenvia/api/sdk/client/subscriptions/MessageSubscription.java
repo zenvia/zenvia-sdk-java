@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-/** Describes a webkook {@link "https://en.wikipedia.org/wiki/Webhook"}) setup on
- *  Zenvia CPaaS API ({@link "https://app.zenvia.com/home/api"}) for receiving messages
+/** Describes a <a href="https://en.wikipedia.org/wiki/Webhook" target="_blank">webkook</a> setup on
+ *  <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia CPaaS API</a> for receiving messages
  *  trafficking on a specific channel.
  *
  *  @since 0.9.0 */

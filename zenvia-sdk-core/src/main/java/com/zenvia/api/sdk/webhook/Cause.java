@@ -27,7 +27,7 @@ public class Cause {
 	 *
 	 *  @param reason Reason of this error.
 	 *
-	 *  @param More details about this error.
+	 *  @param details More details about this error.
 	 *
 	 *  @since 1.1.0 */
 	@JsonCreator

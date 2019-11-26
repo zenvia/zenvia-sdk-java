@@ -13,16 +13,20 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import com.zenvia.api.sdk.client.AbstractClient;
 import com.zenvia.api.sdk.client.ChannelType;
+import com.zenvia.api.sdk.client.subscriptions.EventType;
 import com.zenvia.api.sdk.webhook.AbstractWebhookController;
 import com.zenvia.api.sdk.webhook.Event;
 import com.zenvia.api.sdk.webhook.MessageEventCallback;
 import com.zenvia.api.sdk.webhook.MessageStatusEventCallback;
 
+/** WebhookController that is backed by <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc" target="_blank">Spring Web MVC</a>.
+ *
+ *  @since 1.1.0 */
 public class WebhookController extends AbstractWebhookController {
 
 	private static final Logger LOG = LoggerFactory.getLogger( WebhookController.class );
 	
-	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE}
+	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE}
 	 *  events using the given configurations and below default configurations.
 	 *  <br>
 	 *  <ul>
@@ -40,7 +44,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, messageEventHandler, null, null);
 	}
 
-	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
+	/** Creates the {@link WebhookController} to receive both {@link EventType#MESSAGE} and
 	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations
 	 *  and below default configurations.
 	 *  <br>
@@ -66,7 +70,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, messageEventHandler, messageStatusEventHandler, null, null, null, null);
 	}
 
-	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
+	/** Creates the {@link WebhookController} to receive both {@link EventType#MESSAGE} and
 	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations.
 	 *
 	 *  @param handlerMapping
@@ -92,7 +96,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, messageEventHandler, messageStatusEventHandler, path, null, null, null);
 	}
 
-	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE} events
+	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE} events
 	 *  using the given configurations.
 	 *  
 	 *  @param handlerMapping
@@ -114,7 +118,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, messageEventHandler, null, path, null, null, null);
 	}
 	
-	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE_STATUS} events
+	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE_STATUS} events
 	 *  using the given configurations and below default configurations.
 	 *  <br>
 	 *  <ul>
@@ -134,7 +138,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, null, messageStatusEventHandler, null);
 	}
 
-	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE_STATUS} events
+	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE_STATUS} events
 	 *  using the given configurations.
 	 *  
 	 *  @param handlerMapping
@@ -156,7 +160,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, null, messageStatusEventHandler, path);
 	}
 
-	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE} events
+	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE} events
 	 *  using the given configurations and below default configurations.
 	 *  <br>
 	 *  <ul>
@@ -191,7 +195,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, messageEventHandler, null, null, client, url, channel);
 	}
 
-	/** Creates the {@link WebhookControler} to receive only {@link EventType#MESSAGE_STATUS} events
+	/** Creates the {@link WebhookController} to receive only {@link EventType#MESSAGE_STATUS} events
 	 *  using the given configurations and below default configurations.
 	 *  <br>
 	 *  <ul>
@@ -226,7 +230,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, null, messageStatusEventHandler, null, client, url, channel);
 	}
 
-	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
+	/** Creates the {@link WebhookController} to receive both {@link EventType#MESSAGE} and
 	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations and 
 	 *  below default configurations.
 	 *  <br>
@@ -266,7 +270,7 @@ public class WebhookController extends AbstractWebhookController {
 		this(handlerMapping, messageEventHandler, messageStatusEventHandler, null, client, url, channel);
 	}
 
-	/** Creates the {@link WebhookControler} to receive both {@link EventType#MESSAGE} and
+	/** Creates the {@link WebhookController} to receive both {@link EventType#MESSAGE} and
 	 *  {@link EventType#MESSAGE_STATUS} events using the given configurations.
 	 *  The subscription will be created if it does not exist for these configurations.
 	 *

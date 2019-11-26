@@ -16,7 +16,7 @@ public class FileContent extends Content {
 	 *  @since 0.9.0 */
 	public final String fileUrl;
 
-	/** The <i>media type</i> ({@link "https://en.wikipedia.org/wiki/Media_type"}) of media. 
+	/** The <a href="https://en.wikipedia.org/wiki/Media_type" target="_blank"><i>media type</i></a> of media. 
 	 *
 	 *  @since 0.9.0 */
 	public final String fileMimeType;
@@ -56,7 +56,7 @@ public class FileContent extends Content {
 	 *  by at least Zenvia's platform.
 	 *
 	 *  @param fileMimeType
-	 *  The <i>media type</i> ({@link "https://en.wikipedia.org/wiki/Media_type"}) of media.
+	 *  The <a href="https://en.wikipedia.org/wiki/Media_type" target="_blank"><i>media type</i></a> of media.
 	 *  While sending this type of content, this field is optional. If not provided, the
 	 *  <i>media type</i> in the <i>Content-Type</i> header of the URL reply will be used.
 	 *

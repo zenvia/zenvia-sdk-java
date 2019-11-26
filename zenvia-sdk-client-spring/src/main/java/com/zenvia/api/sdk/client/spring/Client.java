@@ -35,10 +35,9 @@ import com.zenvia.api.sdk.client.subscriptions.PartialSubscription;
 import com.zenvia.api.sdk.client.subscriptions.Subscription;
 
 
-/** API Client that is backed by Spring Boot Rest Template: 
- *  {@link "https://github.com/spring-projects/spring-framework/blob/master/spring-web/src/main/java/org/springframework/web/client/RestTemplate.java"}.
- *  The Rest Template is backed by Apache HTTP Client ({@link "http://hc.apache.org/"})
- *  and Jackson ({@link "https://github.com/FasterXML/jackson"}).
+/** API Client that is backed by <a href="https://github.com/spring-projects/spring-framework/blob/master/spring-web/src/main/java/org/springframework/web/client/RestTemplate.java" target="_blank">Spring Boot Rest Template</a>.
+ *  The Rest Template is backed by <a href="http://hc.apache.org/" target="_blank">Apache HTTP Client</a>
+ *  and <a href="https://github.com/FasterXML/jackson" target="_blank">Jackson</a>.
  *  <br><br>
  *  Its is meant to not have too many dependencies.
  *  <br><br>
@@ -70,7 +69,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @since 0.9.0 */
 	public Client( String apiToken ) {
@@ -91,7 +90,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
@@ -114,7 +113,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
@@ -150,7 +149,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
@@ -185,7 +184,7 @@ public class Client extends AbstractClient {
 	/** Initializes the connection pool using the given configurations.
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections in the pool.
@@ -241,7 +240,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
@@ -267,7 +266,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
@@ -295,7 +294,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
@@ -337,7 +336,7 @@ public class Client extends AbstractClient {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be
@@ -378,7 +377,7 @@ public class Client extends AbstractClient {
 	/** Initializes the connection pool using the given configurations.
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Normally the value {@value #DEFAULT_URL} is used, but can be

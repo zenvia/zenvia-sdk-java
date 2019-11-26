@@ -103,7 +103,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @since 0.9.0 */
 	public AbstractClient( String apiToken ) {
@@ -123,7 +123,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections the pool can have.
@@ -148,7 +148,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param connectionTimeout
 	 *  The amount of time in milliseconds for a connection attempt to timeout.
@@ -183,7 +183,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections the pool can have.
@@ -217,7 +217,7 @@ public abstract class AbstractClient implements Closeable {
 	/** Initializes the connection pool using the given configurations.
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param maxConnections
 	 *  The maximum number of connections the pool can have.
@@ -272,7 +272,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Usually the value {@value #DEFAULT_URL} is used, but change it
@@ -297,7 +297,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Usually the value {@value #DEFAULT_URL} is used, but change it
@@ -328,7 +328,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Usually the value {@value #DEFAULT_URL} is used, but change it
@@ -369,7 +369,7 @@ public abstract class AbstractClient implements Closeable {
 	 *  </ul>
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Usually the value {@value #DEFAULT_URL} is used, but change it
@@ -409,7 +409,7 @@ public abstract class AbstractClient implements Closeable {
 	/** Initializes the connection pool using the given configurations.
 	 *
 	 *  @param apiToken
-	 *  An API token generated on Zenvia API console: {@link "https://app.zenvia.com/home/api"}.
+	 *  An API token generated on <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia API console</a>.
 	 *
 	 *  @param apiUrl
 	 *  The URL for the API service. Usually the value {@value #DEFAULT_URL} is used, but change it
