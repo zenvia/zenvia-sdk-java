@@ -74,12 +74,22 @@ or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk
 
 ### Webhook Controller
 
-For the webhook controller, add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-webhook-jersey):
+Add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-webhook-jersey) for the WebhookController over `Jersey` framework:
 
 ```xml
 <dependency>
 	<groupId>com.zenvia</groupId>
 	<artifactId>zenvia-api-sdk-webhook-jersey</artifactId>
+	<version>1.0.0</version>
+</dependency>
+```
+
+
+or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-webhook-webmvc) for the WebhookController over `Spring Web MVC` framework:
+```xml
+<dependency>
+	<groupId>com.zenvia</groupId>
+	<artifactId>zenvia-api-sdk-webhook-webmvc</artifactId>
 	<version>1.0.0</version>
 </dependency>
 ```
@@ -177,7 +187,7 @@ In the `messageEventHandler` field you will receive the message events and in th
 ```java
 Client client = new Client("YOUR_API_TOKEN");
 WebhookController webhook = new WebhookController(
-  new ResourceConfig(),
+  new ResourceConfig(), //or an instance of RequestMappingHandlerMapping when using Spring Wev MVC version
   (MessageEvent messageEvent) -> {
     System.out.println("Message event:" + messageEvent);
   },
