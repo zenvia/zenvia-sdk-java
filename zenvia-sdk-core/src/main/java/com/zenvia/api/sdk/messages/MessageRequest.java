@@ -20,14 +20,14 @@ import com.zenvia.api.sdk.contents.Content;
 public class MessageRequest {
 	/** Id of the sender of the message. The format of the value varies from channel to channel.
 	 *  When the message originates from the contact, it is the id of the contact. When it is the
-	 *  other way around, it represents an integration on {@link "https://app.zenvia.com"}.
+	 *  other way around, it represents an integration on <a href="https://app.zenvia.com" target="_blank">https://app.zenvia.com</a>.
 	 *
 	 *  @since 0.9.0 */
 	public final String from;
 
 	/** Id of the receiver of the message. The format of the value varies from channel to channel.
 	 *  When the contact is the receiver of the message, it is the id of the contact. When it is the
-	 *  other way around, it represents an integration on {@link "https://app.zenvia.com"}.
+	 *  other way around, it represents an integration on <a href="https://app.zenvia.com" target="_blank">https://app.zenvia.com</a>.
 	 *
 	 *  @since 0.9.0 */
 	public final String to;

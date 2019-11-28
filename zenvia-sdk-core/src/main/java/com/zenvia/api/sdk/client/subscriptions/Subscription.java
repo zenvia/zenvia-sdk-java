@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,8 +17,8 @@ import com.zenvia.api.sdk.Json;
 import com.zenvia.api.sdk.ZonedDateTimeDeserializer;
 
 
-/** Describes a webkook {@link "https://en.wikipedia.org/wiki/Webhook"}) setup on
- *  Zenvia CPaaS API ({@link "https://app.zenvia.com/home/api"}).
+/** Describes a <a href="https://en.wikipedia.org/wiki/Webhook" target="_blank">webkook</a> setup on
+ *  <a href="https://app.zenvia.com/home/api" target="_blank">Zenvia CPaaS API</a>.
  *
  *  @since 0.9.0 */
 @JsonIgnoreProperties( ignoreUnknown = true )
@@ -27,6 +28,7 @@ import com.zenvia.api.sdk.ZonedDateTimeDeserializer;
 	@JsonSubTypes.Type( value = MessageStatusSubscription.class, name = MessageStatusSubscription.EVENT_TYPE )
 } )
 @JsonPropertyOrder( { "eventType" } )
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class Subscription {
 	/** @since 0.9.0 */
 	public final String id;

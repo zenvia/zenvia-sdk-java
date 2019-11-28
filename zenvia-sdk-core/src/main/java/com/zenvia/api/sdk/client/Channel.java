@@ -17,8 +17,7 @@ import com.zenvia.api.sdk.messages.Message;
 import com.zenvia.api.sdk.messages.MessageRequest;
 
 
-/** Encapsulates the API calls under channel resource
- *  ({@link "https://zenvia.github.io/zenvia-openapi-spec/#section/API-Design/Resources-path"}).
+/** Encapsulates the API calls under <a href="https://zenvia.github.io/zenvia-openapi-spec/#section/API-Design/Resources-path" target="_blank">channel resource</a>.
  *
  *  @since 0.9.0 */
 public class Channel {
@@ -46,7 +45,8 @@ public class Channel {
 	 *  available {@link AbstractClient client} implementations.
 	 * 
 	 *  @param from Id of the sender of the message. Represents an integration on
-	 *  {@link "https://app.zenvia.com"}. The format of the value varies from channel to channel.
+	 *  <a href="https://app.zenvia.com" target="_blank">https://app.zenvia.com</a>.
+	 *  The format of the value varies from channel to channel.
 	 *
 	 *  @param to Id of the receiver of the message. The format of the value varies from channel
 	 *  to channel. On channels which handles with phone numbers, it is the contact's phone number.
@@ -88,7 +88,8 @@ public class Channel {
 	 *  available {@link AbstractClient client} implementations.
 	 * 
 	 *  @param from Id of the sender of the message. Represents an integration on
-	 *  {@link "https://app.zenvia.com"}. The format of the value varies from channel to channel.
+	 *  <a href="https://app.zenvia.com" target="_blank">https://app.zenvia.com</a>.
+	 *  The format of the value varies from channel to channel.
 	 *
 	 *  @param to Id of the receiver of the message. The format of the value varies from channel
 	 *  to channel. On channels which handles with phone numbers, it is the contact's phone number.
@@ -130,7 +131,8 @@ public class Channel {
 	 *  available {@link AbstractClient client} implementations.
 	 * 
 	 *  @param from Id of the sender of the message. Represents an integration on
-	 *  {@link "https://app.zenvia.com"}. The format of the value varies from channel to channel.
+	 *  <a href="https://app.zenvia.com" target="_blank">https://app.zenvia.com</a>.
+	 *  The format of the value varies from channel to channel.
 	 *
 	 *  @param to Id of the receiver of the message. The format of the value varies from channel
 	 *  to channel. On channels which handles with phone numbers, it is the contact's phone number.
