@@ -3,8 +3,10 @@ package com.zenvia.api.sdk.autoconfigure.webhook;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jersey.JerseyAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -23,6 +25,7 @@ import com.zenvia.api.sdk.webhook.jersey.WebhookController;
 @ConditionalOnClass({ WebhookController.class, ResourceConfig.class })
 @Conditional(OnEventCallbacksCondition.class)
 @AutoConfigureAfter({ ClientSpringAutoConfiguration.class, ClientApacheAutoConfiguration.class })
+@AutoConfigureBefore({ JerseyAutoConfiguration.class })
 @EnableConfigurationProperties(WebhookProperties.class)
 public class WebhookControllerJerseyAutoConfiguration {
 
@@ -30,7 +33,7 @@ public class WebhookControllerJerseyAutoConfiguration {
 	@ConditionalOnMissingBean
 	public WebhookController createWebhookController(
 		WebhookProperties webhookProperties,
-		ObjectProvider<ResourceConfig> resourceConfig,
+		ResourceConfig resourceConfig,
 		ObjectProvider<MessageEventCallback> messageEventHandler,
 		ObjectProvider<MessageStatusEventCallback> messageStatusEventHandler,
 		ObjectProvider<AbstractClient> client
@@ -39,8 +42,8 @@ public class WebhookControllerJerseyAutoConfiguration {
 		if (webhookProperties.getChannel() != null) {
 			channel = ChannelType.parse(webhookProperties.getChannel());
 		}
-		return new WebhookController(
-			resourceConfig.getIfAvailable(),
+		WebhookController controller = new WebhookController(
+			resourceConfig,
 			messageEventHandler.getIfAvailable(),
 			messageStatusEventHandler.getIfAvailable(),
 			webhookProperties.getPath(),
@@ -48,6 +51,8 @@ public class WebhookControllerJerseyAutoConfiguration {
 			webhookProperties.getUrl(),
 			channel
 		);
+		controller.init();
+		return controller;
 	}
 
 	@Bean
