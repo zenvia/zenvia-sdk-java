@@ -1,19 +1,16 @@
 package com.zenvia.api.sdk.webhook;
 
-import java.util.List;
-
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zenvia.api.sdk.client.AbstractClient;
 import com.zenvia.api.sdk.client.ChannelType;
+import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 import com.zenvia.api.sdk.client.subscriptions.Criteria;
-import com.zenvia.api.sdk.client.subscriptions.EventType;
 import com.zenvia.api.sdk.client.subscriptions.MessageCriteria;
 import com.zenvia.api.sdk.client.subscriptions.MessageStatusSubscription;
 import com.zenvia.api.sdk.client.subscriptions.MessageSubscription;
-import com.zenvia.api.sdk.client.subscriptions.Subscription;
-import com.zenvia.api.sdk.client.subscriptions.SubscriptionStatus;
 import com.zenvia.api.sdk.client.subscriptions.Webhook;
 import com.zenvia.api.sdk.messages.MessageDirection;
 
@@ -28,7 +25,7 @@ public abstract class AbstractWebhookController {
 	
 	protected final MessageStatusEventCallback messageStatusEventHandler;
 
-	protected final String path;
+	protected String path;
 
 	protected final AbstractClient client;
 	
@@ -106,9 +103,12 @@ public abstract class AbstractWebhookController {
 	) {
 		this.messageEventHandler = messageEventHandler;
 		this.messageStatusEventHandler = messageStatusEventHandler;
-		this.path = valueOrDefault( path, DEFAULT_PATH );
 		this.client = client;
-		this.url = url;
+		this.path = valueOrDefault( path, DEFAULT_PATH );
+		if (!this.path.startsWith("/")) {
+			this.path = "/".concat(this.path);
+		}
+		this.url = url.concat(this.path);
 		this.channel = channel;
 	}
 
@@ -129,40 +129,33 @@ public abstract class AbstractWebhookController {
 			return;
 		}
 
-		LOG.debug("Verifying subscriptions before create them if not exist");
-		List<Subscription> subscriptions = client.listSubscriptions();
-		boolean shouldCreateMessageSubscription = true;
-		boolean shouldCreateMessageStatusSubscription = true;
+		Webhook webhook = new Webhook(url);
 		
-		for (Subscription subscription : subscriptions) {
-			if (
-				SubscriptionStatus.ACTIVE.equals(subscription.status) && 
-				url.equalsIgnoreCase(subscription.webhook.url) && 
-				channel.equals(subscription.criteria.channel)
-			) {
-				if (EventType.MESSAGE.equals(subscription.eventType)) {
-					LOG.debug("It wont be necessary to create subscription for MESSAGE event");
-					shouldCreateMessageSubscription = false;
-				} else if(EventType.MESSAGE_STATUS.equals(subscription.eventType)) {
-					shouldCreateMessageStatusSubscription = false;
-					LOG.debug("It wont be necessary to create subscription for MESSAGE_STAUS event");
+		if (messageEventHandler != null) {
+			MessageCriteria criteria = new MessageCriteria(channel, MessageDirection.IN);
+			LOG.debug("Trying to create subscription for MESSAGE event of channel {}", channel);
+			try {
+				client.createSubscription(new MessageSubscription(webhook, criteria));
+			} catch (UnsuccessfulRequestException error) {
+				if (error.httpStatusCode == HttpStatus.SC_CONFLICT) {
+					LOG.debug("Message subscription already exists.");
+				} else {
+					throw error;
 				}
 			}
 		}
 		
-		if (shouldCreateMessageSubscription || shouldCreateMessageStatusSubscription) {
-			Webhook webhook = new Webhook(url);
-			
-			if (messageEventHandler != null && shouldCreateMessageSubscription) {
-				MessageCriteria criteria = new MessageCriteria(channel, MessageDirection.IN);
-				LOG.debug("Trying to create subscription for MESSAGE event of channel {}", channel);
-				client.createSubscription(new MessageSubscription(webhook, criteria));
-			}
-			
-			if (messageStatusEventHandler != null && shouldCreateMessageStatusSubscription) {
-				Criteria criteria = new Criteria(channel);
-				LOG.debug("Trying to create subscription for MESSAGE_STATUS event of channel {}", channel);
+		if (messageStatusEventHandler != null) {
+			Criteria criteria = new Criteria(channel);
+			LOG.debug("Trying to create subscription for MESSAGE_STATUS event of channel {}", channel);
+			try {
 				client.createSubscription(new MessageStatusSubscription(webhook, criteria));
+			} catch (UnsuccessfulRequestException error) {
+				if (error.httpStatusCode == HttpStatus.SC_CONFLICT) {
+					LOG.debug("Message status subscription already exists.");
+				} else {
+					throw error;
+				}
 			}
 		}
 	}

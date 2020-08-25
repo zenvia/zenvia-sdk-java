@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -24,7 +25,7 @@ import com.zenvia.api.sdk.webhook.webmvc.WebhookController;
 @ConditionalOnClass(WebhookController.class)
 @ConditionalOnBean(RequestMappingHandlerMapping.class)
 @Conditional(OnEventCallbacksCondition.class)
-@AutoConfigureAfter({ ClientSpringAutoConfiguration.class, ClientApacheAutoConfiguration.class })
+@AutoConfigureAfter({ ClientSpringAutoConfiguration.class, ClientApacheAutoConfiguration.class, WebMvcAutoConfiguration.class })
 @EnableConfigurationProperties(WebhookProperties.class)
 public class WebhookControllerWebMvcAutoConfiguration {
 
@@ -41,7 +42,7 @@ public class WebhookControllerWebMvcAutoConfiguration {
 		if (webhookProperties.getChannel() != null) {
 			channel = ChannelType.parse(webhookProperties.getChannel());
 		}
-		return new WebhookController(
+		WebhookController controller = new WebhookController(
 			handlerMapping,
     		messageEventHandler.getIfAvailable(),
     		messageStatusEventHandler.getIfAvailable(),
@@ -50,6 +51,8 @@ public class WebhookControllerWebMvcAutoConfiguration {
     		webhookProperties.getUrl(),
     		channel
     	);
+		controller.init();
+		return controller;
 	}
 
 }
