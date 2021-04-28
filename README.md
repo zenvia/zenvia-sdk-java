@@ -10,8 +10,6 @@ This SDK for [Java](https://www.java.com/) was created based on the [Zenvia](htt
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ZenviaMobile.svg?style=social)](https://twitter.com/intent/follow?screen_name=ZenviaMobile)
 
-
-
 ## Table of Contents
 
 - [Features](#features)
@@ -22,8 +20,6 @@ This SDK for [Java](https://www.java.com/) was created based on the [Zenvia](htt
 - [Contributing](#contributing)
 - [License](#license)
 
-
-
 ## Features
 
 - [x] Text message content
@@ -32,20 +28,14 @@ This SDK for [Java](https://www.java.com/) was created based on the [Zenvia](htt
 - [x] Subscription handling
 - [x] Logging support
 
-
-
 ## Prerequisites
 
-* [Sign up](https://www.zenvia.com/) for a Zenvia Account
-* [Java](https://www.java.com/)
-
-
+- [Sign up](https://www.zenvia.com/) for a Zenvia Account
+- [Java](https://www.java.com/)
 
 #### Obtain an API Token
 
 You need to create an API token in the Zenvia [API console](https://app.zenvia.com/home/api).
-
-
 
 ## Installation
 
@@ -61,8 +51,15 @@ If using maven, add to your pom [this SDK](https://search.maven.org/search?q=g:c
 </dependency>
 ```
 
+If you are using Gradle instead, add to your `build.gradle` [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-client-apache):
 
-or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-client-spring) that includes [Spring Boot](https://spring.io/projects/spring-boot):
+```groovy
+dependencies {
+    implementation group: 'com.zenvia', name: 'zenvia-api-sdk-client-apache', version: '1.1.0'
+}
+```
+
+You can also use [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-client-spring) that includes [Spring Boot](https://spring.io/projects/spring-boot):
 
 ```xml
 <dependency>
@@ -70,6 +67,14 @@ or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk
 	<artifactId>zenvia-api-sdk-client-spring</artifactId>
 	<version>1.1.0</version>
 </dependency>
+```
+
+or in `build.gradle`:
+
+```groovy
+dependencies {
+    implementation group: 'com.zenvia', name: 'zenvia-api-sdk-client-spring', version: '1.1.0'
+}
 ```
 
 ### Webhook Controller
@@ -84,8 +89,16 @@ Add to your pom [this SDK](https://search.maven.org/search?q=g:com.zenvia+AND+a:
 </dependency>
 ```
 
+or in `build.gradle`:
+
+```groovy
+dependencies {
+    implementation group: 'com.zenvia', name: 'zenvia-api-sdk-webhook-jersey', version: '1.1.0'
+}
+```
 
 or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk-webhook-webmvc) for the WebhookController over `Spring Web MVC` framework:
+
 ```xml
 <dependency>
 	<groupId>com.zenvia</groupId>
@@ -94,11 +107,17 @@ or [the one](https://search.maven.org/search?q=g:com.zenvia+AND+a:zenvia-api-sdk
 </dependency>
 ```
 
+or in `build.gradle`
+
+```groovy
+dependencies {
+    implementation group: 'com.zenvia', name: 'zenvia-api-sdk-webhook-webmvc', version: '1.1.0'
+}
+```
 
 ### Starters
 
 For those using Spring Boot, consider ours [Starters](./zenvia-sdk-starters/README.md) to easily configure the Zenvia SDK in your project.
-
 
 ## Basic Usage
 
@@ -107,8 +126,8 @@ import com.zenvia.api.sdk.contents.*;
 import com.zenvia.api.sdk.messages.Message;
 import com.zenvia.api.sdk.client.Channel;
 import com.zenvia.api.sdk.client.errors.ErrorResponse;
-import com.zenvia.api.sdk.client.exception.ApiException;
-import com.zenvia.api.sdk.client.exception.UnsuccessfulRequestException;
+import com.zenvia.api.sdk.client.exceptions.ApiException;
+import com.zenvia.api.sdk.client.exceptions.UnsuccessfulRequestException;
 
 // When using zenvia-api-sdk-client-apache
 import com.zenvia.api.sdk.client.apache.Client;
@@ -136,9 +155,7 @@ try {
 }
 ```
 
-
 ## Getting Started
-
 
 ### Sending your first message
 
@@ -160,21 +177,19 @@ available on the exception.
 
 The content types can be:
 
-| Name            | Description |
-|-----------------|-------------|
-| TextContent     | Used to send text messages to your customer.
-| FileContent     | Used to send file messages to your customer.
-| TemplateContent | Used to send template messages to your customer.
+| Name            | Description                                      |
+| --------------- | ------------------------------------------------ |
+| TextContent     | Used to send text messages to your customer.     |
+| FileContent     | Used to send file messages to your customer.     |
+| TemplateContent | Used to send template messages to your customer. |
 
 The content support by channel is described below.
 
 | Channel  | TextContent | FileContent | TemplateContent |
-|----------|    :---:    |    :---:    |      :---:      |
-| SMS      | X           |             |                 |
-| WhatsApp | X           | X           | X               |
-| Facebook | X           | X           |                 |
-
-
+| -------- | :---------: | :---------: | :-------------: |
+| SMS      |      X      |             |                 |
+| WhatsApp |      X      |      X      |        X        |
+| Facebook |      X      |      X      |                 |
 
 ### Receiving message and message status events
 
@@ -201,14 +216,11 @@ WebhookController webhook = new WebhookController(
 webhook.init();
 ```
 
-
 ## Contributing
 
 Pull requests are always welcome!
 
 Please see the [Contributors' Guide](CONTRIBUTING.md) for more information on contributing.
-
-
 
 ## License
 
