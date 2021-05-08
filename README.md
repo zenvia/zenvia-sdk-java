@@ -8,7 +8,7 @@ This SDK for [Java](https://www.java.com/) was created based on the [Zenvia](htt
 [![Coverage Status](https://coveralls.io/repos/github/zenvia/zenvia-sdk-java/badge.svg?branch=master)](https://coveralls.io/github/zenvia/zenvia-sdk-java?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.zenvia/zenvia-api-sdk/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.zenvia/zenvia-api-sdk/)
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/ZenviaMobile.svg?style=social)](https://twitter.com/intent/follow?screen_name=ZenviaMobile)
+[![Twitter Follow](https://img.shields.io/twitter/follow/ZENVIA_.svg?style=social)](https://twitter.com/intent/follow?screen_name=ZENVIA_)
 
 ## Table of Contents
 
